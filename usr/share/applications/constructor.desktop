@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=Development;
+Comment=ISO constructor for SolydXK
+Exec=constructor
+Icon=solydxk-constructor
+Name=SolydXK Constructor
+StartupNotify=true
+Terminal=true
+Type=Application

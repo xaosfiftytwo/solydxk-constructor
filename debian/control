@@ -1,0 +1,39 @@
+Source: solydxk-constructor
+Section: development
+Priority: optional
+Maintainer: Arjen Balfoort <arjenbalfoort@solydxk.com>
+Build-Depends: debhelper (>= 9)
+  , python
+  , po4a
+  , intltool
+X-Python-Version: >= 2.7
+Standards-Version: 3.9.5
+Vcs-Git: git://github.com/SolydXK/solydxk-constructor.git
+Vcs-Browser: https://github.com/SolydXK/solydxk-constructor
+
+Package: solydxk-constructor
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}
+  , python3
+  , python3-gi
+  , python3-apt
+  , gir1.2-gtk-3.0
+  , squashfs-tools
+  , coreutils
+  , genisoimage
+  , rsync
+  , xterm
+  , lzma
+  , gzip
+  , uuid-runtime
+  , syslinux
+  , isolinux
+  , syslinux-common
+  , syslinux-utils
+  , mktorrent
+  , intltool
+  , po4a
+  , grub-efi-ia32-bin
+  , grub-efi-amd64-bin
+Description: SolydXK ISO constructor
+ Used by the SolydXK development team to automate ISO building.

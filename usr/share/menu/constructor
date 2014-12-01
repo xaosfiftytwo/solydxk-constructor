@@ -1,0 +1,6 @@
+?package(constructor):\
+   needs="X11"\
+   section="Applications/Development"\
+   title="SolydXK Constructor"\
+   icon="solydxk-constructor"\
+   command="constructor"

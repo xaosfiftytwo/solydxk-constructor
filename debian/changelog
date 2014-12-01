@@ -1,0 +1,148 @@
+solydxk-constructor (2.1.9) solydxk; urgency=low
+
+  * Implement building EFI files for i386
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sun, 30 Nov 2014 21:00:00 +0100
+
+solydxk-constructor (2.1.8) solydxk; urgency=low
+
+  * Limit processor use of mksquashfs to half of what is available
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 27 Nov 2014 19:00:00 +0100
+
+solydxk-constructor (2.1.6) solydxk; urgency=low
+
+  * EFI file creation added
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 24 Nov 2014 17:00:00 +0100
+
+solydxk-constructor (2.1.5) solydxk; urgency=low
+
+  * Include dependency intltool, po4a
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 19 Nov 2014 17:00:00 +0100
+
+solydxk-constructor (2.1.3) solydxk; urgency=low
+
+  * cleanup.sh: make solydxk the autologin user in LigthDM
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 22 Oct 2014 19:00:00 +0100
+
+solydxk-constructor (2.1.2) solydxk; urgency=low
+
+  * Added packages for better BIOS boot
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Fri, 10 Oct 2014 17:00:00 +0100
+
+solydxk-constructor (2.1.1) solydxk; urgency=low
+
+  * Changed icon to go with Evolvere theme
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 17 Sep 2014 18:00:00 +0100
+
+solydxk-constructor (2.1.0) solydxk; urgency=low
+
+  * Removed gnurra.com from webseeds file
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sat, 02 Aug 2014 15:00:00 +0100
+
+solydxk-constructor (2.0.9) solydxk; urgency=low
+
+  * Download offline packages did not function properly
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 15 Jul 2014 11:00:00 +0100
+
+solydxk-constructor (2.0.8) solydxk; urgency=low
+
+  * Check for existence of trackers and webseeds files.
+  * Unpack ISO not enabling GUI when done.
+  * Option to build ISO only.
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sat, 07 Jun 2014 17:00:00 +0100
+
+solydxk-constructor (2.0.5) solydxk; urgency=low
+
+  * Include build for SolydX BE
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 15 May 2014 16:00:00 +0100
+
+solydxk-constructor (2.0.4) solydxk; urgency=low
+
+  * Adapted rmoldkernel.sh to replace dpkg with apt
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 01 May 2014 10:00:00 +0100
+
+solydxk-constructor (2.0.3) solydxk; urgency=low
+
+  * Run "modprobe loop" when starting
+  * Added Gimp instructions in help file
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 09 Apr 2014 22:30:00 +0100
+
+solydxk-constructor (2.0.2) solydxk; urgency=low
+
+  * Support for non-standard boot directories
+  * Make offline package installation possible with offline.sh
+  * Changed initrd.lz to initrd.img
+  * Replaced filesystem.manifest to filesystem.packages
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sun, 16 Mar 2014 10:00:00 +0100
+
+solydxk-constructor (1.9.8) solydxk; urgency=low
+
+  * Minor bugs resolved
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 11 Feb 2014 18:00:00 +0100
+
+solydxk-constructor (1.9.7) solydxk; urgency=low
+
+  * Added torrent creation per ISO
+  * Start/stop apache2, mysql before upgrade when installed (SolydK BO)
+  * Minor bugs resolved
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Fri, 17 Jan 2014 18:00:00 +0100
+
+solydxk-constructor (1.9.3) solydxk; urgency=low
+
+  * Complete rework
+  * Bash dist-upgrade
+  * Bash build ISO
+  * Supports SolydXK and Debian live ISO's
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sat, 07 Dec 2013 16:30:00 +0100
+
+solydxk-constructor (1.0.5) solydxk; urgency=low
+
+  * Handle custom resolv.conf
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 24 Oct 2013 17:00:00 +0100
+ 
+solydxk-constructor (1.0.4) solydxk; urgency=low
+
+  * Adapted for the new iso structure /boot/solydxk instead of /remaster/casper
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sat, 31 Aug 2013 11:00:00 +0100
+
+solydxk-constructor (1.0.3) solydxk; urgency=low
+
+  * Stop interfering services before chroot terminal
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Fri, 17 May 2013 09:00:00 +0100
+
+solydxk-constructor (1.0.2) solydxk; urgency=low
+
+  * Delete root history before building
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sun, 07 Apr 2013 10:00:00 +0100
+
+solydxk-constructor (1.0.1) solydxk; urgency=low
+
+  * Changed control file
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 05 Mar 2013 20:30:00 +0100
+
+solydxk-constructor (1.0.0) solydxk; urgency=low
+
+  * Adapted and repackaged for SolydXK
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 23 Jan 2013 08:38:00 +0100

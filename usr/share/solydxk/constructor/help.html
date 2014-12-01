@@ -1,0 +1,123 @@
+<html>
+<head>
+    <title>SolydXK Constructor Help</title>
+    <style>
+body {
+	    font-family: Arial, Helvetica, Verdana, Sans-serif;
+	    font-size: 12px;
+	    color: #555555;
+	    background: #ffffff;
+	}
+.code {
+	background: #f1f1f1 url(http://debian.solydxk.com/pics/terminal.png) center no-repeat;
+	background-position: 15px 50%; /* x-pos y-pos */
+	text-align: left;
+	padding: 5px 20px 5px 45px;
+	border-top: 2px solid #5d5d5d;
+	border-bottom: 2px solid #5d5d5d;
+	font-family: monospace, courier;  
+	font-style: normal;
+	font-weight: bold;  
+	}
+    </style>
+</head>
+<body>
+<table width="500" align="center">
+    <tr>
+        <td>
+            <h1>SolydXK Constructor Help</h1>
+            <p>SolydXK Constructor helps building your custom SolydXK ISO, and was solely created for maintaining the current SolydXK ISO's, but it might benefit those who want to build their custom SolydXK ISO.<br>
+            You can download SolydXK ISO's here (not the Multi DVD): <a href="http://downloads.solydxk.com" target="_blank">http://downloads.solydxk.com</a></p>
+            <p>SolydXK Constructor needs to start from the terminal. The terminal is your best friend, because all output is written to the terminal.</p>
+            
+            <p><img src="help/mainwindow.png" /></p></p>
+
+            <h2>Content</h2>
+            <ol>
+                <li><a href="#add">Add distribution</a></li>
+                <li><a href="#remove">Remove distributions</a></li>
+                <li><a href="#open">Open directory</a></li>
+                <li><a href="#edit">Edit in terminal</a></li>
+                <li><a href="#upgrade">Dist-upgrade distributions</a></li>
+                <li><a href="#efi">Build EFI files</a></li>
+                <li><a href="#offline">Download offline packages</a></li>
+                <li><a href="#build">Build ISO's</a></li>
+                <li><a href="#debian">Use Debian live as base</a></li>
+                <li><a href="#files">Important files</a></li>
+            </ol>
+
+            <h2><a name="add"></a>1. Add distribution</h2>
+            <p><strong>Unpack an ISO</strong><br>
+            Browse for the downloaded ISO, and select a directory to unpack the ISO to.<br>
+            <img src="help/addisowindow.png" /><br>
+            The button to browse for the unpack directory comes available if the path to the ISO exists.</p>
+            <p><strong>Add an existing directory</strong><br>
+            If you previously unpacked an ISO, and removed the distribution form SolydXK Constructor's list, you can add the existing directory by unchecking the "Create from ISO" checkbox<br>
+            <img src="help/addexistingdistrowindow.png" /><br>
+            The Save button comes available if both the path to the ISO, and the unpack directory exist.</p>
+
+            <h2><a name="remove"></a>2. Remove distributions</h2>
+            <p>This will only remove the selected distributions.<br>
+            The distribution directory, and its contents will NOT be deleted.<br>
+            <img src="help/removedistro.png" /></p>
+
+            <h2><a name="open"></a>3. Open directory</h2>
+            <p>Opens the selected working directory in the default file manager.</p>
+
+            <h2><a name="edit"></a>4. Edit in terminal</h2>
+            <p>Open a chrooted terminal, and start installing (and removing) all the packages you need.<br>
+            It's easier to change configuration in the distribution's root directory, and not through this terminal.<br>
+            <img src="help/terminal.png" /></p>
+
+            <h2><a name="upgrade"></a>5. Dist-upgrade distributions</h2>
+            <p>This will update the apt cache (apt-get update), followed by an upgrade (apt-get dist-upgrade).<br>
+            Make sure your /etc/apt/sources.list, and /etc/apt/preferences files are configured correctly.</p>
+            <p>After the dist-upgrade, you may be asked to remove the old kernel (if any). You can either choose to keep it, or remove it.</p>
+            
+            <h2><a name="efi"></a>6. Build EFI files</h2>
+            <p>When Grub2 was updated, you'll need to rebuild the EFI files (/boot/grub/efi.img and /boot/efi/bootx64.efi).</p>
+            
+            <h2><a name="offline"></a>7. Download offline packages</h2>
+            <p>This will download packages that you need to have available offline, and can be adapted to copy files.<br>
+            You can find the bash file that is being executed here: /usr/lib/solydxk/constructor/offline.sh</p>
+            <p>Files are live available at: /lib/live/mount/medium/offline/.</p>
+
+            <h2><a name="build"></a>8. Build ISO's</h2>
+            <p></p>The building process starts with cleaning up the distribution.<br>
+            You can find the bash file that is being executed here: /usr/lib/solydxk/constructor/cleanup.sh</p>
+            <p>The building process can take a long time.<br>
+            If you need to quit the process before it ends, you can open a terminal and run:<div class="code">sudo killall mksquashfs</div><br>
+            You need to repeat that if you have more than one distribution selected in the list.</p>
+
+            <h2><a name="debian"></a>9. Use Debian live as base</h2>
+            <p>You can even use a Debian Live DVD as a base: <a href="http://www.debian.org/CD/live" target="_blank">http://www.debian.org/CD/live</a><br>
+            If you use Debian, you'll need the "isolinux" directory (and its contents) to replace the "isolinux" directory in the Debian unpack directory.<br>
+            After that you'll need to configure the distribution from scratch. It's a lot of work, but for a CE (Community Edition) well worth it.</p>
+
+            <h2><a name="files"></a>10. Important files</h2>
+            <ul>
+                <li>/usr/lib/solydxk/constructor/distros.list<br>
+                Here are all distribution directories saved.</li>
+                <li>/usr/lib/solydxk/constructor/trackers<br>
+                List with torrent trackers (one per line).</li>
+                <li>/usr/lib/solydxk/constructor/webseeds<br>
+                List with web seeds (without ISO name; one per line).</li>
+                <li>/usr/lib/solydxk/constructor/cleanup.sh<br>
+                This script cleans up prior to building the ISO.</li>
+                <li>/usr/lib/solydxk/constructor/rmoldkernel.sh<br>
+                Removes the old kernel in case of a kernel update.</li>
+                <li>/usr/lib/solydxk/constructor/offline.sh<br>
+                Bash to download/copy offline available packages/files.<br>
+                Files are live available at: /lib/live/mount/medium/offline/.</li>
+                <li>boot/isolinux/isolinux.cfg<br>
+                Here, the isolinux (startup) menu is configured.</li>
+                <li>boot/isolinux/splash.jpg<br>
+                When editing the isolinux background image, make sure to save it without any extra information. In Gimp's export as jpeg window, uncheck all in the 'Advanced options' section.</li>
+                <li>iso_name<br>
+                This file is located directly in the distribution directory, and saves the name for the ISO.</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,134 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-12-01 12:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../usr/lib/solydxk/constructor/constructor.py:71
+#: ../usr/share/applications/constructor.desktop.in.h:2
+msgid "SolydXK Constructor"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:72
+msgid "Select all"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:73
+msgid "Actions"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:74
+msgid "Add distribution"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:75
+msgid "Remove distributions"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:76
+msgid "Open directory"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:77
+msgid "Edit in terminal"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:78
+msgid "Dist-upgrade distributions"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:79
+msgid "Build EFI files"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:80
+msgid "Download offline pck"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:81
+msgid "Build ISOs"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:82
+msgid "Build without cleanup"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:85
+msgid "ISO"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:86
+msgid "Cancel"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:109
+msgid "Version"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:132
+msgid ""
+"Are you sure you want to remove the selected distribution from the list?\n"
+"(This will not remove the directory and its data)"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:156
+msgid "Services detected"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:361
+msgid "Select SolydXK ISO"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:369
+msgid "Select directory"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:377
+msgid "Save existing working directory"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:379
+msgid "Unpack ISO and save"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:385
+#, python-format
+msgid "Could not create directory %(dir)s: exiting"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:398
+msgid "Existing working directory added"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:434
+msgid "Unpack ISO to directory"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:435
+msgid "Unpack & Save"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:442
+msgid "Work directory"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:443
+msgid "Save"
+msgstr ""
+
+#: ../usr/share/applications/constructor.desktop.in.h:1
+msgid "ISO constructor for SolydXK"
+msgstr ""

@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ $UID -eq 0 ]; then
+  /usr/bin/python3 /usr/lib/solydxk/constructor/constructor.py $*
+else
+  LAUNCHER="gksudo"
+  if [ -e "/usr/bin/kdesudo" ]; then
+    LAUNCHER="kdesudo"
+  fi
+  $LAUNCHER /usr/bin/python3 /usr/lib/solydxk/constructor/constructor.py $*
+fi
