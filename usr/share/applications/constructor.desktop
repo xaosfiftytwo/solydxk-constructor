@@ -1,9 +1,11 @@
 [Desktop Entry]
 Categories=Development;
 Comment=ISO constructor for SolydXK
+Comment[nl]=ISO constructor voor SolydXK
 Exec=constructor
 Icon=solydxk-constructor
 Name=SolydXK Constructor
+Name[nl]=SolydXK Constructor
 StartupNotify=true
 Terminal=true
 Type=Application
