@@ -17,7 +17,7 @@ if [ -d offline ]; then
 fi
 mkdir offline
 cd offline
-apt-get update
+#apt-get update
 #echo ">>> Run command: apt-get --print-uris --yes install grub-efi:$ARCH | grep ^\' | cut -d\' -f2"
 wget `apt-get --print-uris --yes install grub-efi:$ARCH | grep ^\' | cut -d\' -f2`
 cd ../

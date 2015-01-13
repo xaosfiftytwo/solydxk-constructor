@@ -13,6 +13,9 @@ apt-get -y --force-yes autoremove
 aptitude -y purge ~c
 aptitude -y unmarkauto ~M
 
+# Remove unavailable packages
+apt-get purge -y --force-yes $(env LANG=C bash -c "apt-show-versions | grep 'available' | cut -d':' -f1")
+
 # Remove orphaned packages
 while [ $(deborphan | wc -l) -ne 0 ]; do
   apt-get purge -y --force-yes $(deborphan);

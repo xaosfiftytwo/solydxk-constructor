@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-07 15:23+0100\n"
+"POT-Creation-Date: 2015-01-13 11:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,147 +17,114 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:71
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:71
+#: ../usr/lib/solydxk/constructor/constructor.py:68
 #: ../usr/share/applications/constructor.desktop.in.h:2
-#: ../debian/solydxk-constructor/usr/share/applications/constructor.desktop.in.h:2
 msgid "SolydXK Constructor"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:72
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:72
+#: ../usr/lib/solydxk/constructor/constructor.py:69
 msgid "Select all"
 msgstr ""
 
+#: ../usr/lib/solydxk/constructor/constructor.py:70
+msgid "Add"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:71
+msgid "Remove"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:72
+msgid "Edit"
+msgstr ""
+
 #: ../usr/lib/solydxk/constructor/constructor.py:73
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:73
-msgid "Actions"
+msgid "Upgrade"
 msgstr ""
 
 #: ../usr/lib/solydxk/constructor/constructor.py:74
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:74
-msgid "Add distribution"
+msgid "Build"
 msgstr ""
 
 #: ../usr/lib/solydxk/constructor/constructor.py:75
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:75
-msgid "Remove distributions"
-msgstr ""
-
-#: ../usr/lib/solydxk/constructor/constructor.py:76
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:76
-msgid "Open directory"
-msgstr ""
-
-#: ../usr/lib/solydxk/constructor/constructor.py:77
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:77
-msgid "Edit in terminal"
+msgid "Help"
 msgstr ""
 
 #: ../usr/lib/solydxk/constructor/constructor.py:78
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:78
-msgid "Dist-upgrade distributions"
-msgstr ""
-
-#: ../usr/lib/solydxk/constructor/constructor.py:79
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:79
-msgid "Build EFI files"
-msgstr ""
-
-#: ../usr/lib/solydxk/constructor/constructor.py:80
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:80
-msgid "Download offline pck"
-msgstr ""
-
-#: ../usr/lib/solydxk/constructor/constructor.py:81
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:81
-msgid "Build ISOs"
-msgstr ""
-
-#: ../usr/lib/solydxk/constructor/constructor.py:82
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:82
-msgid "Build without cleanup"
-msgstr ""
-
-#: ../usr/lib/solydxk/constructor/constructor.py:85
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:85
 msgid "ISO"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:86
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:86
+#: ../usr/lib/solydxk/constructor/constructor.py:79
 msgid "Cancel"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:109
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:109
+#: ../usr/lib/solydxk/constructor/constructor.py:102
 msgid "Version"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:132
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:132
+#: ../usr/lib/solydxk/constructor/constructor.py:120
 msgid ""
 "Are you sure you want to remove the selected distribution from the list?\n"
 "(This will not remove the directory and its data)"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:156
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:156
+#: ../usr/lib/solydxk/constructor/constructor.py:144
 msgid "Services detected"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:361
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:361
+#: ../usr/lib/solydxk/constructor/constructor.py:357
 msgid "Select SolydXK ISO"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:369
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:369
+#: ../usr/lib/solydxk/constructor/constructor.py:365
 msgid "Select directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:377
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:377
+#: ../usr/lib/solydxk/constructor/constructor.py:375
 msgid "Save existing working directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:379
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:379
+#: ../usr/lib/solydxk/constructor/constructor.py:377
 msgid "Unpack ISO and save"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:385
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:385
+#: ../usr/lib/solydxk/constructor/constructor.py:383
 #, python-format
 msgid "Could not create directory %(dir)s: exiting"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:398
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:398
+#: ../usr/lib/solydxk/constructor/constructor.py:388
+msgid ""
+"The path to the ISO file does not exist:\n"
+"{}"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:392
+msgid ""
+"The destination directory is not empty.\n"
+"Are you sure you want to overwrite all data in {}?"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:408
 msgid "Existing working directory added"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:434
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:434
+#: ../usr/lib/solydxk/constructor/constructor.py:449
 msgid "Unpack ISO to directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:435
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:435
+#: ../usr/lib/solydxk/constructor/constructor.py:450
 msgid "Unpack & Save"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:442
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:442
+#: ../usr/lib/solydxk/constructor/constructor.py:458
 msgid "Work directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:443
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:443
+#: ../usr/lib/solydxk/constructor/constructor.py:459
 msgid "Save"
 msgstr ""
 
 #: ../usr/share/applications/constructor.desktop.in.h:1
-#: ../debian/solydxk-constructor/usr/share/applications/constructor.desktop.in.h:1
 msgid "ISO constructor for SolydXK"
 msgstr ""

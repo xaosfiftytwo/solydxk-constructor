@@ -1,0 +1,5 @@
+/usr/lib/solydxk/constructor/cleanup.sh
+/usr/lib/solydxk/constructor/offline.sh
+/usr/lib/solydxk/constructor/rmoldkernel.sh
+/usr/lib/solydxk/constructor/trackers
+/usr/lib/solydxk/constructor/webseeds

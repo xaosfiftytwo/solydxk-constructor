@@ -133,13 +133,13 @@ class IsoUnpack(threading.Thread):
 
 class BuildIso(threading.Thread):
 
-    def __init__(self, distroPath, queue, isoOnly=False):
+    def __init__(self, distroPath, queue):
         threading.Thread.__init__(self)
         self.ec = ExecCmd()
         self.dg = DistroGeneral(distroPath)
         self.ed = EditDistro(distroPath)
         self.queue = queue
-        self.isoOnly = isoOnly
+
         self.returnMessage = None
 
         # Paths
@@ -204,7 +204,7 @@ class BuildIso(threading.Thread):
             if not exists(self.bootPath):
                 self.returnMessage = "ERROR: Cannot find boot directory: %s" % self.bootPath
 
-            if self.returnMessage is None and not self.isoOnly:
+            if self.returnMessage is None:
                 print("======================================================")
                 print("INFO: Cleanup and prepare ISO build...")
                 print("======================================================")
@@ -268,7 +268,7 @@ class BuildIso(threading.Thread):
                 else:
                     self.returnMessage = "ERROR: %s not found" % vmlinuzSymLink
 
-            if self.returnMessage is None and not self.isoOnly:
+            if self.returnMessage is None:
                 vmlinuzPath = join(self.distroPath, "root/%s" % vmlinuzFile)
                 if exists(vmlinuzPath):
                     print("Copy vmlinuz")
@@ -276,7 +276,7 @@ class BuildIso(threading.Thread):
                 else:
                     self.returnMessage = "ERROR: %s not found" % vmlinuzPath
 
-            if self.returnMessage is None and not self.isoOnly:
+            if self.returnMessage is None:
                 # Initrd
                 initrdSymLink = join(self.distroPath, "root/initrd.img")
                 if lexists(initrdSymLink):
@@ -284,7 +284,7 @@ class BuildIso(threading.Thread):
                 else:
                     self.returnMessage = "ERROR: %s not found" % initrdSymLink
 
-            if self.returnMessage is None and not self.isoOnly:
+            if self.returnMessage is None:
                 initrdPath = join(self.distroPath, "root/%s" % initrdFile)
                 if exists(initrdPath):
                     print("Copy initrd")

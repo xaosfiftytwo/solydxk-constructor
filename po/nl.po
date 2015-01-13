@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-07 15:23+0100\n"
+"POT-Creation-Date: 2015-01-13 11:51+0100\n"
 "PO-Revision-Date: 2014-12-07 15:23+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,85 +18,53 @@ msgstr ""
 "X-Generator: Poedit 1.6.10\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:71
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:71
+#: ../usr/lib/solydxk/constructor/constructor.py:68
 #: ../usr/share/applications/constructor.desktop.in.h:2
-#: ../debian/solydxk-constructor/usr/share/applications/constructor.desktop.in.h:2
 msgid "SolydXK Constructor"
 msgstr "SolydXK Constructor"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:72
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:72
+#: ../usr/lib/solydxk/constructor/constructor.py:69
 msgid "Select all"
 msgstr "Selecteer alles"
 
+#: ../usr/lib/solydxk/constructor/constructor.py:70
+msgid "Add"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:71
+msgid "Remove"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:72
+msgid "Edit"
+msgstr ""
+
 #: ../usr/lib/solydxk/constructor/constructor.py:73
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:73
-msgid "Actions"
-msgstr "Acties"
+msgid "Upgrade"
+msgstr ""
 
 #: ../usr/lib/solydxk/constructor/constructor.py:74
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:74
-msgid "Add distribution"
-msgstr "Voeg distributie toe"
-
-#: ../usr/lib/solydxk/constructor/constructor.py:75
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:75
-msgid "Remove distributions"
-msgstr "Verwijder distributies"
-
-#: ../usr/lib/solydxk/constructor/constructor.py:76
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:76
-msgid "Open directory"
-msgstr "Open map"
-
-#: ../usr/lib/solydxk/constructor/constructor.py:77
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:77
-msgid "Edit in terminal"
-msgstr "Bewerk in terminal"
-
-#: ../usr/lib/solydxk/constructor/constructor.py:78
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:78
-msgid "Dist-upgrade distributions"
-msgstr "Dist-upgrade distributies"
-
-#: ../usr/lib/solydxk/constructor/constructor.py:79
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:79
-msgid "Build EFI files"
-msgstr "Bouw EFI bestanden"
-
-#: ../usr/lib/solydxk/constructor/constructor.py:80
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:80
-msgid "Download offline pck"
-msgstr "Download offline pakketten"
-
-#: ../usr/lib/solydxk/constructor/constructor.py:81
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:81
-msgid "Build ISOs"
+#, fuzzy
+msgid "Build"
 msgstr "Bouw ISO's"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:82
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:82
-msgid "Build without cleanup"
-msgstr "Bouw zonder opschonen"
+#: ../usr/lib/solydxk/constructor/constructor.py:75
+msgid "Help"
+msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:85
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:85
+#: ../usr/lib/solydxk/constructor/constructor.py:78
 msgid "ISO"
 msgstr "ISO"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:86
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:86
+#: ../usr/lib/solydxk/constructor/constructor.py:79
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:109
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:109
+#: ../usr/lib/solydxk/constructor/constructor.py:102
 msgid "Version"
 msgstr "Versie"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:132
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:132
+#: ../usr/lib/solydxk/constructor/constructor.py:120
 msgid ""
 "Are you sure you want to remove the selected distribution from the list?\n"
 "(This will not remove the directory and its data)"
@@ -105,63 +73,90 @@ msgstr ""
 "verwijderen?\n"
 "(Dit zal de map met gegevens NIET verwijderen)"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:156
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:156
+#: ../usr/lib/solydxk/constructor/constructor.py:144
 msgid "Services detected"
 msgstr "Services gededecteerd"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:361
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:361
+#: ../usr/lib/solydxk/constructor/constructor.py:357
 msgid "Select SolydXK ISO"
 msgstr "Selecteer SolydXK ISO"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:369
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:369
+#: ../usr/lib/solydxk/constructor/constructor.py:365
 msgid "Select directory"
 msgstr "Selecteer map"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:377
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:377
+#: ../usr/lib/solydxk/constructor/constructor.py:375
 msgid "Save existing working directory"
 msgstr "Bewaar bestaande werkmap"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:379
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:379
+#: ../usr/lib/solydxk/constructor/constructor.py:377
 msgid "Unpack ISO and save"
 msgstr "ISO uitpakken en bewaren"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:385
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:385
+#: ../usr/lib/solydxk/constructor/constructor.py:383
 #, python-format
 msgid "Could not create directory %(dir)s: exiting"
 msgstr "Kon map %(dir)s niet maken: verlaten"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:398
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:398
+#: ../usr/lib/solydxk/constructor/constructor.py:388
+msgid ""
+"The path to the ISO file does not exist:\n"
+"{}"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:392
+msgid ""
+"The destination directory is not empty.\n"
+"Are you sure you want to overwrite all data in {}?"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:408
 msgid "Existing working directory added"
 msgstr "Bestaande werkmap toegevoegd"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:434
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:434
+#: ../usr/lib/solydxk/constructor/constructor.py:449
 msgid "Unpack ISO to directory"
 msgstr "ISO uitpakken naar map"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:435
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:435
+#: ../usr/lib/solydxk/constructor/constructor.py:450
 msgid "Unpack & Save"
 msgstr "Uitpakken en bewaren"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:442
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:442
+#: ../usr/lib/solydxk/constructor/constructor.py:458
 msgid "Work directory"
 msgstr "Werkmap"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:443
-#: ../debian/solydxk-constructor/usr/lib/solydxk/constructor/constructor.py:443
+#: ../usr/lib/solydxk/constructor/constructor.py:459
 msgid "Save"
 msgstr "Bewaren"
 
 #: ../usr/share/applications/constructor.desktop.in.h:1
-#: ../debian/solydxk-constructor/usr/share/applications/constructor.desktop.in.h:1
 msgid "ISO constructor for SolydXK"
 msgstr "ISO constructor voor SolydXK"
+
+#~ msgid "Add distribution"
+#~ msgstr "Voeg distributie toe"
+
+#~ msgid "Remove distributions"
+#~ msgstr "Verwijder distributies"
+
+#~ msgid "Edit in terminal"
+#~ msgstr "Bewerk in terminal"
+
+#~ msgid "Dist-upgrade distributions"
+#~ msgstr "Dist-upgrade distributies"
+
+#~ msgid "Actions"
+#~ msgstr "Acties"
+
+#~ msgid "Open directory"
+#~ msgstr "Open map"
+
+#~ msgid "Build without cleanup"
+#~ msgstr "Bouw zonder opschonen"
+
+#~ msgid "Build EFI files"
+#~ msgstr "Bouw EFI bestanden"
+
+#~ msgid "Download offline pck"
+#~ msgstr "Download offline pakketten"

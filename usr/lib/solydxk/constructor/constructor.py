@@ -9,7 +9,7 @@
 # sudo apt-get install python3-gi
 # from gi.repository import Gtk, GdkPixbuf, GObject, Pango, Gdk
 from gi.repository import Gtk, GObject
-from os import makedirs, remove, system
+from os import makedirs, remove, system, listdir
 from shutil import copy, move, rmtree
 import gettext
 import functions
@@ -25,8 +25,7 @@ from dialogs import MessageDialogSafe, SelectFileDialog, SelectDirectoryDialog, 
 
 # i18n: http://docs.python.org/2/library/gettext.html
 gettext.install("constructor", "/usr/share/locale")
-#t = gettext.translation("constructor", "/usr/share/locale")
-#_ = t.lgettext
+_ = gettext.gettext
 
 
 #class for the main window
@@ -51,10 +50,7 @@ class Constructor(object):
         self.btnRemove = go('btnRemove')
         self.btnEdit = go('btnEdit')
         self.btnUpgrade = go('btnUpgrade')
-        self.btnBuildEfiFiles = go('btnBuildEfiFiles')
-        self.btnDownloadOfflinePackages = go('btnDownloadOfflinePackages')
         self.btnBuildIso = go('btnBuildIso')
-        self.chkBuildIsoOnly = go('chkBuildIsoOnly')
 
         # Add iso window objects
         self.windowAddDistro = go('addDistroWindow')
@@ -62,6 +58,7 @@ class Constructor(object):
         self.txtDir = go('txtDir')
         self.btnDir = go('btnDir')
         self.btnSave = go('btnSave')
+        self.btnHelp = go('btnHelp')
         self.lblIso = go('lblIso')
         self.boxIso = go('boxIso')
         self.lblDir = go('lblDir')
@@ -70,16 +67,12 @@ class Constructor(object):
         # Main window translations
         self.window.set_title(_("SolydXK Constructor"))
         self.chkSelectAll.set_label(_("Select all"))
-        go('lblActions').set_text(_("Actions"))
-        self.btnAdd.set_label(_("Add distribution"))
-        self.btnRemove.set_label(_("Remove distributions"))
-        go('btnOpenDir').set_label(_("Open directory"))
-        self.btnEdit.set_label(_("Edit in terminal"))
-        self.btnUpgrade.set_label(_("Dist-upgrade distributions"))
-        self.btnBuildEfiFiles.set_label(_("Build EFI files"))
-        self.btnDownloadOfflinePackages.set_label(_("Download offline pck"))
-        self.btnBuildIso.set_label(_("Build ISOs"))
-        self.chkBuildIsoOnly.set_label(_("Build without cleanup"))
+        self.btnAdd.set_label("_{}".format(_("Add")))
+        self.btnRemove.set_label("_{}".format(_("Remove")))
+        self.btnEdit.set_label("_{}".format(_("Edit")))
+        self.btnUpgrade.set_label("_{}".format(_("Upgrade")))
+        self.btnBuildIso.set_label("_{}".format(_("Build")))
+        self.btnHelp.set_label("_{}".format(_("Help")))
 
         # Add iso window translations
         self.lblIso.set_text(_("ISO"))
@@ -109,11 +102,6 @@ class Constructor(object):
         ver = _("Version")
         self.version = "%s: %s" % (ver, functions.getPackageVersion('solydxk-constructor'))
         self.showOutput(self.version)
-
-        # Disable Build EFI files button
-        # TODO - also 32-bit installs
-        if self.hostEfiArchitecture == "":
-            self.btnBuildEfiFiles.set_sensitive(False)
 
         # Connect the signals and show the window
         self.builder.connect_signals(self)
@@ -174,6 +162,7 @@ class Constructor(object):
                 de.openTerminal("service apache2 stop")
             if exists(join(rootPath, 'etc/mysql/debian.cnf')):
                 de.openTerminal("service mysql stop")
+
             # Cleanup old kernel and headers
             script = "rmoldkernel.sh"
             scriptSource = join(self.scriptDir, script)
@@ -183,10 +172,20 @@ class Constructor(object):
                 self.ec.run("chmod a+x %s" % scriptTarget)
                 de.openTerminal("/bin/bash %s" % script)
                 remove(scriptTarget)
+
+            # Build EFI files
+            if self.hostEfiArchitecture != "":
+                print(">> Start building EFI files")
+                self.build_efi_files()
+
+            # Download offline packages
+            print(">> Start downloading offline packages")
+            self.download_offline_packages()
+
         if upgraded and exists("/usr/bin/aplay") and exists(self.doneWav):
             self.ec.run("/usr/bin/aplay '%s'" % self.doneWav, False)
 
-    def on_btnBuildEfiFiles_clicked(self, widget):
+    def build_efi_files(self):
 
         # TODO - also 32-bit installs (haven't tested this)
 
@@ -225,13 +224,12 @@ class Constructor(object):
                             "-o {}/efi/boot/{}.efi "
                             "-p \"/boot/grub\" {}".format(arch, arch, bootPath, grubEfiName, modules))
 
-                msg = "Finished building the EFI files"
-                self.showInfo(self.btnBuildEfiFiles.get_label(), msg, self.window)
+                print((">> Finished building EFI files"))
 
             except Exception as detail:
-                self.showError(self.btnBuildEfiFiles.get_label(), detail, self.window)
+                self.showError("Error: build EFI files", detail, self.window)
 
-    def on_btnDownloadOfflinePackages_clicked(self, widget):
+    def download_offline_packages(self):
         selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
         for path in selected:
             rootPath = "%s/root" % path
@@ -254,19 +252,17 @@ class Constructor(object):
                     if exists(offlineSource):
                         print(("%s exists" % offlineSource))
                         if exists(offlineTarget):
-                            print(("Remove %s" % offlineTarget))
+                            print((">> Remove %s" % offlineTarget))
                             rmtree(offlineTarget)
-                        print(("Move %s to %s" % (offlineSource, offlineTarget)))
+                        print((">> Move %s to %s" % (offlineSource, offlineTarget)))
                         move(offlineSource, offlineTarget)
                     else:
-                        print(("Cannot find: %s" % offlineSource))
+                        print((">> Cannot find: %s" % offlineSource))
                 except Exception as detail:
-                    self.showError(self.btnDownloadOfflinePackages.get_label(), detail, self.window)
+                    self.showError("Error: getting offline packages", detail, self.window)
             else:
-                print(("Cannot find: %s" % scriptSource))
+                print((">> Cannot find: %s" % scriptSource))
 
-        msg = "Finished downloading the offline packages"
-        self.showInfo(self.btnDownloadOfflinePackages.get_label(), msg, self.window)
 
     def on_btnBuildIso_clicked(self, widget):
         selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
@@ -277,7 +273,7 @@ class Constructor(object):
             functions.repaintGui()
 
             # Start building the ISO in a thread
-            t = BuildIso(path, self.queue, self.chkBuildIsoOnly.get_active())
+            t = BuildIso(path, self.queue)
             t.start()
             self.queue.join()
 
@@ -371,7 +367,9 @@ class Constructor(object):
             self.txtDir.set_text(dirText)
 
     def on_btnSave_clicked(self, widget):
-        self.iso = self.txtIso.get_text()
+        self.iso = ""
+        if self.chkFromIso.get_active():
+            self.iso = self.txtIso.get_text()
         self.dir = self.txtDir.get_text()
 
         title = _("Save existing working directory")
@@ -386,6 +384,18 @@ class Constructor(object):
         else:
             self.windowAddDistro.hide()
             if self.iso != "":
+                if not exists(self.iso):
+                    self.showInfo(self.btnSave.get_label(), _("The path to the ISO file does not exist:\n{}".format(self.iso)), self.window)
+                    return
+                if listdir(self.dir):
+                    qd = QuestionDialog(self.btnSave.get_label(),
+                        _("The destination directory is not empty.\n"
+                        "Are you sure you want to overwrite all data in {}?".format(self.dir)),
+                        self.window)
+                    answer = qd.show()
+                    if not answer:
+                        return
+
                 self.showOutput("Start unpacking the ISO...")
                 self.toggleGuiElements(True)
                 t = IsoUnpack(self.mountDir, self.iso, self.dir, self.queue)
@@ -410,17 +420,22 @@ class Constructor(object):
         if exists(path):
             self.txtDir.set_sensitive(True)
             self.btnDir.set_sensitive(True)
+            if exists(self.txtDir.get_text()):
+                self.btnSave.set_sensitive(True)
         else:
             self.txtDir.set_sensitive(False)
             self.btnDir.set_sensitive(False)
+            self.btnSave.set_sensitive(False)
 
     def on_txtDir_changed(self, widget):
+        blnFromIso = self.chkFromIso.get_active()
         isoPath = self.txtIso.get_text()
         dirText = self.txtDir.get_text()
         self.btnSave.set_sensitive(False)
         if exists(dirText):
-            if self.chkFromIso.get_active() and exists(isoPath):
-                self.btnSave.set_sensitive(True)
+            if blnFromIso:
+                if exists(isoPath):
+                    self.btnSave.set_sensitive(True)
             else:
                 self.btnSave.set_sensitive(True)
 
@@ -434,6 +449,7 @@ class Constructor(object):
             self.lblDir.set_text(_("Unpack ISO to directory"))
             self.btnSave.set_label(_("Unpack & Save"))
         else:
+            self.txtIso.set_text("")
             self.lblIso.set_visible(False)
             self.boxIso.set_visible(False)
             self.txtDir.set_sensitive(True)
@@ -491,9 +507,6 @@ class Constructor(object):
             self.btnEdit.set_sensitive(False)
             self.btnRemove.set_sensitive(False)
             self.btnUpgrade.set_sensitive(False)
-            self.btnBuildEfiFiles.set_sensitive(False)
-            self.btnDownloadOfflinePackages.set_sensitive(False)
-            self.chkBuildIsoOnly.set_sensitive(False)
         else:
             self.chkSelectAll.set_sensitive(True)
             self.tvDistros.set_sensitive(True)
@@ -502,9 +515,6 @@ class Constructor(object):
             self.btnEdit.set_sensitive(True)
             self.btnRemove.set_sensitive(True)
             self.btnUpgrade.set_sensitive(True)
-            self.btnBuildEfiFiles.set_sensitive(True)
-            self.btnDownloadOfflinePackages.set_sensitive(True)
-            self.chkBuildIsoOnly.set_sensitive(True)
 
     def saveDistroFile(self, distroPath, addDistro=True):
         # save iso_name

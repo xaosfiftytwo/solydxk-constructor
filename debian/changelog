@@ -1,3 +1,21 @@
+solydxk-constructor (2.2.2) solydxk; urgency=low
+
+  * Resolved bug unpacking previously selected ISO over existing working directory
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 13 Jan 2014 10:00:00 +0100
+
+solydxk-constructor (2.2.1) solydxk; urgency=low
+
+  * cleanup.sh: Remove unavailable packages
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 31 Dec 2014 22:00:00 +0100
+
+solydxk-constructor (2.2.0) solydxk; urgency=low
+
+  * Combined dist-upgrade with build EFI files and download offline packages
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sun, 28 Dec 2014 12:00:00 +0100
+
 solydxk-constructor (2.1.9) solydxk; urgency=low
 
   * Implement building EFI files for i386
