@@ -3,6 +3,7 @@
 
 from gi.repository import Gtk, GObject, GdkPixbuf
 
+
 # Show message dialog
 # Usage:
 # MessageDialog(_("My Title"), "Your (error) message here", Gtk.MessageType.ERROR).show()

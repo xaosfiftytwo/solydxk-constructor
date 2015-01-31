@@ -7,6 +7,16 @@ if [ -e /usr/share/mime/packages/kde.xml ]; then
   sed -i -e /\<.*fake.*\>/,/^$/d /usr/share/mime/packages/kde.xml
 fi
 
+# Write the current up version
+if [ -e '/usr/lib/solydxk/updatemanager/files' ]; then
+  wget http://repository.solydxk.com/umfiles/repo.info
+  if [ -e 'repo.info' ]; then
+    VER=$(cat 'repo.info' | grep 'upd=')
+    echo $VER > /usr/lib/solydxk/updatemanager/files/updatemanager.hist
+    rm 'repo.info'
+  fi
+fi
+
 # Cleanup
 apt-get -y --force-yes clean
 apt-get -y --force-yes autoremove

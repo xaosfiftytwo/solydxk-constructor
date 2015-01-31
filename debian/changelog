@@ -1,3 +1,9 @@
+solydxk-constructor (2.2.3) solydxk; urgency=low
+
+  * Save current update version in updatemanager.hist
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Fri, 30 Jan 2014 20:00:00 +0100
+
 solydxk-constructor (2.2.2) solydxk; urgency=low
 
   * Resolved bug unpacking previously selected ISO over existing working directory
