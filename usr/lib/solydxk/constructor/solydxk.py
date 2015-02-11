@@ -365,6 +365,7 @@ class BuildIso(threading.Thread):
                     cat = "%s/boot.cat" % isolinuxPath
                     if exists(cat):
                         remove(cat)
+                    copy("/usr/lib/syslinux/modules/bios/chain.c32", isolinuxPath)
                     copy("/usr/lib/ISOLINUX/isolinux.bin", isolinuxPath)
                     copy("/usr/lib/syslinux/modules/bios/reboot.c32", isolinuxPath)
                     copy("/usr/lib/syslinux/modules/bios/vesamenu.c32", isolinuxPath)
@@ -372,6 +373,8 @@ class BuildIso(threading.Thread):
                     copy("/usr/lib/syslinux/modules/bios/ldlinux.c32", isolinuxPath)
                     copy("/usr/lib/syslinux/modules/bios/libcom32.c32", isolinuxPath)
                     copy("/usr/lib/syslinux/modules/bios/libutil.c32", isolinuxPath)
+                    copy("/boot/memtest86+.bin", join(isolinuxPath, "memtest86"))
+                    copy("/boot/memtest86+.bin", join(self.bootPath, "boot"))
                 except Exception as detail:
                     self.returnMessage = "WARNING: BuildIso: %(detail)s" % {"detail": detail}
 

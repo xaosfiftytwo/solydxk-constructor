@@ -1,14 +1,20 @@
+solydxk-constructor (2.2.5) solydxk; urgency=low
+
+  * Force overwrite of new config files while upgrading
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 09 Feb 2015 12:00:00 +0100
+
 solydxk-constructor (2.2.3) solydxk; urgency=low
 
   * Save current update version in updatemanager.hist
 
- -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Fri, 30 Jan 2014 20:00:00 +0100
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Fri, 30 Jan 2015 20:00:00 +0100
 
 solydxk-constructor (2.2.2) solydxk; urgency=low
 
   * Resolved bug unpacking previously selected ISO over existing working directory
 
- -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 13 Jan 2014 10:00:00 +0100
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 13 Jan 2015 10:00:00 +0100
 
 solydxk-constructor (2.2.1) solydxk; urgency=low
 

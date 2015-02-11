@@ -17,11 +17,15 @@ if [ -e '/usr/lib/solydxk/updatemanager/files' ]; then
   fi
 fi
 
+# Make sure all firmware drivers are installed
+sudo apt-get -y --force-yes install $(aptitude search ^firmware | grep ^p | awk '{print $2}')
+
 # Cleanup
 apt-get -y --force-yes clean
 apt-get -y --force-yes autoremove
 aptitude -y purge ~c
 aptitude -y unmarkauto ~M
+find . -type f -name "*.dpkg*" -exec rm {} \;
 
 # Remove unavailable packages
 apt-get purge -y --force-yes $(env LANG=C bash -c "apt-show-versions | grep 'available' | cut -d':' -f1")

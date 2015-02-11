@@ -157,7 +157,7 @@ class Constructor(object):
                 de.openTerminal("service apache2 start")
             if exists(join(rootPath, 'etc/mysql/debian.cnf')):
                 de.openTerminal("service mysql start")
-            de.openTerminal("apt-get -y --force-yes dist-upgrade")
+            de.openTerminal("apt-get -y --force-yes -o Dpkg::Options::=\"--force-confnew\" dist-upgrade")
             if exists(join(rootPath, 'etc/apache2/apache2.conf')):
                 de.openTerminal("service apache2 stop")
             if exists(join(rootPath, 'etc/mysql/debian.cnf')):
