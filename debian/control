@@ -26,15 +26,13 @@ Depends: ${misc:Depends}, ${python:Depends}
   , lzma
   , gzip
   , uuid-runtime
-  , syslinux
-  , isolinux
-  , syslinux-common
-  , syslinux-utils
   , mktorrent
   , intltool
   , po4a
   , grub-efi-ia32-bin
   , grub-efi-amd64-bin
   , apt-show-versions
+  , isolinux
+  , syslinux-utils
 Description: SolydXK ISO constructor
  Used by the SolydXK development team to automate ISO building.

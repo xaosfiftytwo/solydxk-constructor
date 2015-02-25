@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-#-*- coding: utf-8 -*-
 
 # Password settings
 # http://docs.python.org/2/library/spwd.html#module-spwd

@@ -1,3 +1,27 @@
+solydxk-constructor (2.3.2) solydxk; urgency=low
+
+  * Removed HDT and memtest86 for Grub - not functioning
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 22 Feb 2015 10:00:00 +0100
+
+solydxk-constructor (2.3.1) solydxk; urgency=low
+
+  * Added Hardware Detection Tool (HDT)
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 18 Feb 2015 12:00:00 +0100
+
+solydxk-constructor (2.2.9) solydxk; urgency=low
+
+  * Re-added isolinux and syslinux-utils as dependencies
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sat, 14 Feb 2015 09:00:00 +0100
+
+solydxk-constructor (2.2.6) solydxk; urgency=low
+
+  * Add memtest86+ as a dependency
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Fri, 13 Feb 2015 16:00:00 +0100
+
 solydxk-constructor (2.2.5) solydxk; urgency=low
 
   * Force overwrite of new config files while upgrading

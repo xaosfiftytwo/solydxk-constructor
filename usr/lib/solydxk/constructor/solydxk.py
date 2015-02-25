@@ -212,7 +212,7 @@ class BuildIso(threading.Thread):
                 # Clean-up
                 cleanup = "cleanup.sh"
                 if exists(join(self.scriptDir, cleanup)):
-                    copy(join(self.scriptDir, cleanup), join(self.rootPath, cleanup))
+                    self.copy_file(join(self.scriptDir, cleanup), join(self.rootPath, cleanup))
                     self.ec.run("chmod a+x %s" % join(self.rootPath, cleanup))
                     plymouthTheme = self.dg.getPlymouthTheme()
                     #self.ec.run("chroot '%(rootPath)s' /bin/bash %(cleanup)s %(plymouthTheme)s" % {"rootPath": self.rootPath, "cleanup": cleanup, "plymouthTheme": plymouthTheme})
@@ -230,12 +230,12 @@ class BuildIso(threading.Thread):
 
                 # write iso name to boot/isolinux/isolinux.cfg
                 cfgFile = join(self.bootPath, "isolinux/isolinux.cfg")
-                sedstring = "sed -ie 's/\(menu title Welcome to \).*/\\1%(isoName)s/' %(cfg)s" % {"isoName": self.fullIsoName, "cfg": cfgFile}
+                sedstring = "sed -i -e 's/\(menu title Welcome to \).*/\\1%(isoName)s/' %(cfg)s" % {"isoName": self.fullIsoName, "cfg": cfgFile}
                 self.ec.run(sedstring)
 
                 # Make sure that the paths are correct (correcting old stuff)
-                self.ec.run("sed -ie 's/.lz/.img/g' %s" % cfgFile)
-                self.ec.run("sed -ie 's/\/solydxk/\/live/g' %s" % cfgFile)
+                self.ec.run("sed -i 's/.lz/.img/g' %s" % cfgFile)
+                self.ec.run("sed -i 's/\/solydxk/\/live/g' %s" % cfgFile)
 
                 # Write info for grub (EFI)
                 grubFile = join(self.bootPath, "boot/grub/grub.cfg")
@@ -272,7 +272,7 @@ class BuildIso(threading.Thread):
                 vmlinuzPath = join(self.distroPath, "root/%s" % vmlinuzFile)
                 if exists(vmlinuzPath):
                     print("Copy vmlinuz")
-                    copy(vmlinuzPath, join(self.livePath, "vmlinuz"))
+                    self.copy_file(vmlinuzPath, join(self.livePath, "vmlinuz"))
                 else:
                     self.returnMessage = "ERROR: %s not found" % vmlinuzPath
 
@@ -288,7 +288,7 @@ class BuildIso(threading.Thread):
                 initrdPath = join(self.distroPath, "root/%s" % initrdFile)
                 if exists(initrdPath):
                     print("Copy initrd")
-                    copy(initrdPath, join(self.livePath, "initrd.img"))
+                    self.copy_file(initrdPath, join(self.livePath, "initrd.img"))
                 else:
                     self.returnMessage = "ERROR: %s not found" % initrdPath
 
@@ -299,7 +299,7 @@ class BuildIso(threading.Thread):
                     #makedirs(diskDir)
                 #self.ec.run("rm -rf %s/*uuid*" % diskDir)
                 #self.ec.run("uuidgen -r > %s/live-uuid-generic" % diskDir)
-                #copy(join(diskDir, "live-uuid-generic"), join(diskDir, "live-uuid-generic"))
+                #copy_file(join(diskDir, "live-uuid-generic"), join(diskDir, "live-uuid-generic"))
 
                 #Update filesystem.size
                 #self.ec.run("du -b %(directory)s/root/ 2> /dev/null | tail -1 | awk {'print $1;'} > %(directory)s/live/filesystem.size" % {"directory": self.bootPath})
@@ -315,7 +315,7 @@ class BuildIso(threading.Thread):
                 self.ec.run('chroot \"' + self.rootPath + '\"' + dpkgQuery + ' > \"' + join(self.livePath, "filesystem.packages") + '\"' )
                 #dpkgQuery = ' dpkg-query -W --showformat=\'${Package} ${Version}\n\' '
                 #self.ec.run('chroot \"' + self.rootPath + '\"' + dpkgQuery + ' > \"' + join(self.bootPath, "live/filesystem.manifest") + '\"' )
-                #copy(join(self.bootPath, "live/filesystem.manifest"), join(self.bootPath, "live/filesystem.manifest-desktop"))
+                #copy_file(join(self.bootPath, "live/filesystem.manifest"), join(self.bootPath, "live/filesystem.manifest-desktop"))
                 # check for existing squashfs root
                 if exists(join(self.livePath, "filesystem.squashfs")):
                     print("Removing existing SquashFS root...")
@@ -356,27 +356,28 @@ class BuildIso(threading.Thread):
                 self.ec.run("sed -i '/boot.cat/d' %s/md5sum.txt" % self.bootPath)
                 self.ec.run("sed -i '/isolinux.bin/d'  %s/md5sum.txt" % self.bootPath)
                 #Copy md5sum.txt to MD5SUMS (for Debian compatibility)
-                copy(join(self.bootPath, "md5sum.txt"), join(self.bootPath, "MD5SUMS"))
+                self.copy_file(join(self.bootPath, "md5sum.txt"), join(self.bootPath, "MD5SUMS"))
 
                 # Update isolinux files
-                isolinuxPath = "%s/isolinux" % self.bootPath
-                self.ec.run("chmod -R +w %s" % isolinuxPath)
-                try:
-                    cat = "%s/boot.cat" % isolinuxPath
-                    if exists(cat):
-                        remove(cat)
-                    copy("/usr/lib/syslinux/modules/bios/chain.c32", isolinuxPath)
-                    copy("/usr/lib/ISOLINUX/isolinux.bin", isolinuxPath)
-                    copy("/usr/lib/syslinux/modules/bios/reboot.c32", isolinuxPath)
-                    copy("/usr/lib/syslinux/modules/bios/vesamenu.c32", isolinuxPath)
-                    copy("/usr/lib/syslinux/modules/bios/poweroff.c32", isolinuxPath)
-                    copy("/usr/lib/syslinux/modules/bios/ldlinux.c32", isolinuxPath)
-                    copy("/usr/lib/syslinux/modules/bios/libcom32.c32", isolinuxPath)
-                    copy("/usr/lib/syslinux/modules/bios/libutil.c32", isolinuxPath)
-                    copy("/boot/memtest86+.bin", join(isolinuxPath, "memtest86"))
-                    copy("/boot/memtest86+.bin", join(self.bootPath, "boot"))
-                except Exception as detail:
-                    self.returnMessage = "WARNING: BuildIso: %(detail)s" % {"detail": detail}
+                syslinuxPath = join(self.rootPath, "usr/lib/syslinux")
+                modulesPath = join(syslinuxPath, "modules/bios")
+                isolinuxPath = join(self.bootPath, "isolinux")
+                self.ec.run("chmod -R +w {}".format(isolinuxPath))
+                cat = join(isolinuxPath, "boot.cat")
+                if exists(cat):
+                    remove(cat)
+                self.copy_file(join(modulesPath, "chain.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "hdt.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "libmenu.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "libgpl.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "reboot.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "vesamenu.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "poweroff.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "ldlinux.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "libcom32.c32"), isolinuxPath)
+                self.copy_file(join(modulesPath, "libutil.c32"), isolinuxPath)
+                self.copy_file(join(self.rootPath, "boot/memtest86+.bin"), join(isolinuxPath, "memtest86"))
+                self.copy_file("/usr/lib/ISOLINUX/isolinux.bin", isolinuxPath)
 
                 # remove existing iso
                 if exists(self.isoFileName):
@@ -389,13 +390,10 @@ class BuildIso(threading.Thread):
 
                 # build iso according to architecture
                 print("Building ISO...")
-                self.ec.run('genisoimage -o \"' + self.isoFileName + '\" -b \"isolinux/isolinux.bin\" -c \"isolinux/boot.cat\" -no-emul-boot -boot-load-size 4 -boot-info-table -V \"' + self.fullIsoName + '\" -cache-inodes -r -J -l \"' + self.bootPath + '\"')
+                self.ec.run('genisoimage -input-charset utf-8 -o \"' + self.isoFileName + '\" -b \"isolinux/isolinux.bin\" -c \"isolinux/boot.cat\" -no-emul-boot -boot-load-size 4 -boot-info-table -V \"' + self.fullIsoName + '\" -cache-inodes -r -J -l \"' + self.bootPath + '\"')
 
                 print("Making Hybrid ISO...")
                 self.ec.run("isohybrid %s" % self.isoFileName)
-
-                self.ec.run("rm -rf %s" % join(self.bootPath, "isolinux/*.cfge"))
-                self.ec.run("rm -rf %s" % join(self.bootPath, "boot/grub/*.cfge"))
 
                 print("Create ISO md5sum file...")
                 self.ec.run("echo \"%s:\" $(md5sum \"%s\" | cut -d' ' -f 1) > \"%s.md5sum\"" % (self.isoName, self.isoFileName, self.isoFileName))
@@ -416,6 +414,15 @@ class BuildIso(threading.Thread):
         except Exception as detail:
             self.returnMessage = "ERROR: BuildIso: %(detail)s" % {"detail": detail}
             self.queue.put(self.returnMessage)
+
+    def copy_file(self, file_path, destination):
+        if exists(file_path):
+            try:
+                copy(file_path, destination)
+            except Exception as detail:
+                print(("ERROR: BuildIso.copy_file: {}".format(detail)))
+        else:
+            print(("ERROR: BuildIso.copy_file: cannot find {}".format(file_path)))
 
 
 # Class to create a chrooted terminal for a given directory
