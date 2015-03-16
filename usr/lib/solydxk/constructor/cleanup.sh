@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Packages that deborphan must NOT treat as orphans - comma separated list
+NotOrphan='baloo'
+
 PLYMOUTHTHEME=$1
 
 # Remove fake mime types in kde
@@ -27,17 +30,28 @@ aptitude -y purge ~c
 aptitude -y unmarkauto ~M
 find . -type f -name "*.dpkg*" -exec rm {} \;
 
-# Remove unavailable packages
-apt-get purge -y --force-yes $(env LANG=C bash -c "apt-show-versions | grep 'available' | cut -d':' -f1")
-
-# Remove orphaned packages
-while [ $(deborphan | wc -l) -ne 0 ]; do
-  apt-get purge -y --force-yes $(deborphan);
-  apt-get purge -y --force-yes $(COLUMNS=132 dpkg -l | grep ^rc | awk '{ print $2 }');
+# Remove unavailable packages only when not manually held back
+for PCK in $(env LANG=C bash -c "apt-show-versions | grep 'available' | cut -d':' -f1"); do
+  REMOVE=true
+  for HELDPCK in $(env LANG=C dpkg --get-selections | grep hold$ | awk '{print $1}'); do
+    if [ $PCK == $HELDPCK ]; then
+      REMOVE=false
+    fi
+  done
+  if $REMOVE; then
+    apt-get purge -y --force-yes $PCK
+  fi
 done
 
-for a in $(ls /var/cache/apt/archives | grep '\.deb$' | cut -d _ -f1 | sort | uniq); do
-    ls -tr /var/cache/apt/archives/${a}_* | sed '$ d' | xargs -r -p rm -v -f
+# Removing orphaned packages, except the ones listed in NotOrphan
+ehco "Removing orphaned packages . . ."
+Exclude=${NotOrphan//,/\/d;/}
+Orphaned=$(deborphan | sed '/'$Exclude'/d')
+while [ "$Orphaned" ]; do
+   apt-get -y --force-yes purge $Orphaned
+   RC=$(dpkg-query -l | sed -n 's/^rc\s*\(\S*\).*/\1/p')
+   [ "$RC" ] && apt-get -y --force-yes purge $RC
+   Orphaned=$(deborphan | sed '/'$Exclude':/d')
 done
 
 # Disable memtest in Grub
@@ -46,7 +60,7 @@ chmod -x /etc/grub.d/20_memtest86+
 # Set plymouth theme
 if [ "$PLYMOUTHTHEME" != "" ]; then
   plymouth-set-default-theme $PLYMOUTHTHEME
-  plymouth-set-default-theme
+  echo "Plymouth theme set: $(plymouth-set-default-theme)"
   update-grub
   update-initramfs -t -u -k all
 fi
@@ -78,10 +92,9 @@ else
 fi
 
 # Settings for the firewall
-modprobe ip_tables
 ufw default deny incoming
 ufw default allow outgoing
-if [ -e "/lib/live/config/1170-openssh-server" ]; then
+if [ -e "/lib/live/config/1160-openssh-server" ]; then
   ufw allow in 22
 fi
 ufw enable
@@ -97,3 +110,13 @@ fi
 
 # Delete all log files
 find /var/log -type f -delete
+
+# Removing redundant kernel module structure(s) from /lib/modules (if any)
+VersionPlusArch=$(ls -l /vmlinuz | sed 's/.*\/vmlinuz-\(.*\)/\1/')
+L=${#VersionPlusArch}
+for I in /lib/modules/*; do
+   if [ ${I: -$L} != $VersionPlusArch ] && [ ! -d $I/kernel ]; then
+      echo "Removing redundant kernel module structure: $I"
+      rm -fr $I
+   fi
+done

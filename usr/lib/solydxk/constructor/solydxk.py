@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-#-*- coding: utf-8 -*-
 
 import re
 import threading
@@ -426,6 +425,7 @@ class BuildIso(threading.Thread):
 
 
 # Class to create a chrooted terminal for a given directory
+# https://wiki.debian.org/chroot
 class EditDistro(object):
 
     def __init__(self, distroPath):
@@ -441,19 +441,23 @@ class EditDistro(object):
             self.distribution = basename(distroPath)
 
     def openTerminal(self, command=""):
+        # Set some paths
+        resolveCnfHost = "/etc/resolv.conf"
+        resolveCnf = join(self.rootPath, "etc/resolv.conf")
+        resolveCnfBak = "%s.bak" % resolveCnf
+        wgetrc = join(self.rootPath, "etc/wgetrc")
+        wgetrcBak = "%s.bak" % wgetrc
+        terminal = "/tmp/constructor-terminal.sh"
+        proc = join(self.rootPath, "proc/")
+        dev = join(self.rootPath, "dev/")
+        pts = join(self.rootPath, "dev/pts/")
+        policy = join(self.rootPath, "usr/sbin/policy-rc.d")
+        ischroot = join(self.rootPath, "usr/bin/ischroot")
+        ischrootTmp = join(self.rootPath, "usr/bin/ischroot.tmp")
+
         try:
             # setup environment
             # copy dns info
-            resolveCnfHost = "/etc/resolv.conf"
-            resolveCnf = join(self.rootPath, "etc/resolv.conf")
-            resolveCnfBak = "%s.bak" % resolveCnf
-            wgetrc = join(self.rootPath, "etc/wgetrc")
-            wgetrcBak = "%s.bak" % wgetrc
-            terminal = "/tmp/constructor-terminal.sh"
-            proc = join(self.rootPath, "proc/")
-            dev = join(self.rootPath, "dev/")
-            pts = join(self.rootPath, "dev/pts/")
-
             if exists(resolveCnf):
                 move(resolveCnf, resolveCnfBak)
             if exists(resolveCnfHost):
@@ -473,6 +477,18 @@ class EditDistro(object):
             # copy wgetrc
             move(wgetrc, wgetrcBak)
             copy("/etc/wgetrc", wgetrc)
+
+            # Let dpkg only start daemons when desired
+            scr = "#!/bin/sh\nexit 101\n"
+            with open(policy, 'w') as f:
+                f.write(scr)
+            self.ec.run("chmod a+x %s" % policy)
+
+            # Temporary fix ischroot
+            if not exists(ischrootTmp):
+                self.ec.run("mv %s %s" % (ischroot, ischrootTmp))
+            if not exists(ischroot):
+                self.ec.run("ln -s /bin/true %s" % ischroot)
 
             # HACK: create temporary script for chrooting
             if exists(terminal):
@@ -509,6 +525,15 @@ class EditDistro(object):
             if exists(terminal):
                 remove(terminal)
 
+            # remove policy script
+            if exists(policy):
+                remove(policy)
+
+            # replace ischroot
+            if exists("%s.tmp" % ischroot):
+                self.ec.run("rm %s" % ischroot)
+                self.ec.run("mv %s.tmp %s" % (ischroot, ischroot))
+
         except Exception as detail:
             # restore wgetrc
             move(wgetrcBak, wgetrc)
@@ -526,8 +551,17 @@ class EditDistro(object):
             self.unmount([pts, dev, proc])
 
             # remove temp script
-            if exists("/tmp/constructor-terminal.sh"):
-                remove("/tmp/constructor-terminal.sh")
+            if exists(terminal):
+                remove(terminal)
+
+            # remove policy script
+            if exists(policy):
+                remove(policy)
+
+            # replace ischroot
+            if exists("%s.tmp" % ischroot):
+                self.ec.run("rm %s" % ischroot)
+                self.ec.run("mv %s.tmp %s" % (ischroot, ischroot))
 
             errText = 'Error launching terminal: '
             print((errText, detail))
@@ -536,6 +570,7 @@ class EditDistro(object):
         for mount in mounts:
             self.ec.run("umount --force '%s'" % mount)
             self.ec.run("umount -l '%s'" % mount)
+
 
 class DistroGeneral(object):
 

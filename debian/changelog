@@ -1,3 +1,16 @@
+solydxk-constructor (2.3.4) solydxk; urgency=low
+
+  * Improved cleanup.sh
+  * Improved chrooting
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 16 Mar 2015 11:00:00 +0100
+
+solydxk-constructor (2.3.3) solydxk; urgency=low
+
+  * Prevent cleanup from removing packages that are not in the repository and were held back by the maintainer with "dpkg --set-selections"
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 10 Mar 2015 17:00:00 +0100
+
 solydxk-constructor (2.3.2) solydxk; urgency=low
 
   * Removed HDT and memtest86 for Grub - not functioning
