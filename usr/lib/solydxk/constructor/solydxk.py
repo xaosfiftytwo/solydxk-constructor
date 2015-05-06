@@ -394,8 +394,8 @@ class BuildIso(threading.Thread):
                 print("Making Hybrid ISO...")
                 self.ec.run("isohybrid %s" % self.isoFileName)
 
-                print("Create ISO md5sum file...")
-                self.ec.run("echo \"%s:\" $(md5sum \"%s\" | cut -d' ' -f 1) > \"%s.md5sum\"" % (self.isoName, self.isoFileName, self.isoFileName))
+                print("Create ISO md5 file...")
+                self.ec.run("echo \"$(md5sum \"%s\" | cut -d' ' -f 1)  %s\" > \"%s.md5\"" % (self.isoFileName, self.isoBaseName, self.isoFileName))
 
                 print("Create Torrent file...")
                 torrentFile = "%s.torrent" % self.isoFileName

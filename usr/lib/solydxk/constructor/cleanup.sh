@@ -44,7 +44,7 @@ for PCK in $(env LANG=C bash -c "apt-show-versions | grep 'available' | cut -d':
 done
 
 # Removing orphaned packages, except the ones listed in NotOrphan
-ehco "Removing orphaned packages . . ."
+echo "Removing orphaned packages . . ."
 Exclude=${NotOrphan//,/\/d;/}
 Orphaned=$(deborphan | sed '/'$Exclude'/d')
 while [ "$Orphaned" ]; do

@@ -24,7 +24,7 @@ from dialogs import MessageDialogSafe, SelectFileDialog, SelectDirectoryDialog, 
 
 # i18n: http://docs.python.org/2/library/gettext.html
 gettext.install("constructor", "/usr/share/locale")
-_ = gettext.gettext
+#_ = gettext.gettext
 
 
 #class for the main window
