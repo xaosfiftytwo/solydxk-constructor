@@ -1,3 +1,21 @@
+solydxk-constructor (2.4.0) solydxk; urgency=low
+
+  * Resolved issue inserting duplicate keys in LightDM configuration
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sun, 17 May 2015 14:00:00 +0100
+
+solydxk-constructor (2.3.9) solydxk; urgency=low
+
+  * Adapt LightDM configuration in cleanup script
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 13 May 2015 10:00:00 +0100
+
+solydxk-constructor (2.3.7) solydxk; urgency=low
+
+  * Allow ufw to accept CIFS (samba)
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 07 May 2015 15:30:00 +0100
+
 solydxk-constructor (2.3.6) solydxk; urgency=low
 
   * Fix gettext bug

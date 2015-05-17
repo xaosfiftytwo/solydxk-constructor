@@ -3,6 +3,22 @@
 # Packages that deborphan must NOT treat as orphans - comma separated list
 NotOrphan='baloo'
 
+function sed_append_sting {
+  PATTERN=$1
+  LINE=$2
+  FLE=$3
+  
+  if [ -e $FLE ]; then
+    if grep -q $PATTERN "$FLE"; then
+      # Escape forward slashes
+      LINE=$(echo $LINE | sed 's/\//\\\//g')
+      sed -i -e "s/$PATTERN/$LINE/" $FLE
+    else
+      echo $LINE >> $FLE
+    fi
+  fi
+}
+
 PLYMOUTHTHEME=$1
 
 # Remove fake mime types in kde
@@ -65,10 +81,26 @@ if [ "$PLYMOUTHTHEME" != "" ]; then
   update-initramfs -t -u -k all
 fi
 
-# Live user in LightDM
-if [ -e /etc/lightdm/lightdm.conf ]; then
-  sed -i -r 's/^#?(autologin-user)\s*=.*/\1=solydxk/' /etc/lightdm/lightdm.conf
-  sed -i -r 's/^#?(autologin-user-timeout)\s*=.*/\1=0/' /etc/lightdm/lightdm.conf
+# Configure LightDM
+CONF='/etc/lightdm/lightdm-kde-greeter.conf'
+if [ -e '/etc/lightdm/lightdm-gtk-greeter.conf' ]; then
+  CONF='/etc/lightdm/lightdm-gtk-greeter.conf'
+fi
+   
+if [ -e /usr/bin/startkde ]; then
+  sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydk-lightdmbg.png' $CONF
+  sed_append_sting '^theme-name\s*=.*' 'theme-name=greybird-solydk-gtk3' $CONF
+else
+  sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydx-lightdmbg.png' $CONF
+  sed_append_sting '^theme-name\s*=.*' 'theme-name=greybird-solydx' $CONF
+fi
+sed_append_sting '^default-user-image\s*=.*' 'default-user-image=/usr/share/pixmaps/faces/user-generic.png' $CONF
+    
+CONF='/etc/lightdm/lightdm.conf'
+if [ -e $CONF ]; then
+  sed -i -e '/^greeter-hide-users\s*=/ c greeter-hide-users=false' $CONF
+  sed -i -r 's/^#?(autologin-user)\s*=.*/\1=solydxk/' $CONF
+  sed -i -r 's/^#?(autologin-user-timeout)\s*=.*/\1=0/' $CONF
 fi
 
 # Set default SolydXK settings
@@ -94,6 +126,7 @@ fi
 # Settings for the firewall
 ufw default deny incoming
 ufw default allow outgoing
+ufw allow CIFS
 if [ -e "/lib/live/config/1160-openssh-server" ]; then
   ufw allow in 22
 fi
