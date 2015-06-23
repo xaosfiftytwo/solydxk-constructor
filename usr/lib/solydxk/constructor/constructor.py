@@ -10,7 +10,6 @@
 from gi.repository import Gtk, GObject
 from os import makedirs, remove, system, listdir
 from shutil import copy, move, rmtree
-import gettext
 import functions
 import threading
 import operator
@@ -22,9 +21,10 @@ from solydxk import IsoUnpack, EditDistro, BuildIso, DistroGeneral
 from treeview import TreeViewHandler
 from dialogs import MessageDialogSafe, SelectFileDialog, SelectDirectoryDialog, QuestionDialog
 
-# i18n: http://docs.python.org/2/library/gettext.html
-gettext.install("constructor", "/usr/share/locale")
-#_ = gettext.gettext
+# i18n: http://docs.python.org/3/library/gettext.html
+import gettext
+from gettext import gettext as _
+gettext.textdomain('solydxk-constructor')
 
 
 #class for the main window
@@ -312,7 +312,7 @@ class Constructor(object):
             system("xdg-open %s &" % path)
 
     def fillTreeViewDistros(self, selectDistros=[]):
-        contentList = [["Select", "Distribution", "Working directory"]]
+        contentList = [[_("Select"), _("Distribution"), _("Working directory")]]
         distros = self.getDistros()
         for distro in distros:
             select = False

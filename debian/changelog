@@ -1,3 +1,15 @@
+solydxk-constructor (2.4.2) solydxk; urgency=low
+
+  * Improved localization handling
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 22 June 2015 12:00:00 +0100
+
+solydxk-constructor (2.4.1) solydxk; urgency=low
+
+  * Add update-geoip-database to the cleanup script
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 10 Jun 2015 09:30:00 +0100
+
 solydxk-constructor (2.4.0) solydxk; urgency=low
 
   * Resolved issue inserting duplicate keys in LightDM configuration

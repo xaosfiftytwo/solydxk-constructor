@@ -112,6 +112,11 @@ update-apt-xapian-index
 # Update database for mlocate
 updatedb
 
+# Update geoip database
+if [ -e /usr/sbin/update-geoip-database ]; then
+  /usr/sbin/update-geoip-database
+fi
+
 # Recreate pixbuf cache
 PB='/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders'
 if [ -e $PB ]; then
