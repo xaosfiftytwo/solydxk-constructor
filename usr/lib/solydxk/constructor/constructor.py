@@ -516,7 +516,6 @@ class Constructor(object):
             self.btnUpgrade.set_sensitive(True)
 
     def saveDistroFile(self, distroPath, addDistro=True):
-        # save iso_name
         newCont = []
         dg = DistroGeneral(distroPath)
         self.isoName = dg.getIsoName()

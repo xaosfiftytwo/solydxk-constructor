@@ -75,10 +75,9 @@ chmod -x /etc/grub.d/20_memtest86+
 
 # Set plymouth theme
 if [ "$PLYMOUTHTHEME" != "" ]; then
-  plymouth-set-default-theme $PLYMOUTHTHEME
+  plymouth-set-default-theme -R $PLYMOUTHTHEME
   echo "Plymouth theme set: $(plymouth-set-default-theme)"
   update-grub
-  update-initramfs -t -u -k all
 fi
 
 # Configure LightDM
@@ -138,6 +137,8 @@ fi
 ufw enable
 
 # Cleanup temporary files
+rm -rf /media/*
+rm -rf /var/backups/*
 rm -rf /tmp/*
 rm -rf /tmp/.??*
 rm -rf /var/tmp/*

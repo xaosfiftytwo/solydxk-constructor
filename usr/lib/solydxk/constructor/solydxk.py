@@ -91,19 +91,6 @@ class IsoUnpack(threading.Thread):
                 self.ec.run("chmod 6755 '%s'" % join(rootDir, "usr/bin/sudo"))
                 self.ec.run("chmod 0440 '%s'" % join(rootDir, "etc/sudoers"))
 
-                # save iso_name
-                cfgFile = join(isolinuxDir, "isolinux.cfg")
-                isoNameFile = join(self.unpackDir, "iso_name")
-                isoName = "SolydXK"
-                cfgCont = None
-                with open(cfgFile, 'r') as f:
-                    cfgCont = f.read()
-                reObj = re.search("Solyd.*\-bit", cfgCont)
-                if reObj:
-                    isoName = reObj.group(0).strip()
-                with open(isoNameFile, 'w') as f:
-                    f.write(isoName)
-
                 self.returnMessage = "DONE - ISO unpacked to: %s" % self.unpackDir
 
             self.queue.put(self.returnMessage)
@@ -162,15 +149,9 @@ class BuildIso(threading.Thread):
 
         # ISO Name
         self.isoName = self.dg.getIsoName()
-        d = datetime.now()
-        self.dateString = d.strftime("%Y%m")
-        self.fullIsoName = "%(isoName)s %(dateString)s" % {"isoName": self.isoName, "dateString": self.dateString}
 
         # ISO distribution
-        self.distribution = self.dg.getDistribution()
-        if self.distribution is None:
-            self.distribution = basename(distroPath)
-        self.isoBaseName = "%(distribution)s_%(dateString)s.iso" % {"distribution": self.distribution, "dateString": self.dateString}
+        self.isoBaseName = self.dg.getIsoFileName()
         self.isoFileName = join(self.distroPath, self.isoBaseName)
 
         # Trackers, and webseeds
@@ -229,7 +210,7 @@ class BuildIso(threading.Thread):
 
                 # write iso name to boot/isolinux/isolinux.cfg
                 cfgFile = join(self.bootPath, "isolinux/isolinux.cfg")
-                sedstring = "sed -i -e 's/\(menu title Welcome to \).*/\\1%(isoName)s/' %(cfg)s" % {"isoName": self.fullIsoName, "cfg": cfgFile}
+                sedstring = "sed -i -e 's/\(menu title Welcome to \).*/\\1%(isoName)s/' %(cfg)s" % {"isoName": self.isoName, "cfg": cfgFile}
                 self.ec.run(sedstring)
 
                 # Make sure that the paths are correct (correcting old stuff)
@@ -243,7 +224,7 @@ class BuildIso(threading.Thread):
                     with open(grubFile, 'r') as f:
                         content = f.read()
                     if content != "":
-                        content = re.sub("Start.*\d", "Start %s" % self.fullIsoName, content)
+                        content = re.sub("Start.*\d", "Start %s" % self.isoName, content)
                         with open(grubFile, 'w') as f:
                             f.write(content)
 
@@ -253,7 +234,7 @@ class BuildIso(threading.Thread):
                     with open(loopbackFile, 'r') as f:
                         content = f.read()
                     if content != "":
-                        content = re.sub("Start.*\d", "Start %s" % self.fullIsoName, content)
+                        content = re.sub("Start.*\d", "Start %s" % self.isoName, content)
                         with open(loopbackFile, 'w') as f:
                             f.write(content)
 
@@ -383,13 +364,9 @@ class BuildIso(threading.Thread):
                     print("Removing existing ISO...")
                     remove(self.isoFileName)
 
-                # Save ISO name in iso_name file
-                if not exists(join(self.distroPath, "iso_name")):
-                    self.ec.run("echo \"%s\" > %s/iso_name" % (self.isoName, self.distroPath))
-
                 # build iso according to architecture
                 print("Building ISO...")
-                self.ec.run('genisoimage -input-charset utf-8 -o \"' + self.isoFileName + '\" -b \"isolinux/isolinux.bin\" -c \"isolinux/boot.cat\" -no-emul-boot -boot-load-size 4 -boot-info-table -V \"' + self.fullIsoName + '\" -cache-inodes -r -J -l \"' + self.bootPath + '\"')
+                self.ec.run('genisoimage -input-charset utf-8 -o \"' + self.isoFileName + '\" -b \"isolinux/isolinux.bin\" -c \"isolinux/boot.cat\" -no-emul-boot -boot-load-size 4 -boot-info-table -V \"' + self.isoName + '\" -cache-inodes -r -J -l \"' + self.bootPath + '\"')
 
                 print("Making Hybrid ISO...")
                 self.ec.run("isohybrid %s" % self.isoFileName)
@@ -401,7 +378,7 @@ class BuildIso(threading.Thread):
                 torrentFile = "%s.torrent" % self.isoFileName
                 if exists(torrentFile):
                     remove(torrentFile)
-                self.ec.run("mktorrent -a \"%s\" -c \"%s %s\" -w \"%s\" -o \"%s\" \"%s\"" % (self.trackers, self.isoName, self.dateString, self.webseeds, torrentFile, self.isoFileName))
+                self.ec.run("mktorrent -a \"%s\" -c \"%s\" -w \"%s\" -o \"%s\" \"%s\"" % (self.trackers, self.isoName, self.webseeds, torrentFile, self.isoFileName))
 
                 print("======================================================")
                 self.returnMessage = "DONE - ISO Located at: %s" % self.isoFileName
@@ -448,14 +425,20 @@ class EditDistro(object):
         wgetrc = join(self.rootPath, "etc/wgetrc")
         wgetrcBak = "%s.bak" % wgetrc
         terminal = "/tmp/constructor-terminal.sh"
+        lockDir = join(self.rootPath, "run/lock/")
         proc = join(self.rootPath, "proc/")
         dev = join(self.rootPath, "dev/")
         pts = join(self.rootPath, "dev/pts/")
+        sys = join(self.rootPath, "sys/")
         policy = join(self.rootPath, "usr/sbin/policy-rc.d")
         ischroot = join(self.rootPath, "usr/bin/ischroot")
         ischrootTmp = join(self.rootPath, "usr/bin/ischroot.tmp")
 
         try:
+            # temporary create /run/lock
+            if not exists(lockDir):
+                makedirs(lockDir)
+
             # setup environment
             # copy dns info
             if exists(resolveCnf):
@@ -463,13 +446,14 @@ class EditDistro(object):
             if exists(resolveCnfHost):
                 copy(resolveCnfHost, resolveCnf)
 
-            # umount /proc /dev /dev/pts
-            self.unmount([pts, dev, proc])
+            # umount /proc /dev /dev/pts /sys
+            self.unmount([pts, dev, proc, sys])
 
-            # mount /proc /dev /dev/pts
+            # mount /proc /dev /dev/pts /sys /run /sys
             self.ec.run("mount --bind /proc '%s'" % proc)
             self.ec.run("mount --bind /dev '%s'" % dev)
             self.ec.run("mount --bind /dev/pts '%s'" % pts)
+            self.ec.run("mount --bind /sys '%s'" % sys)
 
             # copy apt.conf
             #copy("/etc/apt/apt.conf", join(self.rootPath, "etc/apt/apt.conf"))
@@ -518,8 +502,8 @@ class EditDistro(object):
             else:
                 remove(resolveCnf)
 
-            # umount /proc /dev /dev/pts
-            self.unmount([pts, dev, proc])
+            # umount /proc /dev /dev/pts /sys
+            self.unmount([pts, dev, proc, sys])
 
             # remove temp script
             if exists(terminal):
@@ -533,6 +517,9 @@ class EditDistro(object):
             if exists("%s.tmp" % ischroot):
                 self.ec.run("rm %s" % ischroot)
                 self.ec.run("mv %s.tmp %s" % (ischroot, ischroot))
+
+            # cleanup /run
+            self.ec.run("rm -rf %s/run/*" % self.rootPath)
 
         except Exception as detail:
             # restore wgetrc
@@ -547,8 +534,8 @@ class EditDistro(object):
             else:
                 remove(resolveCnf)
 
-            # umount /proc /dev /dev/pts
-            self.unmount([pts, dev, proc])
+            # umount /proc /dev /dev/pts /sys
+            self.unmount([pts, dev, proc, sys])
 
             # remove temp script
             if exists(terminal):
@@ -562,6 +549,9 @@ class EditDistro(object):
             if exists("%s.tmp" % ischroot):
                 self.ec.run("rm %s" % ischroot)
                 self.ec.run("mv %s.tmp %s" % (ischroot, ischroot))
+
+            # cleanup /run
+            self.ec.run("rm -rf %s/run/*" % self.rootPath)
 
             errText = 'Error launching terminal: '
             print((errText, detail))
@@ -600,7 +590,7 @@ class DistroGeneral(object):
         distribution = None
         info = join(self.rootPath, "etc/solydxk/info")
         if exists(info):
-            distribution = self.ec.run("cat %s | grep EDITION | cut -d'=' -f2" % info, returnAsList=False).lower().strip('"')
+            distribution = self.ec.run("cat %s | grep EDITION= | cut -d'=' -f2" % info, returnAsList=False).lower().strip('"').strip()
             if not "solyd" in distribution:
                 if "kde 32" in distribution:
                     distribution = "solydk32"
@@ -612,15 +602,35 @@ class DistroGeneral(object):
                     distribution = "solydx64"
         return distribution
 
+    def getDistributionRelease(self):
+        release = "1"
+        info = join(self.rootPath, "etc/solydxk/info")
+        if exists(info):
+            release = self.ec.run("cat %s | grep RELEASE= | cut -d'=' -f2" % info, returnAsList=False).lower().strip('"').strip()
+        return release
+
     def getIsoName(self):
         isoName = "SolydXK"
-        isoFile = join(self.distroPath, "iso_name")
-        if exists(isoFile):
-            with open(isoFile, 'r') as f:
-                lines = f.readlines()
-            for line in lines:
-                line = line.strip()
-                if line != "":
-                    isoName = line
-                    break
+        arch = "64-bit"
+        distribution = self.getDistribution()
+        release = self.getDistributionRelease()
+        d = datetime.now()
+        dateString = d.strftime("%Y%m")
+        if distribution[6:8] == "32":
+                arch == "32-bit"
+        if distribution[0:5] == "solyd":
+            if distribution[0:6] == "solydk":
+                isoName = "SolydK {} {} {}".format(release, arch, dateString)
+            else:
+                isoName = "SolydX {} {} {}".format(release, arch, dateString)
         return isoName
+
+    def getIsoFileName(self):
+        isoFileName = "solydxk.iso"
+        distribution = self.getDistribution()
+        release = self.getDistributionRelease()
+        d = datetime.now()
+        dateString = d.strftime("%Y%m")
+        if distribution[0:5] == "solyd":
+            isoFileName = "{}_{}_{}_{}.iso".format(distribution[0:6], release, distribution[6:8], dateString)
+        return isoFileName

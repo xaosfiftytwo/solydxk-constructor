@@ -1,8 +1,20 @@
+solydxk-constructor (2.4.5) solydxk; urgency=low
+
+  * Include release in naming
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 01 Jul 2015 16:00:00 +0100
+
+solydxk-constructor (2.4.4) solydxk; urgency=low
+
+  * Added /sys and /run mounts
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 25 Jun 2015 16:00:00 +0100
+
 solydxk-constructor (2.4.2) solydxk; urgency=low
 
   * Improved localization handling
 
- -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 22 June 2015 12:00:00 +0100
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 22 Jun 2015 12:00:00 +0100
 
 solydxk-constructor (2.4.1) solydxk; urgency=low
 
