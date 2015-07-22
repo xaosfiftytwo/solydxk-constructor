@@ -131,9 +131,6 @@ fi
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow CIFS
-if [ -e "/lib/live/config/1160-openssh-server" ]; then
-  ufw allow in 22
-fi
 ufw enable
 
 # Cleanup temporary files

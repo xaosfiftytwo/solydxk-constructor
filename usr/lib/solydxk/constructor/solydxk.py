@@ -157,8 +157,8 @@ class BuildIso(threading.Thread):
         # Trackers, and webseeds
         self.trackers = ""
         self.webseeds = ""
-        trackersPath = join(self.scriptDir, "trackers")
-        webseedsPath = join(self.scriptDir, "webseeds")
+        trackersPath = join(self.scriptDir, "files/trackers")
+        webseedsPath = join(self.scriptDir, "files/webseeds")
         if exists(trackersPath):
             with open(trackersPath, "r") as f:
                 lines = f.readlines()
@@ -190,15 +190,17 @@ class BuildIso(threading.Thread):
                 print("======================================================")
 
                 # Clean-up
-                cleanup = "cleanup.sh"
-                if exists(join(self.scriptDir, cleanup)):
-                    self.copy_file(join(self.scriptDir, cleanup), join(self.rootPath, cleanup))
-                    self.ec.run("chmod a+x %s" % join(self.rootPath, cleanup))
+                script = "cleanup.sh"
+                scriptSource = join(self.scriptDir, "files/{}".format(script))
+                scriptTarget = join(self.rootPath, script)
+                if exists(scriptSource):
+                    self.copy_file(scriptSource, scriptTarget)
+                    self.ec.run("chmod a+x %s" % scriptTarget)
                     plymouthTheme = self.dg.getPlymouthTheme()
                     #self.ec.run("chroot '%(rootPath)s' /bin/bash %(cleanup)s %(plymouthTheme)s" % {"rootPath": self.rootPath, "cleanup": cleanup, "plymouthTheme": plymouthTheme})
-                    cmd = "/bin/bash %(cleanup)s %(plymouthTheme)s" % {"cleanup": cleanup, "plymouthTheme": plymouthTheme}
+                    cmd = "/bin/bash %(cleanup)s %(plymouthTheme)s" % {"cleanup": script, "plymouthTheme": plymouthTheme}
                     self.ed.openTerminal(cmd)
-                    remove(join(self.rootPath, cleanup))
+                    remove(scriptTarget)
 
                 rootHome = join(self.rootPath, "root")
                 nanoHist = join(rootHome, ".nano_history")
@@ -210,7 +212,7 @@ class BuildIso(threading.Thread):
 
                 # write iso name to boot/isolinux/isolinux.cfg
                 cfgFile = join(self.bootPath, "isolinux/isolinux.cfg")
-                sedstring = "sed -i -e 's/\(menu title Welcome to \).*/\\1%(isoName)s/' %(cfg)s" % {"isoName": self.isoName, "cfg": cfgFile}
+                sedstring = "sed -i -e 's/Solyd.*[[:digit:]]/{}/' {}".format(self.isoName, cfgFile)
                 self.ec.run(sedstring)
 
                 # Make sure that the paths are correct (correcting old stuff)
@@ -224,7 +226,7 @@ class BuildIso(threading.Thread):
                     with open(grubFile, 'r') as f:
                         content = f.read()
                     if content != "":
-                        content = re.sub("Start.*\d", "Start %s" % self.isoName, content)
+                        content = re.sub("Solyd.*\d", self.isoName, content)
                         with open(grubFile, 'w') as f:
                             f.write(content)
 
@@ -234,7 +236,7 @@ class BuildIso(threading.Thread):
                     with open(loopbackFile, 'r') as f:
                         content = f.read()
                     if content != "":
-                        content = re.sub("Start.*\d", "Start %s" % self.isoName, content)
+                        content = re.sub("Solyd.*\d", self.isoName, content)
                         with open(loopbackFile, 'w') as f:
                             f.write(content)
 

@@ -600,7 +600,7 @@ def getWirelessInterface():
 # Check if we're running live
 def isRunningLive():
     live = False
-    liveDirs = ['/live', '/lib/live', '/rofs']
+    liveDirs = ['/live', '/lib/live/mount', '/rofs']
     for ld in liveDirs:
         if exists(ld):
             live = True

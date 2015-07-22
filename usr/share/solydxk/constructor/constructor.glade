@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk+" version="3.4"/>
   <object class="GtkWindow" id="constructorWindow">
-    <property name="width_request">500</property>
+    <property name="width_request">550</property>
     <property name="height_request">350</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">SolydXK Constrictor</property>
@@ -30,7 +30,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Add</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-add</property>
+                <property name="icon_name">gtk-add</property>
                 <signal name="clicked" handler="on_btnAdd_clicked" swapped="no"/>
               </object>
               <packing>
@@ -44,7 +44,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Remove</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-remove</property>
+                <property name="icon_name">gtk-remove</property>
                 <signal name="clicked" handler="on_btnRemove_clicked" swapped="no"/>
               </object>
               <packing>
@@ -68,7 +68,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Open dir</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-open</property>
+                <property name="icon_name">gtk-open</property>
                 <signal name="clicked" handler="on_btnOpenDir_clicked" swapped="no"/>
               </object>
               <packing>
@@ -134,8 +134,32 @@
                 <property name="can_focus">False</property>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="btnLocalize">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">_Localize</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">preferences-desktop-locale</property>
+                <signal name="clicked" handler="on_btnLocalize_clicked" swapped="no"/>
+              </object>
+              <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="sep4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -144,7 +168,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-help</property>
+                <property name="icon_name">gtk-help</property>
                 <signal name="clicked" handler="on_btnHelp_clicked" swapped="no"/>
               </object>
               <packing>
@@ -229,7 +253,7 @@
     </child>
   </object>
   <object class="GtkWindow" id="addDistroWindow">
-    <property name="width_request">500</property>
+    <property name="width_request">550</property>
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
@@ -253,12 +277,13 @@
             <property name="homogeneous">True</property>
             <child>
               <object class="GtkButton" id="btnCancel">
-                <property name="label" translatable="yes">Cancel</property>
+                <property name="label" translatable="yes">_Cancel</property>
                 <property name="height_request">30</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="margin_top">10</property>
+                <property name="use_underline">True</property>
                 <signal name="clicked" handler="on_btnCancel_clicked" swapped="no"/>
               </object>
               <packing>
@@ -269,13 +294,14 @@
             </child>
             <child>
               <object class="GtkButton" id="btnSave">
-                <property name="label" translatable="yes">Unpack &amp; Save</property>
+                <property name="label" translatable="yes">_Unpack &amp; Save</property>
                 <property name="height_request">30</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="margin_top">10</property>
+                <property name="use_underline">True</property>
                 <signal name="clicked" handler="on_btnSave_clicked" swapped="no"/>
               </object>
               <packing>

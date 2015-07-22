@@ -49,6 +49,7 @@ class Constructor(object):
         self.btnRemove = go('btnRemove')
         self.btnEdit = go('btnEdit')
         self.btnUpgrade = go('btnUpgrade')
+        self.btnLocalize = go('btnLocalize')
         self.btnBuildIso = go('btnBuildIso')
 
         # Add iso window objects
@@ -70,12 +71,13 @@ class Constructor(object):
         self.btnRemove.set_label("_{}".format(_("Remove")))
         self.btnEdit.set_label("_{}".format(_("Edit")))
         self.btnUpgrade.set_label("_{}".format(_("Upgrade")))
+        self.btnLocalize.set_label("_{}".format(_("Localize")))
         self.btnBuildIso.set_label("_{}".format(_("Build")))
         self.btnHelp.set_label("_{}".format(_("Help")))
 
         # Add iso window translations
         self.lblIso.set_text(_("ISO"))
-        go('btnCancel').set_label(_("Cancel"))
+        go('btnCancel').set_label("_{}".format(_("Cancel")))
 
         # Init
         self.ec = ExecCmd()
@@ -164,7 +166,7 @@ class Constructor(object):
 
             # Cleanup old kernel and headers
             script = "rmoldkernel.sh"
-            scriptSource = join(self.scriptDir, script)
+            scriptSource = join(self.scriptDir, "files/{}".format(script))
             scriptTarget = join(rootPath, script)
             if exists(scriptSource):
                 copy(scriptSource, scriptTarget)
@@ -183,6 +185,21 @@ class Constructor(object):
 
         if upgraded and exists("/usr/bin/aplay") and exists(self.doneWav):
             self.ec.run("/usr/bin/aplay '%s'" % self.doneWav, False)
+
+    def on_btnLocalize_clicked(self, widget):
+        # Set locale
+        selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
+        for path in selected:
+            rootPath = "%s/root" % path
+            de = EditDistro(path)
+            script = "setlocale.sh"
+            scriptSource = join(self.scriptDir, "files/{}".format(script))
+            scriptTarget = join(rootPath, script)
+            if exists(scriptSource):
+                copy(scriptSource, scriptTarget)
+                self.ec.run("chmod a+x %s" % scriptTarget)
+                de.openTerminal("/bin/bash %s" % script)
+                remove(scriptTarget)
 
     def build_efi_files(self):
 
@@ -235,7 +252,7 @@ class Constructor(object):
             arch = functions.getGuestEfiArchitecture(rootPath)
             de = EditDistro(path)
             script = "offline.sh"
-            scriptSource = join(self.scriptDir, script)
+            scriptSource = join(self.scriptDir, "files/{}".format(script))
             scriptTarget = join(rootPath, script)
             offlineSource = join(rootPath, "offline")
             offlineTarget = join(rootPath, "../boot/offline")

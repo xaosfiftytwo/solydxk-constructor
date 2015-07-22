@@ -12,8 +12,8 @@
 		<table width="500" align="center">
 			<tr>
 				<td>
-					<p>SolydXK Constructor helps building your custom SolydXK ISO, and was solely created for maintaining the current SolydXK ISO's, but it might benefit those who want to build their custom SolydXK ISO.</p>
-					<p>You can download SolydXK ISO's here: <a href="http://downloads.solydxk.com" target="_blank">http://downloads.solydxk.com</a></p>
+					<p>SolydXK Constructor helps building your custom SolydXK ISO, and was solely created for maintaining the current SolydXK ISOs, but it might benefit those who want to build their custom SolydXK ISO.</p>
+					<p>You can download SolydXK ISOs here: <a href="http://downloads.solydxk.com" target="_blank">http://downloads.solydxk.com</a></p>
 					<p>SolydXK Constructor needs to start from the terminal. The terminal is your best friend, because all output is written to the terminal.</p>
 					
 					<p><img src="help/mainwindow.png" /></p></p>
@@ -25,7 +25,8 @@
 						<li><a href="#open">Open directory</a></li>
 						<li><a href="#edit">Edit in terminal</a></li>
 						<li><a href="#upgrade">Dist-upgrade distributions</a></li>
-						<li><a href="#build">Build ISO's</a></li>
+						<li><a href="#build">Build ISOs</a></li>
+						<li><a href="#localize">Localize the ISOs</a></li>
 						<li><a href="#debian">Use Debian live as base</a></li>
 						<li><a href="#files">Important files</a></li>
 					</ol>
@@ -63,31 +64,57 @@
 						<li>remove the old kernel (if any). You can either choose to keep it, or remove it.</li>
 					</ul>
 					
-					<h2><a name="build"></a>6. Build ISO's</h2>
+					<h2><a name="build"></a>6. Build ISOs</h2>
 					<p></p>The building process starts with cleaning up the distribution.<br>
 					You can find the bash file that is being executed here: /usr/lib/solydxk/constructor/cleanup.sh</p>
 					<p>The building process can take a long time.<br>
 					If you need to quit the process before it ends, you can open a terminal and run:<div class="code">sudo killall mksquashfs</div><br>
 					You need to repeat that if you have more than one distribution selected in the list.</p>
+					
+					<h2><a name="localize"></a>7. Localize the ISOs</h2>
+					<p>This will localize your ISO, setting the default live language to your desired locale and time zone.<br>
+					The process consists of 6 different steps:</p>
+					<ul>
+						<li>Set the desired locale.<br>
+						<img src="help/configurelocales1.png" /></li>
+						<li>Set the default locale.<br>
+						<img src="help/configurelocales2.png" /></li>
+						<li>Set the time zone.<br>
+						<img src="help/configuretimezone1.png" /><br>
+						<img src="help/configuretimezone2.png" /></li>
+						<li>Change the live configuration (/etc/live/config.conf).</li>
+						<li>Upgrade (apt-get dist-upgrade).</li>
+						<li>When needed, install packages for KDE, Firefox, Thunderbird, LibreOffice and for some locales some extra packages.<br>
+						Check the setlocale.sh script for locale specific packages</li>
+					</ul>
+					<p><strong>Note</strong><br>
+					You need to translate these files manually once:</p>
+					<ul>
+						<li>boot/boot/grub/grub.cfg</li>
+						<li>boot/boot/grub/loopback.cfg</li>
+						<li>boot/isolinux/isolinux.cfg</li>
+					</ul>
 
-					<h2><a name="debian"></a>7. Use Debian live as base</h2>
+					<h2><a name="debian"></a>8. Use Debian live as base</h2>
 					<p>You can even use a Debian Live DVD as a base: <a href="http://www.debian.org/CD/live" target="_blank">http://www.debian.org/CD/live</a><br>
 					If you use Debian, you'll need the "isolinux" directory (and its contents) to replace the "isolinux" directory in the Debian unpack directory.<br>
 					After that you'll need to configure the distribution from scratch. It's a lot of work, but for a CE (Community Edition) well worth it.</p>
 
-					<h2><a name="files"></a>8. Important files</h2>
+					<h2><a name="files"></a>9. Important files</h2>
 					<ul>
 						<li>/usr/lib/solydxk/constructor/distros.list<br>
 						Here are all distribution directories saved.</li>
-						<li>/usr/lib/solydxk/constructor/trackers<br>
+						<li>/usr/lib/solydxk/constructor/files/trackers<br>
 						List with torrent trackers (one per line).</li>
-						<li>/usr/lib/solydxk/constructor/webseeds<br>
+						<li>/usr/lib/solydxk/constructor/files/webseeds<br>
 						List with web seeds (without ISO name; one per line).</li>
-						<li>/usr/lib/solydxk/constructor/cleanup.sh<br>
+						<li>/usr/lib/solydxk/constructor/files/cleanup.sh<br>
 						This script cleans up prior to building the ISO.</li>
-						<li>/usr/lib/solydxk/constructor/rmoldkernel.sh<br>
+						<li>/usr/lib/solydxk/constructor/files/rmoldkernel.sh<br>
 						Removes the old kernel in case of a kernel update.</li>
-						<li>/usr/lib/solydxk/constructor/offline.sh<br>
+						<li>/usr/lib/solydxk/constructor/files/setlocale.sh<br>
+						Sets the locale of the ISO. Default is: en_US</li>
+						<li>/usr/lib/solydxk/constructor/files/offline.sh<br>
 						Bash to download/copy offline available packages/files.<br>
 						Files are live available at: /lib/live/mount/medium/offline/.</li>
 						<li>boot/isolinux/isolinux.cfg<br>

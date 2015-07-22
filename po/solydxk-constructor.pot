@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-01 17:10+0200\n"
+"POT-Creation-Date: 2015-07-22 09:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,123 +17,127 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:67
+#: ../usr/lib/solydxk/constructor/constructor.py:68
 #: ../usr/share/applications/constructor.desktop.in.h:2
 msgid "SolydXK Constructor"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:68
+#: ../usr/lib/solydxk/constructor/constructor.py:69
 msgid "Select all"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:69
+#: ../usr/lib/solydxk/constructor/constructor.py:70
 msgid "Add"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:70
+#: ../usr/lib/solydxk/constructor/constructor.py:71
 msgid "Remove"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:71
+#: ../usr/lib/solydxk/constructor/constructor.py:72
 msgid "Edit"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:72
+#: ../usr/lib/solydxk/constructor/constructor.py:73
 msgid "Upgrade"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:73
+#: ../usr/lib/solydxk/constructor/constructor.py:74
+msgid "Localize"
+msgstr ""
+
+#: ../usr/lib/solydxk/constructor/constructor.py:75
 msgid "Build"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:74
+#: ../usr/lib/solydxk/constructor/constructor.py:76
 msgid "Help"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:77
+#: ../usr/lib/solydxk/constructor/constructor.py:79
 msgid "ISO"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:78
+#: ../usr/lib/solydxk/constructor/constructor.py:80
 msgid "Cancel"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:101
+#: ../usr/lib/solydxk/constructor/constructor.py:103
 msgid "Version"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:119
+#: ../usr/lib/solydxk/constructor/constructor.py:121
 msgid ""
 "Are you sure you want to remove the selected distribution from the list?\n"
 "(This will not remove the directory and its data)"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:143
+#: ../usr/lib/solydxk/constructor/constructor.py:145
 msgid "Services detected"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:315
+#: ../usr/lib/solydxk/constructor/constructor.py:332
 msgid "Select"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:315
+#: ../usr/lib/solydxk/constructor/constructor.py:332
 msgid "Distribution"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:315
+#: ../usr/lib/solydxk/constructor/constructor.py:332
 msgid "Working directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:356
+#: ../usr/lib/solydxk/constructor/constructor.py:373
 msgid "Select SolydXK ISO"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:364
+#: ../usr/lib/solydxk/constructor/constructor.py:381
 msgid "Select directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:374
+#: ../usr/lib/solydxk/constructor/constructor.py:391
 msgid "Save existing working directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:376
+#: ../usr/lib/solydxk/constructor/constructor.py:393
 msgid "Unpack ISO and save"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:382
+#: ../usr/lib/solydxk/constructor/constructor.py:399
 #, python-format
 msgid "Could not create directory %(dir)s: exiting"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:387
+#: ../usr/lib/solydxk/constructor/constructor.py:404
 msgid ""
 "The path to the ISO file does not exist:\n"
 "{}"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:391
+#: ../usr/lib/solydxk/constructor/constructor.py:408
 msgid ""
 "The destination directory is not empty.\n"
 "Are you sure you want to overwrite all data in {}?"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:407
+#: ../usr/lib/solydxk/constructor/constructor.py:424
 msgid "Existing working directory added"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:448
+#: ../usr/lib/solydxk/constructor/constructor.py:465
 msgid "Unpack ISO to directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:449
+#: ../usr/lib/solydxk/constructor/constructor.py:466
 msgid "Unpack & Save"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:457
+#: ../usr/lib/solydxk/constructor/constructor.py:474
 msgid "Work directory"
 msgstr ""
 
-#: ../usr/lib/solydxk/constructor/constructor.py:458
+#: ../usr/lib/solydxk/constructor/constructor.py:475
 msgid "Save"
 msgstr ""
 
