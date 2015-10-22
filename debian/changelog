@@ -1,3 +1,28 @@
+solydxk-constructor (2.5.6) solydxk; urgency=low
+
+  * grub.cfg and loopback.cfg were not written correctly
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 22 Oct 2015 07:00:00 +0100
+
+solydxk-constructor (2.5.5) solydxk; urgency=low
+
+  * Added efibootmgr and efivar to the offline packages
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 07 Oct 2015 06:00:00 +0100
+
+solydxk-constructor (2.5.4) solydxk; urgency=low
+
+  * Solved bug not changing the date string of the ISO name in /boot/isolinux/isolinux.cfg
+  * Change ISO name when localized
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sat, 05 Sep 2015 21:00:00 +0100
+
+solydxk-constructor (2.5.2) solydxk; urgency=low
+
+  * Include LXQt as DE
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 25 Aug 2015 23:00:00 +0100
+
 solydxk-constructor (2.5.0) solydxk; urgency=low
 
   * Added feature: localizing ISO

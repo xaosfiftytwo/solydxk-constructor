@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+minimum_perc = 80
+
+[solydxk-constructor.solydxk-constructorpot]
+source_file = po/solydxk-constructor.pot
+file_filter = po/<lang>.po
+source_lang = en
+type = PO

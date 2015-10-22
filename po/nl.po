@@ -1,21 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# root <arjenbalfoort@solydxk.com>, 2015.
+#
+# Translators:
+# root <arjenbalfoort@solydxk.com>, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: solydxk-constructor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-20 10:14+0200\n"
-"PO-Revision-Date: 2015-07-20 11:41+0200\n"
-"Last-Translator: root <arjenbalfoort@solydxk.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2015-10-22 08:57+0200\n"
+"PO-Revision-Date: 2015-10-22 05:34+0000\n"
+"Last-Translator: Arjen Balfoort <schoelje@solydxk.com>\n"
+"Language-Team: Dutch (http://www.transifex.com/solydxk/solydxk-constructor/"
+"language/nl/)\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:68
 #: ../usr/share/applications/constructor.desktop.in.h:2
@@ -151,27 +153,3 @@ msgstr "Bewaren"
 #: ../usr/share/applications/constructor.desktop.in.h:1
 msgid "ISO constructor for SolydXK"
 msgstr "ISO constructor voor SolydXK"
-
-#~ msgid "Remove distributions"
-#~ msgstr "Verwijder distributies"
-
-#~ msgid "Edit in terminal"
-#~ msgstr "Bewerk in terminal"
-
-#~ msgid "Dist-upgrade distributions"
-#~ msgstr "Dist-upgrade distributies"
-
-#~ msgid "Actions"
-#~ msgstr "Acties"
-
-#~ msgid "Open directory"
-#~ msgstr "Open map"
-
-#~ msgid "Build without cleanup"
-#~ msgstr "Bouw zonder opschonen"
-
-#~ msgid "Build EFI files"
-#~ msgstr "Bouw EFI bestanden"
-
-#~ msgid "Download offline pck"
-#~ msgstr "Download offline pakketten"

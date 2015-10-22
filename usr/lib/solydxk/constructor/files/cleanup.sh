@@ -86,12 +86,15 @@ if [ -e '/etc/lightdm/lightdm-gtk-greeter.conf' ]; then
   CONF='/etc/lightdm/lightdm-gtk-greeter.conf'
 fi
    
-if [ -e /usr/bin/startkde ]; then
+if [ -e /usr/bin/startxfce* ]; then
+  sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydx-lightdmbg.png' $CONF
+  sed_append_sting '^theme-name\s*=.*' 'theme-name=greybird-solydx' $CONF
+elif [ -e /usr/bin/startkde* ]; then
   sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydk-lightdmbg.png' $CONF
   sed_append_sting '^theme-name\s*=.*' 'theme-name=greybird-solydk-gtk3' $CONF
 else
-  sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydx-lightdmbg.png' $CONF
-  sed_append_sting '^theme-name\s*=.*' 'theme-name=greybird-solydx' $CONF
+  sed_append_sting '^background\s*=.*' 'background=' $CONF
+  sed_append_sting '^theme-name\s*=.*' 'theme-name=' $CONF
 fi
 sed_append_sting '^default-user-image\s*=.*' 'default-user-image=/usr/share/pixmaps/faces/user-generic.png' $CONF
     
@@ -146,6 +149,9 @@ fi
 
 # Delete all log files
 find /var/log -type f -delete
+
+# Delete grub.cfg: it will be generated during install
+rm -rf /boot/grub/grub.cfg
 
 # Removing redundant kernel module structure(s) from /lib/modules (if any)
 VersionPlusArch=$(ls -l /vmlinuz | sed 's/.*\/vmlinuz-\(.*\)/\1/')

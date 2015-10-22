@@ -148,7 +148,7 @@ class BuildIso(threading.Thread):
             self.ec.run("mkdir -p %s" % self.livePath)
 
         # ISO Name
-        self.isoName = self.dg.getIsoName()
+        self.isoName = self.dg.description
 
         # ISO distribution
         self.isoBaseName = self.dg.getIsoFileName()
@@ -170,7 +170,6 @@ class BuildIso(threading.Thread):
             with open(webseedsPath, "r") as f:
                 lines = f.readlines()
                 wsList = []
-                #webseedIsoName = "%s_latest.iso" % self.distribution
                 for line in lines:
                     #wsList.append("%s/%s" % (line.strip(), webseedIsoName))
                     wsList.append("%s/%s" % (line.strip(), self.isoBaseName))
@@ -210,14 +209,25 @@ class BuildIso(threading.Thread):
                 if exists(bashHist):
                     remove(bashHist)
 
+                # Config naming
+                regExp = "solyd.*(\d{6}|-bit)"
+                d = datetime.now()
+                dateString = d.strftime("%Y%m")
+                nameString = "{} {}".format(self.isoName, dateString)
+
                 # write iso name to boot/isolinux/isolinux.cfg
                 cfgFile = join(self.bootPath, "isolinux/isolinux.cfg")
-                sedstring = "sed -i -e 's/Solyd.*[[:digit:]]/{}/' {}".format(self.isoName, cfgFile)
-                self.ec.run(sedstring)
-
-                # Make sure that the paths are correct (correcting old stuff)
-                self.ec.run("sed -i 's/.lz/.img/g' %s" % cfgFile)
-                self.ec.run("sed -i 's/\/solydxk/\/live/g' %s" % cfgFile)
+                if exists(cfgFile):
+                    content = ""
+                    with open(cfgFile, 'r') as f:
+                        content = f.read()
+                    if content != "":
+                        content = re.sub(regExp, nameString, content, flags=re.IGNORECASE)
+                        # Make sure that the paths are correct (correcting very old stuff)
+                        content = re.sub('.lz', '.img', content)
+                        content = re.sub('/solydxk/', '/live/', content)
+                        with open(cfgFile, 'w') as f:
+                            f.write(content)
 
                 # Write info for grub (EFI)
                 grubFile = join(self.bootPath, "boot/grub/grub.cfg")
@@ -226,7 +236,7 @@ class BuildIso(threading.Thread):
                     with open(grubFile, 'r') as f:
                         content = f.read()
                     if content != "":
-                        content = re.sub("Solyd.*\d", self.isoName, content)
+                        content = re.sub(regExp, nameString, content, flags=re.IGNORECASE)
                         with open(grubFile, 'w') as f:
                             f.write(content)
 
@@ -236,7 +246,7 @@ class BuildIso(threading.Thread):
                     with open(loopbackFile, 'r') as f:
                         content = f.read()
                     if content != "":
-                        content = re.sub("Solyd.*\d", self.isoName, content)
+                        content = re.sub(regExp, nameString, content, flags=re.IGNORECASE)
                         with open(loopbackFile, 'w') as f:
                             f.write(content)
 
@@ -414,10 +424,9 @@ class EditDistro(object):
         if basename(distroPath) == "root":
             distroPath = dirname(distroPath)
         self.rootPath = join(distroPath, "root")
-        # ISO distribution
-        self.distribution = self.dg.getDistribution()
-        if self.distribution is None:
-            self.distribution = basename(distroPath)
+
+        # ISO edition
+        self.edition = self.dg.edition
 
     def openTerminal(self, command=""):
         # Set some paths
@@ -486,7 +495,7 @@ class EditDistro(object):
             if self.ec.run('which x-terminal-emulator'):
                 # use x-terminal-emulator if xterm isn't available
                 if exists("/usr/bin/xterm"):
-                    self.ec.run('export HOME=/root ; xterm -bg black -fg white -rightbar -title \"%s\" -e %s' % (self.distribution, terminal))
+                    self.ec.run('export HOME=/root ; xterm -bg black -fg white -rightbar -title \"%s\" -e %s' % (self.edition, terminal))
                 else:
                     self.ec.run('export HOME=/root ; x-terminal-emulator -e %s' % terminal)
             else:
@@ -574,65 +583,33 @@ class DistroGeneral(object):
         self.distroPath = distroPath
         self.rootPath = join(distroPath, "root")
 
+        self.edition = basename(distroPath)
+        self.description = "SolydXK"
+        infoPath = join(self.rootPath, "etc/solydxk/info")
+        if exists(infoPath):
+            self.edition = self.ec.run(cmd="grep EDITION= {} | cut -d'=' -f 2".format(infoPath), returnAsList=False).strip('"')
+            self.description = self.ec.run(cmd="grep DESCRIPTION= {} | cut -d'=' -f 2".format(infoPath), returnAsList=False).strip('"')
+
     def getPlymouthTheme(self):
         plymouthTheme = ""
         if exists(join(self.rootPath, "usr/share/plymouth/themes/solydk-logo")):
             plymouthTheme = "solydk-logo"
-        elif exists(join(self.rootPath, "usr/share/plymouth/themes/solydkbe-logo")):
-            plymouthTheme = "solydkbe-logo"
-        elif exists(join(self.rootPath, "usr/share/plymouth/themes/solydxbe-logo")):
-            plymouthTheme = "solydxbe-logo"
-        elif exists(join(self.rootPath, "usr/share/plymouth/themes/solydkbo-logo")):
-            plymouthTheme = "solydkbo-logo"
         elif exists(join(self.rootPath, "usr/share/plymouth/themes/solydx-logo")):
             plymouthTheme = "solydx-logo"
         return plymouthTheme
 
-    def getDistribution(self):
-        distribution = None
-        info = join(self.rootPath, "etc/solydxk/info")
-        if exists(info):
-            distribution = self.ec.run("cat %s | grep EDITION= | cut -d'=' -f2" % info, returnAsList=False).lower().strip('"').strip()
-            if not "solyd" in distribution:
-                if "kde 32" in distribution:
-                    distribution = "solydk32"
-                elif "kde 64" in distribution:
-                    distribution = "solydk64"
-                if "xfce 32" in distribution:
-                    distribution = "solydx32"
-                elif "xfce 64" in distribution:
-                    distribution = "solydx64"
-        return distribution
-
-    def getDistributionRelease(self):
-        release = "1"
-        info = join(self.rootPath, "etc/solydxk/info")
-        if exists(info):
-            release = self.ec.run("cat %s | grep RELEASE= | cut -d'=' -f2" % info, returnAsList=False).lower().strip('"').strip()
-        return release
-
-    def getIsoName(self):
-        isoName = "SolydXK"
-        arch = "64-bit"
-        distribution = self.getDistribution()
-        release = self.getDistributionRelease()
-        d = datetime.now()
-        dateString = d.strftime("%Y%m")
-        if distribution[6:8] == "32":
-                arch == "32-bit"
-        if distribution[0:5] == "solyd":
-            if distribution[0:6] == "solydk":
-                isoName = "SolydK {} {} {}".format(release, arch, dateString)
-            else:
-                isoName = "SolydX {} {} {}".format(release, arch, dateString)
-        return isoName
-
     def getIsoFileName(self):
-        isoFileName = "solydxk.iso"
-        distribution = self.getDistribution()
-        release = self.getDistributionRelease()
+        # Get the date string
         d = datetime.now()
-        dateString = d.strftime("%Y%m")
-        if distribution[0:5] == "solyd":
-            isoFileName = "{}_{}_{}_{}.iso".format(distribution[0:6], release, distribution[6:8], dateString)
+        serial = d.strftime("%Y%m")
+        # Check for a localized system
+        localePath = join(self.rootPath, "etc/default/locale")
+        if exists(localePath):
+            locale = self.ec.run(cmd="grep LANG= {}".format(localePath), returnAsList=False).strip('"').replace(" ", "")
+            matchObj = re.search("\=\s*([a-z]{2})", locale)
+            if matchObj:
+                language = matchObj.group(1)
+                if language != "en":
+                    serial += "_{}".format(language)
+        isoFileName = "{}_{}.iso".format(self.description.lower().replace(' ', '_').split('-')[0], serial)
         return isoFileName

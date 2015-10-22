@@ -349,7 +349,7 @@ class Constructor(object):
                 print(line)
                 if exists(line):
                     dg = DistroGeneral(line)
-                    isoName = dg.getIsoName()
+                    isoName = dg.description
                     distros.append([isoName, line])
             # Sort on iso name
             if distros:
@@ -535,7 +535,7 @@ class Constructor(object):
     def saveDistroFile(self, distroPath, addDistro=True):
         newCont = []
         dg = DistroGeneral(distroPath)
-        self.isoName = dg.getIsoName()
+        self.isoName = dg.description
 
         cfg = []
         if exists(self.distroFile):
