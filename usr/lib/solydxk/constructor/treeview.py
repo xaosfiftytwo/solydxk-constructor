@@ -1,5 +1,9 @@
 #! /usr/bin/env python3
 
+# Make sure the right Gtk version is loaded
+import gi
+gi.require_version('Gtk', '3.0')
+
 import os
 from gi.repository import Gtk, GObject, GdkPixbuf
 
@@ -117,7 +121,8 @@ class TreeViewHandler(GObject.GObject):
                         for j in range(len(contentList[i])):
                             val = str(contentList[i][j])
                             if str(columnTypesList[j]) == 'str':
-                                val = '"' + val + '"'
+                                # Make sure it's a single line
+                                val = '"' + val.replace('\n', ' ').replace('\r', '') + '"'
                             if str(columnTypesList[j]) == 'GdkPixbuf.Pixbuf':
                                 if os.path.isfile(val):
                                     if fixedImgHeight:

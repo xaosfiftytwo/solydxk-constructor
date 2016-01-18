@@ -1,6 +1,31 @@
-solydxk-constructor (2.5.7) solydxk; urgency=low
+solydxk-constructor (2.6.2) solydxk; urgency=low
 
   * Updated translations
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 18 Jan 2016 18:00:00 +0100
+
+solydxk-constructor (2.6.1) solydxk; urgency=low
+
+  * Resolve bug crashing on paths with spaces
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 31 Dec 2015 17:00:00 +0100
+
+solydxk-constructor (2.6.0) solydxk; urgency=low
+
+  * Updated translations
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Sat, 19 Dec 2015 11:00:00 +0100
+
+solydxk-constructor (2.5.9) solydxk; urgency=low
+
+  * Updated cleanup script: autostart UM with new UM version
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 23 Nov 2015 10:00:00 +0100
+
+solydxk-constructor (2.5.8) solydxk; urgency=low
+
+  * Updated translations
+  * Disable localize button while building
 
  -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 03 Nov 2015 17:00:00 +0100
 

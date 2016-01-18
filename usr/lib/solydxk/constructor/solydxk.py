@@ -587,8 +587,8 @@ class DistroGeneral(object):
         self.description = "SolydXK"
         infoPath = join(self.rootPath, "etc/solydxk/info")
         if exists(infoPath):
-            self.edition = self.ec.run(cmd="grep EDITION= {} | cut -d'=' -f 2".format(infoPath), returnAsList=False).strip('"')
-            self.description = self.ec.run(cmd="grep DESCRIPTION= {} | cut -d'=' -f 2".format(infoPath), returnAsList=False).strip('"')
+            self.edition = self.ec.run(cmd="grep EDITION= \"{}\" | cut -d'=' -f 2".format(infoPath), returnAsList=False).strip('"')
+            self.description = self.ec.run(cmd="grep DESCRIPTION= \"{}\" | cut -d'=' -f 2".format(infoPath), returnAsList=False).strip('"')
 
     def getPlymouthTheme(self):
         plymouthTheme = ""

@@ -5,6 +5,10 @@
 # User settings
 # http://docs.python.org/2/library/pwd.html
 
+# Make sure the right Gtk version is loaded
+import gi
+gi.require_version('Gtk', '3.0')
+
 # sudo apt-get install python3-gi
 # from gi.repository import Gtk, GdkPixbuf, GObject, Pango, Gdk
 from gi.repository import Gtk, GObject
@@ -523,6 +527,9 @@ class Constructor(object):
             self.btnEdit.set_sensitive(False)
             self.btnRemove.set_sensitive(False)
             self.btnUpgrade.set_sensitive(False)
+            self.btnLocalize.set_sensitive(False)
+            self.btnDir.set_sensitive(False)
+            self.btnHelp.set_sensitive(False)
         else:
             self.chkSelectAll.set_sensitive(True)
             self.tvDistros.set_sensitive(True)
@@ -531,6 +538,9 @@ class Constructor(object):
             self.btnEdit.set_sensitive(True)
             self.btnRemove.set_sensitive(True)
             self.btnUpgrade.set_sensitive(True)
+            self.btnLocalize.set_sensitive(True)
+            self.btnDir.set_sensitive(True)
+            self.btnHelp.set_sensitive(True)
 
     def saveDistroFile(self, distroPath, addDistro=True):
         newCont = []

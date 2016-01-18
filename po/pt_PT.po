@@ -1,146 +1,154 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
+# Translators:
+# Luis Filipe Teixeira <lufilte@gmail.com>, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: solydxk-constructor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-18 17:45+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2015-12-31 17:10+0100\n"
+"PO-Revision-Date: 2015-12-23 17:05+0000\n"
+"Last-Translator: Luis Filipe Teixeira <lufilte@gmail.com>\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/solydxk/"
+"solydxk-constructor/language/pt_PT/)\n"
+"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:72
 #: ../usr/share/applications/constructor.desktop.in.h:2
 msgid "SolydXK Constructor"
-msgstr ""
+msgstr "Construtor de SolydXK"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:73
 msgid "Select all"
-msgstr ""
+msgstr "Selecionar tudo"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:74
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:75
 msgid "Remove"
-msgstr ""
+msgstr "Remover"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:76
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:77
 msgid "Upgrade"
-msgstr ""
+msgstr "Atualização"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:78
 msgid "Localize"
-msgstr ""
+msgstr "Localizar"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:79
 msgid "Build"
-msgstr ""
+msgstr "Construir"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:80
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:83
 msgid "ISO"
-msgstr ""
+msgstr "ISO"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:84
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:107
 msgid "Version"
-msgstr ""
+msgstr "Versão"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:125
 msgid ""
 "Are you sure you want to remove the selected distribution from the list?\n"
 "(This will not remove the directory and its data)"
 msgstr ""
+"Tem certeza que deseja remover a distribuição selecionada da lista?\n"
+"(Isto não irá remover o diretório e seus dados)"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:149
 msgid "Services detected"
-msgstr ""
+msgstr "Serviços detetados"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:336
 msgid "Select"
-msgstr ""
+msgstr "Selecionar"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:336
 msgid "Distribution"
-msgstr ""
+msgstr "Distribuição"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:336
 msgid "Working directory"
-msgstr ""
+msgstr "Diretório de trabalho"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:377
 msgid "Select SolydXK ISO"
-msgstr ""
+msgstr "Selecionar a ISO da SolydXK"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:385
 msgid "Select directory"
-msgstr ""
+msgstr "Selecionar o diretório"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:395
 msgid "Save existing working directory"
-msgstr ""
+msgstr "Salvar a pasta de trabalho existente"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:397
 msgid "Unpack ISO and save"
-msgstr ""
+msgstr "Descompactar a ISO e salvar"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:403
 #, python-format
 msgid "Could not create directory %(dir)s: exiting"
-msgstr ""
+msgstr "Não foi possível criar diretório de %(dir)s: a sair"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:408
 msgid ""
 "The path to the ISO file does not exist:\n"
 "{}"
 msgstr ""
+"O caminho para o ficheiro ISO não existe:\n"
+"{}"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:412
 msgid ""
 "The destination directory is not empty.\n"
 "Are you sure you want to overwrite all data in {}?"
 msgstr ""
+"O diretório de destino não está vazio.\n"
+"Tem certeza que deseja substituir todos os dados em {}?"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:428
 msgid "Existing working directory added"
-msgstr ""
+msgstr "Diretório de trabalho existente adicionado"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:469
 msgid "Unpack ISO to directory"
-msgstr ""
+msgstr "Descompacte a ISO para o diretório"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:470
 msgid "Unpack & Save"
-msgstr ""
+msgstr "Descompactar e salvar"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:478
 msgid "Work directory"
-msgstr ""
+msgstr "Diretório de trabalho"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:479
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: ../usr/share/applications/constructor.desktop.in.h:1
 msgid "ISO constructor for SolydXK"
-msgstr ""
+msgstr "Construtor ISO para SolydXK"

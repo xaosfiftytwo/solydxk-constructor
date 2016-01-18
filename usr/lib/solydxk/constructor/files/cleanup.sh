@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Packages that deborphan must NOT treat as orphans - comma separated list
-NotOrphan='baloo'
+NotOrphan='baloo,live-installer-3,live-installer-3-slideshow'
 
 function sed_append_sting {
   PATTERN=$1
@@ -35,9 +35,21 @@ if [ -e '/usr/lib/solydxk/updatemanager/files' ]; then
     rm 'repo.info'
   fi
 fi
+# Make the updatemanager autostart
+AUTOFILE='/usr/lib/solydxk/updatemanager/files/updatemanagertray.desktop'
+AUTODEST='/etc/xdg/autostart'
+if [ -f "$AUTOFILE" ] && [ -d "$AUTODEST" ]; then
+  cp -f "$AUTOFILE" "$AUTODEST/"
+fi
 
-# Make sure all firmware drivers are installed
-sudo apt-get -y --force-yes install $(aptitude search ^firmware | grep ^p | awk '{print $2}')
+# Make sure all firmware drivers are installed but don't install from backports
+FIRMWARE=$(aptitude search ^firmware | grep ^p | awk '{print $2}')
+for F in $FIRMWARE; do
+  STABLE=$(apt-cache policy $F | grep 500 2>/dev/null)
+  if [ "$STABLE" != "" ]; then
+    sudo apt-get -y --force-yes install $F
+  fi
+done
 
 # Cleanup
 apt-get -y --force-yes clean
@@ -47,7 +59,7 @@ aptitude -y unmarkauto ~M
 find . -type f -name "*.dpkg*" -exec rm {} \;
 
 # Remove unavailable packages only when not manually held back
-for PCK in $(env LANG=C bash -c "apt-show-versions | grep 'available' | cut -d':' -f1"); do
+for PCK in $(env LANG=C apt-show-versions | grep 'available' | cut -d':' -f1); do
   REMOVE=true
   for HELDPCK in $(env LANG=C dpkg --get-selections | grep hold$ | awk '{print $1}'); do
     if [ $PCK == $HELDPCK ]; then
@@ -55,7 +67,11 @@ for PCK in $(env LANG=C bash -c "apt-show-versions | grep 'available' | cut -d':
     fi
   done
   if $REMOVE; then
-    apt-get purge -y --force-yes $PCK
+    if [[ "$NotOrphan" =~ "$PCK" ]]; then
+      echo "Not available but keep installed: $PCK"
+    else
+      apt-get purge -y --force-yes $PCK
+    fi
   fi
 done
 
