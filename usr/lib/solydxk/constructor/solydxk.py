@@ -195,10 +195,7 @@ class BuildIso(threading.Thread):
                 if exists(scriptSource):
                     self.copy_file(scriptSource, scriptTarget)
                     self.ec.run("chmod a+x %s" % scriptTarget)
-                    plymouthTheme = self.dg.getPlymouthTheme()
-                    #self.ec.run("chroot '%(rootPath)s' /bin/bash %(cleanup)s %(plymouthTheme)s" % {"rootPath": self.rootPath, "cleanup": cleanup, "plymouthTheme": plymouthTheme})
-                    cmd = "/bin/bash %(cleanup)s %(plymouthTheme)s" % {"cleanup": script, "plymouthTheme": plymouthTheme}
-                    self.ed.openTerminal(cmd)
+                    self.ed.openTerminal("/bin/bash %s" % script)
                     remove(scriptTarget)
 
                 rootHome = join(self.rootPath, "root")
@@ -574,7 +571,6 @@ class EditDistro(object):
 
 
 class DistroGeneral(object):
-
     def __init__(self, distroPath):
         self.ec = ExecCmd()
         distroPath = distroPath.rstrip('/')
@@ -589,14 +585,6 @@ class DistroGeneral(object):
         if exists(infoPath):
             self.edition = self.ec.run(cmd="grep EDITION= \"{}\" | cut -d'=' -f 2".format(infoPath), returnAsList=False).strip('"')
             self.description = self.ec.run(cmd="grep DESCRIPTION= \"{}\" | cut -d'=' -f 2".format(infoPath), returnAsList=False).strip('"')
-
-    def getPlymouthTheme(self):
-        plymouthTheme = ""
-        if exists(join(self.rootPath, "usr/share/plymouth/themes/solydk-logo")):
-            plymouthTheme = "solydk-logo"
-        elif exists(join(self.rootPath, "usr/share/plymouth/themes/solydx-logo")):
-            plymouthTheme = "solydx-logo"
-        return plymouthTheme
 
     def getIsoFileName(self):
         # Get the date string

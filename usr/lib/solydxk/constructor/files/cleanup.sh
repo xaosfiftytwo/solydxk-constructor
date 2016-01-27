@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # Packages that deborphan must NOT treat as orphans - comma separated list
-NotOrphan='baloo,live-installer-3,live-installer-3-slideshow'
+NotOrphan='baloo'
+
+# Prefered plymouth theme
+# This can be a partial string or regular expression
+PREFEREDPLYMOUTHTHEME="solyd.*flat"
 
 function sed_append_sting {
   PATTERN=$1
@@ -18,8 +22,6 @@ function sed_append_sting {
     fi
   fi
 }
-
-PLYMOUTHTHEME=$1
 
 # Remove fake mime types in kde
 if [ -e /usr/share/mime/packages/kde.xml ]; then
@@ -80,20 +82,31 @@ echo "Removing orphaned packages . . ."
 Exclude=${NotOrphan//,/\/d;/}
 Orphaned=$(deborphan | sed '/'$Exclude'/d')
 while [ "$Orphaned" ]; do
-   apt-get -y --force-yes purge $Orphaned
-   RC=$(dpkg-query -l | sed -n 's/^rc\s*\(\S*\).*/\1/p')
-   [ "$RC" ] && apt-get -y --force-yes purge $RC
-   Orphaned=$(deborphan | sed '/'$Exclude':/d')
+  apt-get -y --force-yes purge $Orphaned
+  RC=$(dpkg-query -l | sed -n 's/^rc\s*\(\S*\).*/\1/p')
+  [ "$RC" ] && apt-get -y --force-yes purge $RC
+  Orphaned=$(deborphan | sed '/'$Exclude':/d')
 done
 
 # Disable memtest in Grub
 chmod -x /etc/grub.d/20_memtest86+
 
 # Set plymouth theme
-if [ "$PLYMOUTHTHEME" != "" ]; then
-  plymouth-set-default-theme -R $PLYMOUTHTHEME
-  echo "Plymouth theme set: $(plymouth-set-default-theme)"
-  update-grub
+PLYMOUTHTHEME=$(plymouth-set-default-theme)
+if [[ ! "$PLYMOUTHTHEME" =~ $PREFEREDPLYMOUTHTHEME ]]; then
+  PLYMOUTHTHEMES=$(plymouth-set-default-theme -l)
+  for PT in $PLYMOUTHTHEMES; do
+    # Check for preferred theme
+    if [[ "$PT" =~ $PREFEREDPLYMOUTHTHEME ]]; then
+      PLYMOUTHTHEME=$PT
+      break
+    fi
+  done
+  if [ "$PLYMOUTHTHEME" != "" ]; then
+    plymouth-set-default-theme -R $PLYMOUTHTHEME
+    echo "Plymouth theme set: $(plymouth-set-default-theme)"
+    update-grub
+  fi
 fi
 
 # Configure LightDM
@@ -103,10 +116,10 @@ if [ -e '/etc/lightdm/lightdm-gtk-greeter.conf' ]; then
 fi
    
 if [ -e /usr/bin/startxfce* ]; then
-  sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydx-lightdmbg.png' $CONF
+  sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydx-lightdmbg-flat.png' $CONF
   sed_append_sting '^theme-name\s*=.*' 'theme-name=greybird-solydx' $CONF
 elif [ -e /usr/bin/startkde* ]; then
-  sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydk-lightdmbg.png' $CONF
+  sed_append_sting '^background\s*=.*' 'background=/usr/share/images/desktop-base/solydk-lightdmbg-flat.png' $CONF
   sed_append_sting '^theme-name\s*=.*' 'theme-name=greybird-solydk-gtk3' $CONF
 else
   sed_append_sting '^background\s*=.*' 'background=' $CONF

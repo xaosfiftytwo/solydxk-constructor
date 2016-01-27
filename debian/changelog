@@ -1,3 +1,9 @@
+solydxk-constructor (2.6.3) solydxk; urgency=low
+
+  * Supports solydx/k-logo-flat Plymouth themes
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 19 Jan 2016 16:00:00 +0100
+
 solydxk-constructor (2.6.2) solydxk; urgency=low
 
   * Updated translations
