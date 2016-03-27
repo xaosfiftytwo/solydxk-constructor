@@ -1,3 +1,22 @@
+solydxk-constructor (2.6.7) solydxk; urgency=low
+
+  * Set minimum-uid for Lightdm to 1000
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 24 Mar 2016 10:26:58 +0100
+
+solydxk-constructor (2.6.6) solydxk; urgency=low
+
+  * Added global gconf configuration
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 21 Mar 2016 10:44:19 +0100
+
+solydxk-constructor (2.6.5) solydxk; urgency=low
+
+  * Prefer xterm above x-terminal-emulator
+  * Remove md5 and add sha256 file
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 24 Feb 2016 16:30:00 +0100
+
 solydxk-constructor (2.6.3) solydxk; urgency=low
 
   * Supports solydx/k-logo-flat Plymouth themes

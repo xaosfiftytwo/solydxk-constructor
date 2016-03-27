@@ -333,19 +333,19 @@ class BuildIso(threading.Thread):
                 # update manifest files
                 #self.ec.run("/usr/lib/solydxk/constructor/updateManifest.sh %s" % self.distroPath)
                 # update md5
-                print("Updating md5 sums...")
+                #print("Updating md5 sums...")
                 if exists(join(self.bootPath, "md5sum.txt")):
                     remove(join(self.bootPath, "md5sum.txt"))
                 if exists(join(self.bootPath, "MD5SUMS")):
                     remove(join(self.bootPath, "MD5SUMS"))
-                self.ec.run('cd \"' + self.bootPath + '\"; ' + 'find . -type f -print0 | xargs -0 md5sum > md5sum.txt')
-                #Remove md5sum.txt, MD5SUMS, boot.cat and isolinux.bin from md5sum.txt
-                self.ec.run("sed -i '/md5sum.txt/d' %s/md5sum.txt" % self.bootPath)
-                self.ec.run("sed -i '/MD5SUMS/d' %s/md5sum.txt" % self.bootPath)
-                self.ec.run("sed -i '/boot.cat/d' %s/md5sum.txt" % self.bootPath)
-                self.ec.run("sed -i '/isolinux.bin/d'  %s/md5sum.txt" % self.bootPath)
-                #Copy md5sum.txt to MD5SUMS (for Debian compatibility)
-                self.copy_file(join(self.bootPath, "md5sum.txt"), join(self.bootPath, "MD5SUMS"))
+                #self.ec.run('cd \"' + self.bootPath + '\"; ' + 'find . -type f -print0 | xargs -0 md5sum > md5sum.txt')
+                ##Remove md5sum.txt, MD5SUMS, boot.cat and isolinux.bin from md5sum.txt
+                #self.ec.run("sed -i '/md5sum.txt/d' %s/md5sum.txt" % self.bootPath)
+                #self.ec.run("sed -i '/MD5SUMS/d' %s/md5sum.txt" % self.bootPath)
+                #self.ec.run("sed -i '/boot.cat/d' %s/md5sum.txt" % self.bootPath)
+                #self.ec.run("sed -i '/isolinux.bin/d'  %s/md5sum.txt" % self.bootPath)
+                ##Copy md5sum.txt to MD5SUMS (for Debian compatibility)
+                #self.copy_file(join(self.bootPath, "md5sum.txt"), join(self.bootPath, "MD5SUMS"))
 
                 # Update isolinux files
                 syslinuxPath = join(self.rootPath, "usr/lib/syslinux")
@@ -380,8 +380,11 @@ class BuildIso(threading.Thread):
                 print("Making Hybrid ISO...")
                 self.ec.run("isohybrid %s" % self.isoFileName)
 
-                print("Create ISO md5 file...")
-                self.ec.run("echo \"$(md5sum \"%s\" | cut -d' ' -f 1)  %s\" > \"%s.md5\"" % (self.isoFileName, self.isoBaseName, self.isoFileName))
+                print("Create sha256 file...")
+                oldmd5 = "%s.md5" % self.isoFileName
+                if exists(oldmd5):
+                    remove(oldmd5)
+                self.ec.run("echo \"$(sha256sum \"%s\" | cut -d' ' -f 1)  %s\" > \"%s.sha256\"" % (self.isoFileName, self.isoBaseName, self.isoFileName))
 
                 print("Create Torrent file...")
                 torrentFile = "%s.torrent" % self.isoFileName
@@ -489,12 +492,11 @@ class EditDistro(object):
             with open(terminal, 'w') as f:
                 f.write(scr)
             self.ec.run("chmod a+x %s" % terminal)
-            if self.ec.run('which x-terminal-emulator'):
+            if exists("/usr/bin/xterm"):
+                self.ec.run('export HOME=/root ; xterm -bg black -fg white -rightbar -title \"%s\" -e %s' % (self.edition, terminal))
+            elif self.ec.run('which x-terminal-emulator'):
                 # use x-terminal-emulator if xterm isn't available
-                if exists("/usr/bin/xterm"):
-                    self.ec.run('export HOME=/root ; xterm -bg black -fg white -rightbar -title \"%s\" -e %s' % (self.edition, terminal))
-                else:
-                    self.ec.run('export HOME=/root ; x-terminal-emulator -e %s' % terminal)
+                self.ec.run('export HOME=/root ; x-terminal-emulator -e %s' % terminal)
             else:
                 print('Error: no valid terminal found')
 

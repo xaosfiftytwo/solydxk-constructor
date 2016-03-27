@@ -36,5 +36,6 @@ Depends: ${misc:Depends}, ${python:Depends}
   , apt-show-versions
   , isolinux
   , syslinux-utils
+  , gconf2
 Description: SolydXK ISO constructor
  Used by the SolydXK development team to automate ISO building.

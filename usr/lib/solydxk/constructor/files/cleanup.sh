@@ -28,9 +28,16 @@ if [ -e /usr/share/mime/packages/kde.xml ]; then
   sed -i -e /\<.*fake.*\>/,/^$/d /usr/share/mime/packages/kde.xml
 fi
 
+# Set gconf default settings
+if which gconftool-2 >/dev/null; then
+  gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /apps/gksu/sudo-mode true
+  gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /apps/gksu/display-no-pass-info false
+  gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/blueman/transfer/browse_command "thunar --browser obex://[%d]"
+fi
+
 # Write the current up version
 if [ -e '/usr/lib/solydxk/updatemanager/files' ]; then
-  wget http://repository.solydxk.com/umfiles/repo.info
+  timeout -s KILL 15 wget http://repository.solydxk.com/umfiles/repo.info
   if [ -e 'repo.info' ]; then
     VER=$(cat 'repo.info' | grep 'upd=')
     echo $VER > /usr/lib/solydxk/updatemanager/files/updatemanager.hist
@@ -132,6 +139,11 @@ if [ -e $CONF ]; then
   sed -i -e '/^greeter-hide-users\s*=/ c greeter-hide-users=false' $CONF
   sed -i -r 's/^#?(autologin-user)\s*=.*/\1=solydxk/' $CONF
   sed -i -r 's/^#?(autologin-user-timeout)\s*=.*/\1=0/' $CONF
+fi
+
+CONF='/etc/lightdm/users.conf'
+if [ -e $CONF ]; then
+  sed -i -e '/^minimum-uid\s*=/ c minimum-uid=1000' $CONF
 fi
 
 # Set default SolydXK settings
