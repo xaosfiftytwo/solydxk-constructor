@@ -1,3 +1,15 @@
+solydxk-constructor (2.7.0) solydxk; urgency=low
+
+  * Save distros.list in user home directory
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 26 Apr 2016 22:17:19 +0200
+
+solydxk-constructor (2.6.9) solydxk; urgency=low
+
+  * Get mirrors list from server
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 26 Apr 2016 18:30:27 +0200
+
 solydxk-constructor (2.6.8) solydxk; urgency=low
 
   * Updated background image for help file

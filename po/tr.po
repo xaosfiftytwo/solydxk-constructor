@@ -3,57 +3,58 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# Butterfly <gokhanlnx@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: solydxk-constructor\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-04-26 22:33+0200\n"
-"PO-Revision-Date: 2016-01-09 15:08+0000\n"
-"Last-Translator: Anders Dalen <anders@andersdalen.no>\n"
-"Language-Team: Norwegian Bokmål (http://www.transifex.com/solydxk/solydxk-"
-"constructor/language/nb/)\n"
-"Language: nb\n"
+"PO-Revision-Date: 2016-04-02 20:15+0000\n"
+"Last-Translator: Butterfly <gokhanlnx@gmail.com>\n"
+"Language-Team: Turkish (http://www.transifex.com/solydxk/solydxk-constructor/"
+"language/tr/)\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:83
 #: ../usr/share/applications/constructor.desktop.in.h:2
 msgid "SolydXK Constructor"
-msgstr "SolydXK Constructor"
+msgstr "SolydXK Oluşturucu"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:84
 msgid "Select all"
-msgstr "Velg alt"
+msgstr "Tümünü seç"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:85
 msgid "Add"
-msgstr "Legg til"
+msgstr "Ekle"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:86
 msgid "Remove"
-msgstr "Fjern"
+msgstr "Sil"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:87
 msgid "Edit"
-msgstr "Rediger"
+msgstr "Düzenle"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:88
 msgid "Upgrade"
-msgstr "Oppgrader"
+msgstr "Güncelle"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:89
 msgid "Localize"
-msgstr "Språktillpass"
+msgstr "Yerelleştir"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:90
 msgid "Build"
-msgstr "Bygg"
+msgstr "İnşa et"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:91
 msgid "Help"
-msgstr "Hjelp"
+msgstr "Yardım"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:94
 msgid "ISO"
@@ -61,63 +62,63 @@ msgstr "ISO"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:95
 msgid "Cancel"
-msgstr "Avbryt"
+msgstr "İptal"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:117
 msgid "Version"
-msgstr "Versjon"
+msgstr "Sürüm"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:135
 msgid ""
 "Are you sure you want to remove the selected distribution from the list?\n"
 "(This will not remove the directory and its data)"
 msgstr ""
-"Er du sikker på at du ønsker å fjerne den valgte distribusjonen fra lista?\n"
-"(dette vil ikke fjerne katalogen og dataene)"
+"Listeden seçilen dağıtımı silmek istediğinize emin misiniz?\n"
+"(Bu dizini ve verilerini silmeyecek)"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:159
 msgid "Services detected"
-msgstr "Tjenester oppdaget"
+msgstr "Servisler algılandı"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:346
 msgid "Select"
-msgstr "Velg"
+msgstr "Seç"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:346
 msgid "Distribution"
-msgstr "Distribusjon"
+msgstr "Dağıtım"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:346
 msgid "Working directory"
-msgstr "Arbeidskatalog"
+msgstr "Çalışma dizini"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:387
 msgid "Select SolydXK ISO"
-msgstr "Velg SolydXK ISO"
+msgstr "SolydXK ISO Dosyası Seç"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:395
 msgid "Select directory"
-msgstr "Velg katalog"
+msgstr "Dizin seç"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:405
 msgid "Save existing working directory"
-msgstr "Lagre gjeldende arbeidskatalog"
+msgstr "Mevcut çalıştırma dizinini kaydet"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:407
 msgid "Unpack ISO and save"
-msgstr "Pakk ut ISO og lagre"
+msgstr "ISO çıkart ve kaydet"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:413
 #, python-format
 msgid "Could not create directory %(dir)s: exiting"
-msgstr "Kunne ikke opprette katalog %(dir)s: avslutter"
+msgstr "Dizin %(dir)s oluşturulamadı: mevcut"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:418
 msgid ""
 "The path to the ISO file does not exist:\n"
 "{}"
 msgstr ""
-"Adressen till ISO-filen eksisterer ikke:\n"
+"Hedefteki ISO dosyası mevcut değil:\n"
 "{}"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:422
@@ -125,29 +126,29 @@ msgid ""
 "The destination directory is not empty.\n"
 "Are you sure you want to overwrite all data in {}?"
 msgstr ""
-"Målkatalogen er ikke tom.\n"
-"Er du sikker på at du ønsker å skrive over alle data i {}?"
+"Hedef dizin boş değil.\n"
+"{} içindeki tüm verilerin üstüne yazmak istiyor musunuz?"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:438
 msgid "Existing working directory added"
-msgstr "Eksisterende katalog er lagt til"
+msgstr "Mevcut çalışma dizini eklendi"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:479
 msgid "Unpack ISO to directory"
-msgstr "Pakk ut ISO til katalog"
+msgstr "ISO dosyasını dizine çıkart"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:480
 msgid "Unpack & Save"
-msgstr "Pakk ut og lagre"
+msgstr "Çıkart & Kaydet"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:488
 msgid "Work directory"
-msgstr "Arbeidskatalog"
+msgstr "Çalışma dizini"
 
 #: ../usr/lib/solydxk/constructor/constructor.py:489
 msgid "Save"
-msgstr "Lagre"
+msgstr "Kaydet"
 
 #: ../usr/share/applications/constructor.desktop.in.h:1
 msgid "ISO constructor for SolydXK"
-msgstr "ISO constructor for SolydXK"
+msgstr "SolydXK için ISO oluşturucu"

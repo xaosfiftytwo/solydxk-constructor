@@ -1,4 +1,5 @@
-udp://tracker.openbittorrent.com:80/announce
-udp://tracker.publicbt.com:80/announce
-udp://open.demonii.com:1337/announce
-udp://tracker.ccc.de:80/announce
+udp://tracker.openbittorrent.com:80
+udp://tracker.leechers-paradise.org:6969
+udp://tracker.coppersurfer.tk:6969
+udp://glotorrents.pw:6969
+udp://tracker.opentrackr.org:1337

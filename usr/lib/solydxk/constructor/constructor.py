@@ -19,7 +19,7 @@ import threading
 import operator
 from queue import Queue
 # abspath, dirname, join, expanduser, exists, basename
-from os.path import join, abspath, dirname, exists
+from os.path import join, abspath, dirname, exists, isdir
 from execcmd import ExecCmd
 from solydxk import IsoUnpack, EditDistro, BuildIso, DistroGeneral
 from treeview import TreeViewHandler
@@ -37,6 +37,17 @@ class Constructor(object):
     def __init__(self):
         self.scriptDir = abspath(dirname(__file__))
         self.shareDir = join(self.scriptDir, '../../../share/solydxk/constructor')
+        self.userAppDir = join(functions.get_user_home_dir(), ".constructor")
+        self.distroFile = join(self.userAppDir, "distros.list")
+
+        # Create the user's application directory if it doesn't exist
+        if not isdir(self.userAppDir):
+            user_name = functions.getUserLoginName()
+            makedirs(self.userAppDir)
+            old_distro_file = join(self.scriptDir, "distros.list")
+            if exists(old_distro_file):
+                move(old_distro_file, self.distroFile)
+            system("chown -R %s:%s %s" % (user_name, user_name, self.userAppDir))
 
         # Load window and widgets
         self.builder = Gtk.Builder()
@@ -88,7 +99,6 @@ class Constructor(object):
         self.ec.run("modprobe loop", False)
         self.queue = Queue()
         self.mountDir = "/mnt/constructor"
-        self.distroFile = join(self.scriptDir, "distros.list")
         self.distroAdded = False
         self.iso = None
         self.dir = None

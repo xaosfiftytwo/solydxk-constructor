@@ -17,7 +17,7 @@ try:
     #import io
     import fnmatch
     import urllib.request, urllib.error, urllib.parse
-    from os.path import join, exists, abspath, splitext
+    from os.path import join, exists, abspath, splitext, expanduser
     from datetime import datetime
     import calendar
     import collections
@@ -732,3 +732,25 @@ def getFileContents(path):
         cont = f.read()
         f.close()
     return cont
+
+
+# Read keys from file
+def get_config_dict(file, key_value=re.compile(r'^\s*(\w+)\s*=\s*["\']?(.*?)["\']?\s*(#.*)?$')):
+    """Returns POSIX config file (key=value, no sections) as dict.
+    Assumptions: no multiline values, no value contains '#'. """
+    d = {}
+    with open(file) as f:
+        for line in f:
+            try:
+                key, value, _ = key_value.match(line).groups()
+            except AttributeError:
+                continue
+            d[key] = value
+    return d
+
+
+# Get user's home directory
+def get_user_home_dir(user_name=""):
+    if user_name == "":
+        user_name = getUserLoginName()
+    return expanduser("~%s" % user_name)

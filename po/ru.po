@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: solydxk-constructor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-02 12:47+0100\n"
+"POT-Creation-Date: 2016-04-26 22:33+0200\n"
 "PO-Revision-Date: 2015-10-22 15:29+0000\n"
 "Last-Translator: Ilinsky Mikhail <mail@milinsky.com>\n"
 "Language-Team: Russian (http://www.transifex.com/solydxk/solydxk-constructor/"
@@ -21,56 +21,56 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:72
+#: ../usr/lib/solydxk/constructor/constructor.py:83
 #: ../usr/share/applications/constructor.desktop.in.h:2
 msgid "SolydXK Constructor"
 msgstr "SolydXK Конструктор"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:73
+#: ../usr/lib/solydxk/constructor/constructor.py:84
 msgid "Select all"
 msgstr "Выделить все"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:74
+#: ../usr/lib/solydxk/constructor/constructor.py:85
 msgid "Add"
 msgstr "Добавить"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:75
+#: ../usr/lib/solydxk/constructor/constructor.py:86
 msgid "Remove"
 msgstr "Удалить"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:76
+#: ../usr/lib/solydxk/constructor/constructor.py:87
 msgid "Edit"
 msgstr "Изменить"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:77
+#: ../usr/lib/solydxk/constructor/constructor.py:88
 msgid "Upgrade"
 msgstr "Обновить"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:78
+#: ../usr/lib/solydxk/constructor/constructor.py:89
 msgid "Localize"
 msgstr "Локализовать"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:79
+#: ../usr/lib/solydxk/constructor/constructor.py:90
 msgid "Build"
 msgstr "Собрать"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:80
+#: ../usr/lib/solydxk/constructor/constructor.py:91
 msgid "Help"
 msgstr "Помощь"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:83
+#: ../usr/lib/solydxk/constructor/constructor.py:94
 msgid "ISO"
 msgstr "ISO"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:84
+#: ../usr/lib/solydxk/constructor/constructor.py:95
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:107
+#: ../usr/lib/solydxk/constructor/constructor.py:117
 msgid "Version"
 msgstr "Версия"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:125
+#: ../usr/lib/solydxk/constructor/constructor.py:135
 msgid ""
 "Are you sure you want to remove the selected distribution from the list?\n"
 "(This will not remove the directory and its data)"
@@ -78,44 +78,44 @@ msgstr ""
 "Вы уверены, что хотите удалить выбранный дистрибутив из списка?\n"
 "(Это не удалит каталог и его данные)"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:149
+#: ../usr/lib/solydxk/constructor/constructor.py:159
 msgid "Services detected"
 msgstr "Сервисы обнаружены"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:336
+#: ../usr/lib/solydxk/constructor/constructor.py:346
 msgid "Select"
 msgstr "Выбрать"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:336
+#: ../usr/lib/solydxk/constructor/constructor.py:346
 msgid "Distribution"
 msgstr "Дистрибутив"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:336
+#: ../usr/lib/solydxk/constructor/constructor.py:346
 msgid "Working directory"
 msgstr "Рабочий каталог"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:377
+#: ../usr/lib/solydxk/constructor/constructor.py:387
 msgid "Select SolydXK ISO"
 msgstr "Выберите SolydXK ISO"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:385
+#: ../usr/lib/solydxk/constructor/constructor.py:395
 msgid "Select directory"
 msgstr "Выберите директорию"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:395
+#: ../usr/lib/solydxk/constructor/constructor.py:405
 msgid "Save existing working directory"
 msgstr "Сохранить существующий рабочий каталог"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:397
+#: ../usr/lib/solydxk/constructor/constructor.py:407
 msgid "Unpack ISO and save"
 msgstr "Распаковать ISO и сохранить"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:403
+#: ../usr/lib/solydxk/constructor/constructor.py:413
 #, python-format
 msgid "Could not create directory %(dir)s: exiting"
 msgstr "Не удалось создать каталог %(dir)s: выход"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:408
+#: ../usr/lib/solydxk/constructor/constructor.py:418
 msgid ""
 "The path to the ISO file does not exist:\n"
 "{}"
@@ -123,7 +123,7 @@ msgstr ""
 "Путь к ISO-файл не существует\n"
 "{}"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:412
+#: ../usr/lib/solydxk/constructor/constructor.py:422
 msgid ""
 "The destination directory is not empty.\n"
 "Are you sure you want to overwrite all data in {}?"
@@ -131,23 +131,23 @@ msgstr ""
 "Целевой каталог не пуст.\n"
 "Вы уверены, что хотите перезаписать все данные в {}?"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:428
+#: ../usr/lib/solydxk/constructor/constructor.py:438
 msgid "Existing working directory added"
 msgstr "Существующий рабочий каталог добавлен"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:469
+#: ../usr/lib/solydxk/constructor/constructor.py:479
 msgid "Unpack ISO to directory"
 msgstr "Распаковать ISO в каталог"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:470
+#: ../usr/lib/solydxk/constructor/constructor.py:480
 msgid "Unpack & Save"
 msgstr "Распаковать И Сохранить"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:478
+#: ../usr/lib/solydxk/constructor/constructor.py:488
 msgid "Work directory"
 msgstr "Работа каталог"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:479
+#: ../usr/lib/solydxk/constructor/constructor.py:489
 msgid "Save"
 msgstr "Сохранить"
 

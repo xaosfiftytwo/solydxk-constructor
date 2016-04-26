@@ -7,6 +7,7 @@ from shutil import copy, move
 from datetime import datetime
 from execcmd import ExecCmd
 from os.path import join, exists, basename, abspath, dirname, lexists, isdir
+from functions import get_config_dict
 
 
 class IsoUnpack(threading.Thread):
@@ -158,7 +159,7 @@ class BuildIso(threading.Thread):
         self.trackers = ""
         self.webseeds = ""
         trackersPath = join(self.scriptDir, "files/trackers")
-        webseedsPath = join(self.scriptDir, "files/webseeds")
+        webseeds = self.get_webseeds()
         if exists(trackersPath):
             with open(trackersPath, "r") as f:
                 lines = f.readlines()
@@ -166,14 +167,34 @@ class BuildIso(threading.Thread):
                 for line in lines:
                     trList.append(line.strip())
                 self.trackers = ",".join(trList)
-        if exists(webseedsPath):
-            with open(webseedsPath, "r") as f:
-                lines = f.readlines()
-                wsList = []
-                for line in lines:
-                    #wsList.append("%s/%s" % (line.strip(), webseedIsoName))
-                    wsList.append("%s/%s" % (line.strip(), self.isoBaseName))
-                self.webseeds = ",".join(wsList)
+        if webseeds:
+            wsList = []
+            for line in webseeds:
+                #wsList.append("%s/%s" % (line.strip(), webseedIsoName))
+                wsList.append("%s/%s" % (line.strip(), self.isoBaseName))
+            self.webseeds = ",".join(wsList)
+
+    def get_webseeds(self):
+        webseeds = []
+        webseedsPath = join(self.scriptDir, "files/webseeds")
+        try:
+            config = get_config_dict(join(self.scriptDir, "files/constructor.conf"))
+            url = config.get("MIRRORSURL", "http://downloads.solydxk.com/mirrors.txt")
+            cmd = "curl --connect-timeout 5 -m 5 -s %s" % url
+
+            lst = self.ec.run(cmd, False)
+            for line in lst:
+                mirror_data = line.split(',')
+                if mirror_data[1][0:4] == "http":
+                    webseeds.append(mirror_data[1])
+            if webseeds:
+                with open(webseedsPath, 'w') as f:
+                    f.write("%s\n" % "\n".join(webseeds))
+        except:
+            if exists(webseedsPath):
+                with open(webseedsPath, 'r') as f:
+                    webseeds = f.readlines()
+        return webseeds
 
     def run(self):
         try:
