@@ -7,6 +7,14 @@ NotOrphan='baloo'
 # This can be a partial string or regular expression
 PREFEREDPLYMOUTHTHEME="solyd.*flat"
 
+# --force-yes is deprecated in stretch
+FORCE='--allow-downgrades --allow-remove-essential --allow-change-held-packages'
+DEBVER=$(grep ^8 /etc/debian_version)
+if [ "$DEBVER" != "" ]; then
+  FORCE='--force-yes'
+fi
+
+
 function sed_append_sting {
   PATTERN=$1
   LINE=$2
@@ -56,13 +64,13 @@ FIRMWARE=$(aptitude search ^firmware | grep ^p | awk '{print $2}')
 for F in $FIRMWARE; do
   STABLE=$(apt-cache policy $F | grep 500 2>/dev/null)
   if [ "$STABLE" != "" ]; then
-    sudo apt-get -y --force-yes install $F
+    sudo apt-get -y $FORCE install $F
   fi
 done
 
 # Cleanup
-apt-get -y --force-yes clean
-apt-get -y --force-yes autoremove
+apt-get -y $FORCE clean
+apt-get -y $FORCE autoremove
 aptitude -y purge ~c
 aptitude -y unmarkauto ~M
 find . -type f -name "*.dpkg*" -exec rm {} \;
@@ -79,7 +87,7 @@ for PCK in $(env LANG=C apt-show-versions | grep 'available' | cut -d':' -f1); d
     if [[ "$NotOrphan" =~ "$PCK" ]]; then
       echo "Not available but keep installed: $PCK"
     else
-      apt-get purge -y --force-yes $PCK
+      apt-get purge -y $FORCE $PCK
     fi
   fi
 done
@@ -89,9 +97,9 @@ echo "Removing orphaned packages . . ."
 Exclude=${NotOrphan//,/\/d;/}
 Orphaned=$(deborphan | sed '/'$Exclude'/d')
 while [ "$Orphaned" ]; do
-  apt-get -y --force-yes purge $Orphaned
+  apt-get -y $FORCE purge $Orphaned
   RC=$(dpkg-query -l | sed -n 's/^rc\s*\(\S*\).*/\1/p')
-  [ "$RC" ] && apt-get -y --force-yes purge $RC
+  [ "$RC" ] && apt-get -y $FORCE purge $RC
   Orphaned=$(deborphan | sed '/'$Exclude':/d')
 done
 

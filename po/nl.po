@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: solydxk-constructor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-26 22:33+0200\n"
+"POT-Creation-Date: 2016-05-30 07:15+0200\n"
 "PO-Revision-Date: 2015-10-22 05:34+0000\n"
 "Last-Translator: Arjen Balfoort <schoelje@solydxk.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/solydxk/solydxk-constructor/"
@@ -81,40 +81,40 @@ msgstr ""
 msgid "Services detected"
 msgstr "Services gededecteerd"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:346
+#: ../usr/lib/solydxk/constructor/constructor.py:357
 msgid "Select"
 msgstr "Selecteer"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:346
+#: ../usr/lib/solydxk/constructor/constructor.py:357
 msgid "Distribution"
 msgstr "Distributie"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:346
+#: ../usr/lib/solydxk/constructor/constructor.py:357
 msgid "Working directory"
 msgstr "Werkdirectory"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:387
+#: ../usr/lib/solydxk/constructor/constructor.py:398
 msgid "Select SolydXK ISO"
 msgstr "Selecteer SolydXK ISO"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:395
+#: ../usr/lib/solydxk/constructor/constructor.py:406
 msgid "Select directory"
 msgstr "Selecteer map"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:405
+#: ../usr/lib/solydxk/constructor/constructor.py:416
 msgid "Save existing working directory"
 msgstr "Bewaar bestaande werkmap"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:407
+#: ../usr/lib/solydxk/constructor/constructor.py:418
 msgid "Unpack ISO and save"
 msgstr "ISO uitpakken en bewaren"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:413
+#: ../usr/lib/solydxk/constructor/constructor.py:424
 #, python-format
 msgid "Could not create directory %(dir)s: exiting"
 msgstr "Kon map %(dir)s niet maken: verlaten"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:418
+#: ../usr/lib/solydxk/constructor/constructor.py:429
 msgid ""
 "The path to the ISO file does not exist:\n"
 "{}"
@@ -122,7 +122,7 @@ msgstr ""
 "Het pad naar het ISO bestand bestaat niet:\n"
 "{}"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:422
+#: ../usr/lib/solydxk/constructor/constructor.py:433
 msgid ""
 "The destination directory is not empty.\n"
 "Are you sure you want to overwrite all data in {}?"
@@ -130,23 +130,23 @@ msgstr ""
 "De doeldirectory is niet leeg.\n"
 "Weet u zeker dat u alle data in {} wilt overschrijven?"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:438
+#: ../usr/lib/solydxk/constructor/constructor.py:449
 msgid "Existing working directory added"
 msgstr "Bestaande werkmap toegevoegd"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:479
+#: ../usr/lib/solydxk/constructor/constructor.py:490
 msgid "Unpack ISO to directory"
 msgstr "ISO uitpakken naar map"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:480
+#: ../usr/lib/solydxk/constructor/constructor.py:491
 msgid "Unpack & Save"
 msgstr "Uitpakken en bewaren"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:488
+#: ../usr/lib/solydxk/constructor/constructor.py:499
 msgid "Work directory"
 msgstr "Werkmap"
 
-#: ../usr/lib/solydxk/constructor/constructor.py:489
+#: ../usr/lib/solydxk/constructor/constructor.py:500
 msgid "Save"
 msgstr "Bewaren"
 

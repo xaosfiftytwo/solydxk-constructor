@@ -258,19 +258,6 @@ class BuildIso(threading.Thread):
                         with open(grubFile, 'w') as f:
                             f.write(content)
 
-                loopbackFile = join(self.bootPath, "boot/grub/loopback.cfg")
-                if exists(loopbackFile):
-                    content = ""
-                    with open(loopbackFile, 'r') as f:
-                        content = f.read()
-                    if content != "":
-                        content = re.sub(regExp, nameString, content, flags=re.IGNORECASE)
-                        with open(loopbackFile, 'w') as f:
-                            f.write(content)
-
-                # Clean boot/live directory
-                #popen("rm -rf %s/live/*" % self.bootPath)
-
                 # Vmlinuz
                 vmlinuzSymLink = join(self.distroPath, "root/vmlinuz")
                 if lexists(vmlinuzSymLink):
@@ -303,17 +290,6 @@ class BuildIso(threading.Thread):
                     self.returnMessage = "ERROR: %s not found" % initrdPath
 
             if self.returnMessage is None:
-                # Generate UUID
-                #diskDir = join(self.bootPath, ".disk")
-                #if not exists(diskDir):
-                    #makedirs(diskDir)
-                #self.ec.run("rm -rf %s/*uuid*" % diskDir)
-                #self.ec.run("uuidgen -r > %s/live-uuid-generic" % diskDir)
-                #copy_file(join(diskDir, "live-uuid-generic"), join(diskDir, "live-uuid-generic"))
-
-                #Update filesystem.size
-                #self.ec.run("du -b %(directory)s/root/ 2> /dev/null | tail -1 | awk {'print $1;'} > %(directory)s/live/filesystem.size" % {"directory": self.bootPath})
-
                 print("======================================================")
                 print("INFO: Start building ISO...")
                 print("======================================================")
@@ -323,15 +299,12 @@ class BuildIso(threading.Thread):
                 print("Updating File lists...")
                 dpkgQuery = ' dpkg -l | awk \'/^ii/ {print $2, $3}\' | sed -e \'s/ /\t/g\' '
                 self.ec.run('chroot \"' + self.rootPath + '\"' + dpkgQuery + ' > \"' + join(self.livePath, "filesystem.packages") + '\"' )
-                #dpkgQuery = ' dpkg-query -W --showformat=\'${Package} ${Version}\n\' '
-                #self.ec.run('chroot \"' + self.rootPath + '\"' + dpkgQuery + ' > \"' + join(self.bootPath, "live/filesystem.manifest") + '\"' )
-                #copy_file(join(self.bootPath, "live/filesystem.manifest"), join(self.bootPath, "live/filesystem.manifest-desktop"))
+
                 # check for existing squashfs root
                 if exists(join(self.livePath, "filesystem.squashfs")):
                     print("Removing existing SquashFS root...")
                     remove(join(self.livePath, "filesystem.squashfs"))
                 print("Building SquashFS root...")
-                # check for alternate mksquashfs
                 # check for custom mksquashfs (for multi-threading, new features, etc.)
                 mksquashfs = self.ec.run(cmd="echo $MKSQUASHFS", returnAsList=False).strip()
                 rootPath = join(self.distroPath, "root/")
@@ -348,25 +321,6 @@ class BuildIso(threading.Thread):
                     cmd = "{} \"{}\" \"{}\"".format(mksquashfs, rootPath, squashfsPath)
                 #print(cmd)
                 self.ec.run(cmd)
-
-                # build iso
-                print("Creating ISO...")
-                # update manifest files
-                #self.ec.run("/usr/lib/solydxk/constructor/updateManifest.sh %s" % self.distroPath)
-                # update md5
-                #print("Updating md5 sums...")
-                if exists(join(self.bootPath, "md5sum.txt")):
-                    remove(join(self.bootPath, "md5sum.txt"))
-                if exists(join(self.bootPath, "MD5SUMS")):
-                    remove(join(self.bootPath, "MD5SUMS"))
-                #self.ec.run('cd \"' + self.bootPath + '\"; ' + 'find . -type f -print0 | xargs -0 md5sum > md5sum.txt')
-                ##Remove md5sum.txt, MD5SUMS, boot.cat and isolinux.bin from md5sum.txt
-                #self.ec.run("sed -i '/md5sum.txt/d' %s/md5sum.txt" % self.bootPath)
-                #self.ec.run("sed -i '/MD5SUMS/d' %s/md5sum.txt" % self.bootPath)
-                #self.ec.run("sed -i '/boot.cat/d' %s/md5sum.txt" % self.bootPath)
-                #self.ec.run("sed -i '/isolinux.bin/d'  %s/md5sum.txt" % self.bootPath)
-                ##Copy md5sum.txt to MD5SUMS (for Debian compatibility)
-                #self.copy_file(join(self.bootPath, "md5sum.txt"), join(self.bootPath, "MD5SUMS"))
 
                 # Update isolinux files
                 syslinuxPath = join(self.rootPath, "usr/lib/syslinux")
@@ -389,6 +343,20 @@ class BuildIso(threading.Thread):
                 self.copy_file(join(self.rootPath, "boot/memtest86+.bin"), join(isolinuxPath, "memtest86"))
                 self.copy_file("/usr/lib/ISOLINUX/isolinux.bin", isolinuxPath)
 
+                # Create efiboot.img
+                efiPath = join(self.distroPath, "EFI")
+                efibootPath = join(isolinuxPath, "efiboot.img")
+                print(("Create %s" % efibootPath))
+                cmd = "rm %s 2>/dev/null;" \
+                      "mkdosfs -F12 -n \"SOLYDXK_EFI\" -C %s 2048;" \
+                      "mcopy -s -i %s %s ::" % (efibootPath, efibootPath, efibootPath, efiPath)
+                self.ec.run(cmd)
+
+                # Check if the .solydxk file for Grub exists
+                grubChkFile = join(self.bootPath, ".solydxk")
+                if not exists(grubChkFile):
+                    system("touch %s" % grubChkFile)
+
                 # remove existing iso
                 if exists(self.isoFileName):
                     print("Removing existing ISO...")
@@ -396,10 +364,38 @@ class BuildIso(threading.Thread):
 
                 # build iso according to architecture
                 print("Building ISO...")
-                self.ec.run('genisoimage -input-charset utf-8 -o \"' + self.isoFileName + '\" -b \"isolinux/isolinux.bin\" -c \"isolinux/boot.cat\" -no-emul-boot -boot-load-size 4 -boot-info-table -V \"' + self.isoName + '\" -cache-inodes -r -J -l \"' + self.bootPath + '\"')
 
-                print("Making Hybrid ISO...")
-                self.ec.run("isohybrid %s" % self.isoFileName)
+                # Create volume ID from ISO name
+                volid = self.isoName.replace(" ", "_")
+                volid = volid.replace("-", "")
+                volid = volid.upper()
+
+                cmd = "xorriso -as mkisofs " \
+                      "-r " \
+                      "-checksum_algorithm_iso md5,sha1 " \
+                      "-volid '%s' " \
+                      "-V '%s' " \
+                      "-o '%s' " \
+                      "-isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin " \
+                      "-partition_offset 16 " \
+                      "-J " \
+                      "-l " \
+                      "-joliet-long " \
+                      "-c isolinux/boot.cat " \
+                      "-b isolinux/isolinux.bin " \
+                      "-no-emul-boot " \
+                      "-boot-load-size 4 " \
+                      "-boot-info-table " \
+                      "-eltorito-alt-boot " \
+                      "-e isolinux/efiboot.img " \
+                      "-no-emul-boot " \
+                      "-isohybrid-gpt-basdat " \
+                      "-isohybrid-apm-hfsplus " \
+                      "%s" % (volid, self.isoName, self.isoFileName, self.bootPath)
+                self.ec.run(cmd)
+
+                print("Add md5")
+                self.ec.run("implantisomd5 %s" % self.isoFileName)
 
                 print("Create sha256 file...")
                 oldmd5 = "%s.md5" % self.isoFileName
@@ -487,9 +483,6 @@ class EditDistro(object):
             self.ec.run("mount --bind /dev/pts '%s'" % pts)
             self.ec.run("mount --bind /sys '%s'" % sys)
 
-            # copy apt.conf
-            #copy("/etc/apt/apt.conf", join(self.rootPath, "etc/apt/apt.conf"))
-
             # copy wgetrc
             move(wgetrc, wgetrcBak)
             copy("/etc/wgetrc", wgetrc)
@@ -524,9 +517,6 @@ class EditDistro(object):
             # restore wgetrc
             move(wgetrcBak, wgetrc)
 
-            # remove apt.conf
-            #remove(join(self.rootPath, "root/etc/apt/apt.conf"))
-
             # move dns info
             if exists(resolveCnfBak):
                 move(resolveCnfBak, resolveCnf)
@@ -555,9 +545,6 @@ class EditDistro(object):
         except Exception as detail:
             # restore wgetrc
             move(wgetrcBak, wgetrc)
-
-            # remove apt.conf
-            #remove(join(self.rootPath, "etc/apt/apt.conf"))
 
             # move dns info
             if exists(resolveCnfBak):

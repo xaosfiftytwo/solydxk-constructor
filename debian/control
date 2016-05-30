@@ -22,7 +22,6 @@ Depends: ${misc:Depends}, ${python:Depends}
   , gir1.2-gtk-3.0
   , squashfs-tools
   , coreutils
-  , genisoimage
   , rsync
   , xterm
   , lzma
@@ -35,7 +34,10 @@ Depends: ${misc:Depends}, ${python:Depends}
   , grub-efi-amd64-bin
   , apt-show-versions
   , isolinux
-  , syslinux-utils
   , gconf2
+  , xorriso
+  , isomd5sum
+  , dosfstools
+  , mtools
 Description: SolydXK ISO constructor
  Used by the SolydXK development team to automate ISO building.

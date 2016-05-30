@@ -227,32 +227,43 @@ class Constructor(object):
 
         selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
         for path in selected:
-            rootPath = "%s/root" % path
-            bootPath = "{}/boot".format(path)
+            rootPath = join(path, "root")
+            bootPath = join(path, "boot")
+            efiPath = join(path, "EFI/BOOT")
             arch = functions.getGuestEfiArchitecture(rootPath)
 
             grubEfiName = "bootx64"
-            efiName = "x64"
+            #efiName = "x64"
             if arch != "x86_64":
                 arch = "i386"
                 grubEfiName = "bootia32"
-                efiName = "ia32"
+                #efiName = "ia32"
 
             try:
-                if not exists("{}/efi/boot".format(bootPath)):
-                    makedirs("{}/efi/boot".format(bootPath))
+                # Clean up old stuff and prepare for a new EFI image
+                if not exists(efiPath):
+                    makedirs(efiPath)
+                if exists(join(bootPath, "efi")):
+                    rmtree(join(bootPath, "efi"))
 
-                self.ec.run("efi-image {}/~tmp {}-efi {}".format(bootPath, arch, efiName))
-                if exists("{}/~tmp/efi.img".format(bootPath) and
-                   exists("{}/~tmp/boot/grub/{}-efi".format(bootPath, arch))):
-                    self.ec.run("rm -r {}/boot/grub/{}-efi".format(bootPath, arch))
-                    self.ec.run("mv -vf {}/~tmp/boot/grub/{}-efi {}/boot/grub/".format(bootPath, arch, bootPath))
-                    self.ec.run("mv -vf {}/~tmp/efi.img {}/boot/grub/".format(bootPath, bootPath))
-                    self.ec.run("rm -r {}/~tmp".format(bootPath))
+                # Create embedded.cfg
+                cont = """search --file --set=root /.solydxk
+if [ -e ($root)/boot/grub/grub.cfg ]; then
+    set prefix=($root)/boot/grub
+    configfile $prefix/grub.cfg
+else
+    echo "Could not find /boot/grub/grub.cfg!"
+fi
+"""
+                with open('embedded.cfg', 'w') as f:
+                    f.write(cont)
 
-                self.ec.run("grub-mkimage -O {}-efi -d /usr/lib/grub/{}-efi "
-                            "-o {}/efi/boot/{}.efi "
-                            "-p \"/boot/grub\" {}".format(arch, arch, bootPath, grubEfiName, modules))
+                # Create the .efi image with the embedded.cfg file
+                self.ec.run("grub-mkimage "
+                            "--config=embedded.cfg "
+                            "-O {}-efi "
+                            "-o '{}/{}.efi' "
+                            "{}".format(arch, efiPath, grubEfiName, modules))
 
                 print((">> Finished building EFI files"))
 

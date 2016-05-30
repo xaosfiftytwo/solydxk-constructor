@@ -1,3 +1,15 @@
+solydxk-constructor (2.7.2) solydxk; urgency=low
+
+  * Use xorriso instead of genisoimage
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Fri, 27 May 2016 16:06:17 +0200
+
+solydxk-constructor (2.7.1) solydxk; urgency=low
+
+  * Debugged cleanup script
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Mon, 02 May 2016 11:36:35 +0200
+
 solydxk-constructor (2.7.0) solydxk; urgency=low
 
   * Save distros.list in user home directory
