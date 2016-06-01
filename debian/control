@@ -30,8 +30,6 @@ Depends: ${misc:Depends}, ${python:Depends}
   , mktorrent
   , intltool
   , po4a
-  , grub-efi-ia32-bin
-  , grub-efi-amd64-bin
   , apt-show-versions
   , isolinux
   , gconf2

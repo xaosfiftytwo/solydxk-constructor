@@ -343,10 +343,18 @@ fi
         self.tvHandlerDistros.treeviewToggleRows(toggleColNrList=[0])
 
     def on_btnHelp_clicked(self, widget):
-        if functions.isPackageInstalled("firefox"):
-            system("firefox file://%s &" % self.help)
-        else:
+        browser = self.ec.run(cmd='which firefox', realTime=False, returnAsList=False)
+        if browser == "":
+            browser = self.ec.run(cmd='which chromium', realTime=False, returnAsList=False)
+        if browser == "":
+            browser = self.ec.run(cmd='which google-chrome', realTime=False, returnAsList=False)
+        if browser == "":
+            browser = self.ec.run(cmd='which opera', realTime=False, returnAsList=False)
+        if browser == "":
+            # This probably won't work...
             system("xdg-open file://%s &" % self.help)
+        else:
+            system("%s %s &" % (browser, self.help))
 
     def on_btnOpenDir_clicked(self, widget):
         selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)

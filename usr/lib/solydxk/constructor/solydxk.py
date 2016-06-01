@@ -366,14 +366,16 @@ class BuildIso(threading.Thread):
                 print("Building ISO...")
 
                 # Create volume ID from ISO name
-                volid = self.isoName.replace(" ", "_")
-                volid = volid.replace("-", "")
-                volid = volid.upper()
+                #volid = self.isoName.replace(" ", "_")
+                #volid = volid.replace("-", "")
+                #volid = volid.upper()
+
+                #"-checksum_algorithm_iso md5,sha1 " \
+                #"-volid '%s' " \
+                #"-isohybrid-apm-hfsplus " \
 
                 cmd = "xorriso -as mkisofs " \
                       "-r " \
-                      "-checksum_algorithm_iso md5,sha1 " \
-                      "-volid '%s' " \
                       "-V '%s' " \
                       "-o '%s' " \
                       "-isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin " \
@@ -390,8 +392,7 @@ class BuildIso(threading.Thread):
                       "-e isolinux/efiboot.img " \
                       "-no-emul-boot " \
                       "-isohybrid-gpt-basdat " \
-                      "-isohybrid-apm-hfsplus " \
-                      "%s" % (volid, self.isoName, self.isoFileName, self.bootPath)
+                      "%s" % (self.isoName, self.isoFileName, self.bootPath)
                 self.ec.run(cmd)
 
                 print("Add md5")
