@@ -1,3 +1,22 @@
+solydxk-constructor (2.7.7) solydxk; urgency=low
+
+  * Handle --force-yes for Stretch
+  * Moved efi image creation to BuildIso class
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 08 Jun 2016 13:26:03 +0200
+
+solydxk-constructor (2.7.6) solydxk; urgency=low
+
+  * Use open-as-user to open files/directories
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 01 Jun 2016 17:20:48 +0200
+
+solydxk-constructor (2.7.5) solydxk; urgency=low
+
+  * Using xdg-open-as-user in solydxk-system to open files and directories
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 01 Jun 2016 14:08:55 +0200
+
 solydxk-constructor (2.7.4) solydxk; urgency=low
 
   * Optimized xorriso parameters

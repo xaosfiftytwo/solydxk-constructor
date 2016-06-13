@@ -19,6 +19,7 @@ Depends: ${misc:Depends}, ${python:Depends}
   , python3
   , python3-gi
   , python3-apt
+  , solydxk-system
   , gir1.2-gtk-3.0
   , squashfs-tools
   , coreutils

@@ -6,6 +6,7 @@ gi.require_version('Gtk', '3.0')
 
 try:
     import os
+    import errno
     import pwd
     import shutil
     import re
@@ -34,6 +35,7 @@ packageStatus = ['installed', 'notinstalled', 'uninstallable']
 # Init
 ec = ExecCmd()
 cache = apt.Cache()
+
 
 # General ================================================
 
@@ -754,3 +756,29 @@ def get_user_home_dir(user_name=""):
     if user_name == "":
         user_name = getUserLoginName()
     return expanduser("~%s" % user_name)
+
+
+def get_apt_force(chroot_dir=""):
+    # --force-yes is deprecated in stretch
+    force = '--force-yes'
+    ver = strToNumber(ec.run(cmd="head -c 1 %s/etc/debian_version | sed 's/[a-zA-Z]/0/' 2>/dev/null || echo 0" % chroot_dir, realTime=False, returnAsList=False))
+    if ver == 0 or ver > 8:
+        force = '--allow-downgrades --allow-remove-essential --allow-change-held-packages'
+    return force
+
+
+def silent_remove(path, tree=True):
+    try:
+        os.system("chmod u+w %s" % path)
+        os.remove(path)
+        print(("Removed: %s" % path))
+    except:
+        try:
+            if tree:
+                shutil.rmtree(path)
+            else:
+                os.rmdir(path)
+            print(("Removed: %s" % path))
+        except OSError as e:
+            if e.errno != errno.ENOENT:
+                print(("ERROR: silent_remove - %s" % e))

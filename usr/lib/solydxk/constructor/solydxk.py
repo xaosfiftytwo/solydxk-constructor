@@ -2,12 +2,13 @@
 
 import re
 import threading
-from os import remove, rmdir, makedirs, system, listdir
+from os import makedirs, system, listdir
 from shutil import copy, move
 from datetime import datetime
 from execcmd import ExecCmd
 from os.path import join, exists, basename, abspath, dirname, lexists, isdir
-from functions import get_config_dict
+from functions import get_config_dict, getHostEfiArchitecture, \
+                      getGuestEfiArchitecture, silent_remove
 
 
 class IsoUnpack(threading.Thread):
@@ -87,7 +88,7 @@ class IsoUnpack(threading.Thread):
                     self.ec.run("umount --force '%s'" % self.mountDir)
 
                 # Cleanup
-                rmdir(self.mountDir)
+                silent_remove(self.mountDir, False)
                 # set proper permissions
                 self.ec.run("chmod 6755 '%s'" % join(rootDir, "usr/bin/sudo"))
                 self.ec.run("chmod 0440 '%s'" % join(rootDir, "etc/sudoers"))
@@ -98,7 +99,7 @@ class IsoUnpack(threading.Thread):
 
         except Exception as detail:
             self.ec.run("umount --force '%s'" % self.mountDir)
-            rmdir(self.mountDir)
+            silent_remove(self.mountDir, False)
             self.returnMessage = "ERROR: IsoUnpack: %(detail)s" % {"detail": detail}
             self.queue.put(self.returnMessage)
 
@@ -217,15 +218,13 @@ class BuildIso(threading.Thread):
                     self.copy_file(scriptSource, scriptTarget)
                     self.ec.run("chmod a+x %s" % scriptTarget)
                     self.ed.openTerminal("/bin/bash %s" % script)
-                    remove(scriptTarget)
+                    silent_remove(scriptTarget)
 
                 rootHome = join(self.rootPath, "root")
                 nanoHist = join(rootHome, ".nano_history")
-                if exists(nanoHist):
-                    remove(nanoHist)
+                silent_remove(nanoHist)
                 bashHist = join(rootHome, ".bash_history")
-                if exists(bashHist):
-                    remove(bashHist)
+                silent_remove(bashHist)
 
                 # Config naming
                 regExp = "solyd.*(\d{6}|-bit)"
@@ -301,9 +300,8 @@ class BuildIso(threading.Thread):
                 self.ec.run('chroot \"' + self.rootPath + '\"' + dpkgQuery + ' > \"' + join(self.livePath, "filesystem.packages") + '\"' )
 
                 # check for existing squashfs root
-                if exists(join(self.livePath, "filesystem.squashfs")):
-                    print("Removing existing SquashFS root...")
-                    remove(join(self.livePath, "filesystem.squashfs"))
+                print("Removing existing SquashFS root...")
+                silent_remove(join(self.livePath, "filesystem.squashfs"))
                 print("Building SquashFS root...")
                 # check for custom mksquashfs (for multi-threading, new features, etc.)
                 mksquashfs = self.ec.run(cmd="echo $MKSQUASHFS", returnAsList=False).strip()
@@ -328,8 +326,7 @@ class BuildIso(threading.Thread):
                 isolinuxPath = join(self.bootPath, "isolinux")
                 self.ec.run("chmod -R +w {}".format(isolinuxPath))
                 cat = join(isolinuxPath, "boot.cat")
-                if exists(cat):
-                    remove(cat)
+                silent_remove(cat)
                 self.copy_file(join(modulesPath, "chain.c32"), isolinuxPath)
                 self.copy_file(join(modulesPath, "hdt.c32"), isolinuxPath)
                 self.copy_file(join(modulesPath, "libmenu.c32"), isolinuxPath)
@@ -342,6 +339,11 @@ class BuildIso(threading.Thread):
                 self.copy_file(join(modulesPath, "libutil.c32"), isolinuxPath)
                 self.copy_file(join(self.rootPath, "boot/memtest86+.bin"), join(isolinuxPath, "memtest86"))
                 self.copy_file("/usr/lib/ISOLINUX/isolinux.bin", isolinuxPath)
+
+                # Build the EFI image
+                efi_error = self.build_efi_image(self.distroPath)
+                if efi_error is not None:
+                    self.returnMessage = "ERROR: BuildIso: %(efi_error)s" % {"efi_error": efi_error}
 
                 # Create efiboot.img
                 efiPath = join(self.distroPath, "EFI")
@@ -358,21 +360,10 @@ class BuildIso(threading.Thread):
                     system("touch %s" % grubChkFile)
 
                 # remove existing iso
-                if exists(self.isoFileName):
-                    print("Removing existing ISO...")
-                    remove(self.isoFileName)
+                silent_remove(self.isoFileName)
 
                 # build iso according to architecture
                 print("Building ISO...")
-
-                # Create volume ID from ISO name
-                #volid = self.isoName.replace(" ", "_")
-                #volid = volid.replace("-", "")
-                #volid = volid.upper()
-
-                #"-checksum_algorithm_iso md5,sha1 " \
-                #"-volid '%s' " \
-                #"-isohybrid-apm-hfsplus " \
 
                 cmd = "xorriso -as mkisofs " \
                       "-r " \
@@ -400,18 +391,17 @@ class BuildIso(threading.Thread):
 
                 print("Create sha256 file...")
                 oldmd5 = "%s.md5" % self.isoFileName
-                if exists(oldmd5):
-                    remove(oldmd5)
+                silent_remove(oldmd5)
                 self.ec.run("echo \"$(sha256sum \"%s\" | cut -d' ' -f 1)  %s\" > \"%s.sha256\"" % (self.isoFileName, self.isoBaseName, self.isoFileName))
 
                 print("Create Torrent file...")
                 torrentFile = "%s.torrent" % self.isoFileName
-                if exists(torrentFile):
-                    remove(torrentFile)
+                silent_remove(torrentFile)
                 self.ec.run("mktorrent -a \"%s\" -c \"%s\" -w \"%s\" -o \"%s\" \"%s\"" % (self.trackers, self.isoName, self.webseeds, torrentFile, self.isoFileName))
 
                 print("======================================================")
-                self.returnMessage = "DONE - ISO Located at: %s" % self.isoFileName
+                if self.returnMessage is None:
+                    self.returnMessage = "DONE - ISO Located at: %s" % self.isoFileName
                 print((self.returnMessage))
                 print("======================================================")
 
@@ -429,6 +419,65 @@ class BuildIso(threading.Thread):
                 print(("ERROR: BuildIso.copy_file: {}".format(detail)))
         else:
             print(("ERROR: BuildIso.copy_file: cannot find {}".format(file_path)))
+
+    def build_efi_image(self, distro_path):
+        hostEfiArchitecture = getHostEfiArchitecture()
+        if hostEfiArchitecture == "":
+            return None
+
+        # TODO - also 32-bit installs (haven't tested this)
+
+        modules = "part_gpt part_msdos ntfs ntfscomp hfsplus fat ext2 normal chain boot configfile linux " \
+                "multiboot iso9660 gfxmenu gfxterm loadenv efi_gop efi_uga loadbios fixvideo png " \
+                "ext2 ntfscomp loopback search minicmd cat cpuid appleldr elf usb videotest " \
+                "halt help ls reboot echo test normal sleep memdisk tar font video_fb video " \
+                "gettext true  video_bochs video_cirrus multiboot2 acpi gfxterm_background gfxterm_menu"
+
+        rootPath = join(distro_path, "root")
+        bootPath = join(distro_path, "boot")
+        efiPath = join(distro_path, "EFI/BOOT")
+        arch = getGuestEfiArchitecture(rootPath)
+
+        grubEfiName = "bootx64"
+        if arch != "x86_64":
+            arch = "i386"
+            grubEfiName = "bootia32"
+
+        try:
+            # Clean up old stuff and prepare for a new EFI image
+            if not exists(efiPath):
+                makedirs(efiPath)
+            silent_remove(join(bootPath, "efi"))
+            silent_remove(join(bootPath, "boot/memdisk"))
+            silent_remove(join(bootPath, "boot/grub/x86_64-efi"))
+            silent_remove(join(bootPath, "boot/grub/i386-efi"))
+            silent_remove(join(bootPath, "boot/grub/efi.img"))
+            silent_remove(join(bootPath, "boot/grub/loopback.cfg"))
+
+            # Create embedded.cfg
+            cont = """search --file --set=root /.solydxk
+if [ -e ($root)/boot/grub/grub.cfg ]; then
+  set prefix=($root)/boot/grub
+  configfile $prefix/grub.cfg
+else
+  echo "Could not find /boot/grub/grub.cfg!"
+fi
+"""
+            with open('embedded.cfg', 'w') as f:
+                f.write(cont)
+
+            # Create the .efi image with the embedded.cfg file
+            self.ec.run("grub-mkimage "
+                        "--config=embedded.cfg "
+                        "-O {}-efi "
+                        "-o '{}/{}.efi' "
+                        "{}".format(arch, efiPath, grubEfiName, modules))
+
+            print((">> Finished building EFI files"))
+            return None
+
+        except Exception as detail:
+            return detail
 
 
 # Class to create a chrooted terminal for a given directory
@@ -501,8 +550,7 @@ class EditDistro(object):
                 self.ec.run("ln -s /bin/true %s" % ischroot)
 
             # HACK: create temporary script for chrooting
-            if exists(terminal):
-                remove(terminal)
+            silent_remove(terminal)
             scr = "#!/bin/sh\nchroot '%s' %s\n" % (self.rootPath, command)
             with open(terminal, 'w') as f:
                 f.write(scr)
@@ -522,18 +570,16 @@ class EditDistro(object):
             if exists(resolveCnfBak):
                 move(resolveCnfBak, resolveCnf)
             else:
-                remove(resolveCnf)
+                silent_remove(resolveCnf)
 
             # umount /proc /dev /dev/pts /sys
             self.unmount([pts, dev, proc, sys])
 
             # remove temp script
-            if exists(terminal):
-                remove(terminal)
+            silent_remove(terminal)
 
             # remove policy script
-            if exists(policy):
-                remove(policy)
+            silent_remove(policy)
 
             # replace ischroot
             if exists("%s.tmp" % ischroot):
@@ -551,18 +597,16 @@ class EditDistro(object):
             if exists(resolveCnfBak):
                 move(resolveCnfBak, resolveCnf)
             else:
-                remove(resolveCnf)
+                silent_remove(resolveCnf)
 
             # umount /proc /dev /dev/pts /sys
             self.unmount([pts, dev, proc, sys])
 
             # remove temp script
-            if exists(terminal):
-                remove(terminal)
+            silent_remove(terminal)
 
             # remove policy script
-            if exists(policy):
-                remove(policy)
+            silent_remove(policy)
 
             # replace ischroot
             if exists("%s.tmp" % ischroot):

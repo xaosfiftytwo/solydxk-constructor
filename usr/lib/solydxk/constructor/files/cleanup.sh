@@ -8,10 +8,10 @@ NotOrphan='baloo'
 PREFEREDPLYMOUTHTHEME="solyd.*flat"
 
 # --force-yes is deprecated in stretch
-FORCE='--allow-downgrades --allow-remove-essential --allow-change-held-packages'
-DEBVER=$(grep ^8 /etc/debian_version)
-if [ "$DEBVER" != "" ]; then
-  FORCE='--force-yes'
+FORCE='--force-yes'
+VER=$(head -c 1 /etc/debian_version | sed 's/[a-zA-Z]/0/' 2>/dev/null || echo 0)
+if [ "$VER" -eq 0 ] || [ "$VER" -gt 8 ]; then
+  FORCE='--allow-downgrades --allow-remove-essential --allow-change-held-packages'
 fi
 
 
@@ -170,13 +170,10 @@ fi
 
 # Recreate pixbuf cache
 PB='/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders'
+if [ ! -e $PB ]; then
+  PB='/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders'
 if [ -e $PB ]; then
   $PB --update-cache
-else
-  PB='/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders'
-  if [ -e $PB ]; then
-    $PB --update-cache
-  fi
 fi
 
 # Settings for the firewall

@@ -9,6 +9,12 @@ zh_CN='fonts-arphic-ukai fonts-arphic-uming im-config fcitx fcitx-sunpinyin fcit
 ko_KR='fonts-unfonts* im-config fcitx fcitx-hangul fcitx-frontend-gtk3 fcitx-ui-classic fcitx-config-gtk'
 ja_JP='fonts-vlgothic fonts-takao im-config fcitx fcitx-mozc fcitx-frontend-gtk3 fcitx-ui-classic fcitx-config-gtk mozc-utils-gui'
 
+# --force-yes is deprecated in stretch
+FORCE='--force-yes'
+VER=$(head -c 1 /etc/debian_version | sed 's/[a-zA-Z]/0/' 2>/dev/null || echo 0)
+if [ "$VER" -eq 0 ] || [ "$VER" -gt 8 ]; then
+  FORCE='--allow-downgrades --allow-remove-essential --allow-change-held-packages'
+fi
 
 # Check if package is installed
 function isInstalled() {
@@ -87,9 +93,9 @@ apt-get update
 if isInstalled "kde-runtime"; then
     echo "Localizing KDE..."
     if doesExist "kde-l10n-$LOC1$LOC2L"; then
-        apt-get install --yes --force-yes kde-l10n-$LOC1$LOC2L
+        apt-get install --yes $FORCE kde-l10n-$LOC1$LOC2L
     else
-        apt-get install --yes --force-yes kde-l10n-$LOC1
+        apt-get install --yes $FORCE kde-l10n-$LOC1
     fi
 fi
 
@@ -97,13 +103,13 @@ fi
 if isInstalled "libreoffice"; then
     echo "Localizing LibreOffice..."
     if doesExist "libreoffice-l10n-$LOC1-$LOC2L"; then
-        apt-get install --yes --force-yes libreoffice-l10n-$LOC1-$LOC2L
-        apt-get install --yes --force-yes libreoffice-help-$LOC1-$LOC2L
-        apt-get install --yes --force-yes myspell-$LOC1-$LOC2L
+        apt-get install --yes $FORCE libreoffice-l10n-$LOC1-$LOC2L
+        apt-get install --yes $FORCE libreoffice-help-$LOC1-$LOC2L
+        apt-get install --yes $FORCE myspell-$LOC1-$LOC2L
     else
-        apt-get install --yes --force-yes libreoffice-l10n-$LOC1
-        apt-get install --yes --force-yes libreoffice-help-$LOC1
-        apt-get install --yes --force-yes myspell-$LOC1
+        apt-get install --yes $FORCE libreoffice-l10n-$LOC1
+        apt-get install --yes $FORCE libreoffice-help-$LOC1
+        apt-get install --yes $FORCE myspell-$LOC1
     fi
 fi
 
@@ -111,9 +117,9 @@ fi
 if isInstalled "firefox-esr"; then
     echo "Localizing Firefox ESR..."
     if doesExist "firefox-esr-l10n-$LOC1-$LOC2L"; then
-        apt-get install --yes --force-yes firefox-esr-l10n-$LOC1-$LOC2L
+        apt-get install --yes $FORCE firefox-esr-l10n-$LOC1-$LOC2L
     else
-        apt-get install --yes --force-yes firefox-esr-l10n-$LOC1
+        apt-get install --yes $FORCE firefox-esr-l10n-$LOC1
     fi
     PREF='/etc/skel/.mozilla/firefox/mwad0hks.default/prefs.js'
     localizePref $PREF 'spellchecker.dictionary' $LOC
@@ -127,9 +133,9 @@ fi
 if isInstalled "firefox"; then
     echo "Localizing Firefox..."
     if doesExist "firefox-l10n-$LOC1-$LOC2L"; then
-        apt-get install --yes --force-yes firefox-l10n-$LOC1-$LOC2L
+        apt-get install --yes $FORCE firefox-l10n-$LOC1-$LOC2L
     else
-        apt-get install --yes --force-yes firefox-l10n-$LOC1
+        apt-get install --yes $FORCE firefox-l10n-$LOC1
     fi
     PREF='/etc/skel/.mozilla/firefox/mwad0hks.default/prefs.js'
     localizePref $PREF 'spellchecker.dictionary' $LOC
@@ -143,9 +149,9 @@ fi
 if isInstalled "thunderbird"; then
     echo "Localizing Thunderbird..."
     if doesExist "thunderbird-l10n-$LOC1-$LOC2L"; then
-        apt-get install --yes --force-yes thunderbird-l10n-$LOC1-$LOC2L
+        apt-get install --yes $FORCE thunderbird-l10n-$LOC1-$LOC2L
     else
-        apt-get install --yes --force-yes thunderbird-l10n-$LOC1
+        apt-get install --yes $FORCE thunderbird-l10n-$LOC1
     fi
     PREF='/etc/skel/.thunderbird/pjzwmea6.default/prefs.js'
     localizePref $PREF 'spellchecker.dictionary' $LOC1
@@ -156,9 +162,9 @@ if isInstalled "thunderbird"; then
 fi
 
 # Install locale specific packages
-if [ "$LOC" == "zh_TW" ]; then apt-get install --yes --force-yes $zh_TW; fi
-if [ "$LOC" == "zh_SG" ]; then apt-get install --yes --force-yes $zh_SG; fi
-if [ "$LOC" == "zh_HK" ]; then apt-get install --yes --force-yes $zh_HK; fi
-if [ "$LOC" == "zh_CN" ]; then apt-get install --yes --force-yes $zh_CN; fi
-if [ "$LOC" == "ko_KR" ]; then apt-get install --yes --force-yes $ko_KR; fi
-if [ "$LOC" == "ja_JP" ]; then apt-get install --yes --force-yes $ja_JP; fi
+if [ "$LOC" == "zh_TW" ]; then apt-get install --yes $FORCE $zh_TW; fi
+if [ "$LOC" == "zh_SG" ]; then apt-get install --yes $FORCE $zh_SG; fi
+if [ "$LOC" == "zh_HK" ]; then apt-get install --yes $FORCE $zh_HK; fi
+if [ "$LOC" == "zh_CN" ]; then apt-get install --yes $FORCE $zh_CN; fi
+if [ "$LOC" == "ko_KR" ]; then apt-get install --yes $FORCE $ko_KR; fi
+if [ "$LOC" == "ja_JP" ]; then apt-get install --yes $FORCE $ja_JP; fi

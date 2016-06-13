@@ -12,9 +12,11 @@ gi.require_version('Gtk', '3.0')
 # sudo apt-get install python3-gi
 # from gi.repository import Gtk, GdkPixbuf, GObject, Pango, Gdk
 from gi.repository import Gtk, GObject
-from os import makedirs, remove, system, listdir
-from shutil import copy, move, rmtree
-import functions
+from os import makedirs, system, listdir
+from shutil import copy, move
+from functions import pushMessage, get_user_home_dir, getUserLoginName, \
+                      getPackageVersion, repaintGui, get_apt_force, \
+                      silent_remove, getGuestEfiArchitecture
 import threading
 import operator
 from queue import Queue
@@ -37,12 +39,12 @@ class Constructor(object):
     def __init__(self):
         self.scriptDir = abspath(dirname(__file__))
         self.shareDir = join(self.scriptDir, '../../../share/solydxk/constructor')
-        self.userAppDir = join(functions.get_user_home_dir(), ".constructor")
+        self.userAppDir = join(get_user_home_dir(), ".constructor")
         self.distroFile = join(self.userAppDir, "distros.list")
 
         # Create the user's application directory if it doesn't exist
         if not isdir(self.userAppDir):
-            user_name = functions.getUserLoginName()
+            user_name = getUserLoginName()
             makedirs(self.userAppDir)
             old_distro_file = join(self.scriptDir, "distros.list")
             if exists(old_distro_file):
@@ -107,7 +109,6 @@ class Constructor(object):
         self.help = join(self.shareDir, 'help.html')
         self.chkFromIso.set_active(True)
         self.toggleGuiElements(False)
-        self.hostEfiArchitecture = functions.getHostEfiArchitecture()
 
         # Treeviews
         self.tvHandlerDistros = TreeViewHandler(self.tvDistros)
@@ -115,7 +116,7 @@ class Constructor(object):
 
         # Version information
         ver = _("Version")
-        self.version = "%s: %s" % (ver, functions.getPackageVersion('solydxk-constructor'))
+        self.version = "%s: %s" % (ver, getPackageVersion('solydxk-constructor'))
         self.showOutput(self.version)
 
         # Connect the signals and show the window
@@ -157,13 +158,14 @@ class Constructor(object):
                 for service in services:
                     msg += "\nservice %s stop" % service
                 self.showInfo(_("Services detected"), msg, self.window)
-                functions.repaintGui()
+                repaintGui()
             de.openTerminal()
 
     def on_btnUpgrade_clicked(self, widget):
         selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
         upgraded = False
         for path in selected:
+            force = get_apt_force(path)
             upgraded = True
             rootPath = "%s/root" % path
             de = EditDistro(path)
@@ -172,7 +174,7 @@ class Constructor(object):
                 de.openTerminal("service apache2 start")
             if exists(join(rootPath, 'etc/mysql/debian.cnf')):
                 de.openTerminal("service mysql start")
-            de.openTerminal("apt-get -y --force-yes -o Dpkg::Options::=\"--force-confnew\" dist-upgrade")
+            de.openTerminal("apt-get -y %s -o Dpkg::Options::=\"--force-confnew\" dist-upgrade" % force)
             if exists(join(rootPath, 'etc/apache2/apache2.conf')):
                 de.openTerminal("service apache2 stop")
             if exists(join(rootPath, 'etc/mysql/debian.cnf')):
@@ -186,12 +188,7 @@ class Constructor(object):
                 copy(scriptSource, scriptTarget)
                 self.ec.run("chmod a+x %s" % scriptTarget)
                 de.openTerminal("/bin/bash %s" % script)
-                remove(scriptTarget)
-
-            # Build EFI files
-            if self.hostEfiArchitecture != "":
-                print(">> Start building EFI files")
-                self.build_efi_files()
+                silent_remove(scriptTarget)
 
             # Download offline packages
             print(">> Start downloading offline packages")
@@ -213,68 +210,13 @@ class Constructor(object):
                 copy(scriptSource, scriptTarget)
                 self.ec.run("chmod a+x %s" % scriptTarget)
                 de.openTerminal("/bin/bash %s" % script)
-                remove(scriptTarget)
-
-    def build_efi_files(self):
-
-        # TODO - also 32-bit installs (haven't tested this)
-
-        modules = "part_gpt part_msdos ntfs ntfscomp hfsplus fat ext2 normal chain boot configfile linux " \
-                "multiboot iso9660 gfxmenu gfxterm loadenv efi_gop efi_uga loadbios fixvideo png " \
-                "ext2 ntfscomp loopback search minicmd cat cpuid appleldr elf usb videotest " \
-                "halt help ls reboot echo test normal sleep memdisk tar font video_fb video " \
-                "gettext true  video_bochs video_cirrus multiboot2 acpi gfxterm_background gfxterm_menu"
-
-        selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
-        for path in selected:
-            rootPath = join(path, "root")
-            bootPath = join(path, "boot")
-            efiPath = join(path, "EFI/BOOT")
-            arch = functions.getGuestEfiArchitecture(rootPath)
-
-            grubEfiName = "bootx64"
-            #efiName = "x64"
-            if arch != "x86_64":
-                arch = "i386"
-                grubEfiName = "bootia32"
-                #efiName = "ia32"
-
-            try:
-                # Clean up old stuff and prepare for a new EFI image
-                if not exists(efiPath):
-                    makedirs(efiPath)
-                if exists(join(bootPath, "efi")):
-                    rmtree(join(bootPath, "efi"))
-
-                # Create embedded.cfg
-                cont = """search --file --set=root /.solydxk
-if [ -e ($root)/boot/grub/grub.cfg ]; then
-    set prefix=($root)/boot/grub
-    configfile $prefix/grub.cfg
-else
-    echo "Could not find /boot/grub/grub.cfg!"
-fi
-"""
-                with open('embedded.cfg', 'w') as f:
-                    f.write(cont)
-
-                # Create the .efi image with the embedded.cfg file
-                self.ec.run("grub-mkimage "
-                            "--config=embedded.cfg "
-                            "-O {}-efi "
-                            "-o '{}/{}.efi' "
-                            "{}".format(arch, efiPath, grubEfiName, modules))
-
-                print((">> Finished building EFI files"))
-
-            except Exception as detail:
-                self.showError("Error: build EFI files", detail, self.window)
+                silent_remove(scriptTarget)
 
     def download_offline_packages(self):
         selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
         for path in selected:
             rootPath = "%s/root" % path
-            arch = functions.getGuestEfiArchitecture(rootPath)
+            arch = getGuestEfiArchitecture(rootPath)
             de = EditDistro(path)
             script = "offline.sh"
             scriptSource = join(self.scriptDir, "files/{}".format(script))
@@ -288,13 +230,13 @@ fi
                     # Run the script
                     de.openTerminal("/bin/bash {} {}".format(script, arch))
                     # Remove script
-                    remove(scriptTarget)
+                    silent_remove(scriptTarget)
                     # Move offline directory to boot directory
                     if exists(offlineSource):
                         print(("%s exists" % offlineSource))
                         if exists(offlineTarget):
                             print((">> Remove %s" % offlineTarget))
-                            rmtree(offlineTarget)
+                            silent_remove(offlineTarget)
                         print((">> Move %s to %s" % (offlineSource, offlineTarget)))
                         move(offlineSource, offlineTarget)
                     else:
@@ -311,7 +253,7 @@ fi
         for path in selected:
             self.toggleGuiElements(True)
             self.showOutput("Start building ISO in: %s" % path)
-            functions.repaintGui()
+            repaintGui()
 
             # Start building the ISO in a thread
             t = BuildIso(path, self.queue)
@@ -343,23 +285,12 @@ fi
         self.tvHandlerDistros.treeviewToggleRows(toggleColNrList=[0])
 
     def on_btnHelp_clicked(self, widget):
-        browser = self.ec.run(cmd='which firefox', realTime=False, returnAsList=False)
-        if browser == "":
-            browser = self.ec.run(cmd='which chromium', realTime=False, returnAsList=False)
-        if browser == "":
-            browser = self.ec.run(cmd='which google-chrome', realTime=False, returnAsList=False)
-        if browser == "":
-            browser = self.ec.run(cmd='which opera', realTime=False, returnAsList=False)
-        if browser == "":
-            # This probably won't work...
-            system("xdg-open file://%s &" % self.help)
-        else:
-            system("%s %s &" % (browser, self.help))
+        system("open-as-user %s" % self.help)
 
     def on_btnOpenDir_clicked(self, widget):
         selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
         for path in selected:
-            system("xdg-open %s &" % path)
+            system("open-as-user %s" % path)
 
     def fillTreeViewDistros(self, selectDistros=[]):
         contentList = [[_("Select"), _("Distribution"), _("Working directory")]]
@@ -519,7 +450,7 @@ fi
 
     def showOutput(self, message):
         print(message)
-        functions.pushMessage(self.statusbar, message)
+        pushMessage(self.statusbar, message)
 
     def checkThread(self, addDistro=None):
         #print 'Thread count = ' + str(threading.active_count())
