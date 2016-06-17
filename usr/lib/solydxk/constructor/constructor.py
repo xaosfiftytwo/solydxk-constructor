@@ -165,9 +165,9 @@ class Constructor(object):
         selected = self.tvHandlerDistros.getToggledValues(toggleColNr=0, valueColNr=2)
         upgraded = False
         for path in selected:
-            force = get_apt_force(path)
             upgraded = True
             rootPath = "%s/root" % path
+            force = get_apt_force(rootPath)
             de = EditDistro(path)
             de.openTerminal("apt-get update")
             if exists(join(rootPath, 'etc/apache2/apache2.conf')):

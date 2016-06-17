@@ -1,3 +1,15 @@
+solydxk-constructor (2.7.9) solydxk; urgency=low
+
+  * Fixed localization issues for Firefox/Thunderbird
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Thu, 16 Jun 2016 11:20:34 +0200
+
+solydxk-constructor (2.7.8) solydxk; urgency=low
+
+  * Fix upgrade button not upgrading
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Wed, 15 Jun 2016 21:02:14 +0200
+
 solydxk-constructor (2.7.7) solydxk; urgency=low
 
   * Handle --force-yes for Stretch

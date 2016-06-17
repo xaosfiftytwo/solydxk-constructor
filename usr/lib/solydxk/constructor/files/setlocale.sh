@@ -116,49 +116,55 @@ fi
 # Firefox ESR
 if isInstalled "firefox-esr"; then
     echo "Localizing Firefox ESR..."
+    LAN="$LOC1-$LOC2U"
     if doesExist "firefox-esr-l10n-$LOC1-$LOC2L"; then
         apt-get install --yes $FORCE firefox-esr-l10n-$LOC1-$LOC2L
     else
+        LAN=$LOC1
         apt-get install --yes $FORCE firefox-esr-l10n-$LOC1
     fi
     PREF='/etc/skel/.mozilla/firefox/mwad0hks.default/prefs.js'
     localizePref $PREF 'spellchecker.dictionary' $LOC
-    localizePref $PREF 'extensions.qls.visiblemenuitems' "$LOC1-$LOC2U#en-US"
-    localizePref $PREF 'extensions.qls.contentlocale' "$LOC1-$LOC2U"
-    localizePref $PREF 'extensions.qls.locale' "$LOC1-$LOC2U"
-    localizePref $PREF 'general.useragent.locale' "$LOC1-$LOC2U"
+    localizePref $PREF 'extensions.qls.visiblemenuitems' "$LAN#en-US"
+    localizePref $PREF 'extensions.qls.contentlocale' "$LAN"
+    localizePref $PREF 'extensions.qls.locale' "$LAN"
+    localizePref $PREF 'general.useragent.locale' "$LAN"
 fi
 
 # Firefox
 if isInstalled "firefox"; then
     echo "Localizing Firefox..."
+    LAN="$LOC1-$LOC2U"
     if doesExist "firefox-l10n-$LOC1-$LOC2L"; then
         apt-get install --yes $FORCE firefox-l10n-$LOC1-$LOC2L
     else
+        LAN=$LOC1
         apt-get install --yes $FORCE firefox-l10n-$LOC1
     fi
     PREF='/etc/skel/.mozilla/firefox/mwad0hks.default/prefs.js'
     localizePref $PREF 'spellchecker.dictionary' $LOC
-    localizePref $PREF 'extensions.qls.visiblemenuitems' "$LOC1-$LOC2U#en-US"
-    localizePref $PREF 'extensions.qls.contentlocale' "$LOC1-$LOC2U"
-    localizePref $PREF 'extensions.qls.locale' "$LOC1-$LOC2U"
-    localizePref $PREF 'general.useragent.locale' "$LOC1-$LOC2U"
+    localizePref $PREF 'extensions.qls.visiblemenuitems' "$LAN#en-US"
+    localizePref $PREF 'extensions.qls.contentlocale' "$LAN"
+    localizePref $PREF 'extensions.qls.locale' "$LAN"
+    localizePref $PREF 'general.useragent.locale' "$LAN"
 fi
 
 # Thunderbird
 if isInstalled "thunderbird"; then
     echo "Localizing Thunderbird..."
+    LAN="$LOC1-$LOC2U"
     if doesExist "thunderbird-l10n-$LOC1-$LOC2L"; then
         apt-get install --yes $FORCE thunderbird-l10n-$LOC1-$LOC2L
     else
+        LAN=$LOC1
         apt-get install --yes $FORCE thunderbird-l10n-$LOC1
     fi
     PREF='/etc/skel/.thunderbird/pjzwmea6.default/prefs.js'
     localizePref $PREF 'spellchecker.dictionary' $LOC1
-    localizePref $PREF 'extensions.qls.visiblemenuitems' "$LOC1-$LOC2U#en-US"
-    localizePref $PREF 'extensions.qls.contentlocale' "$LOC1-$LOC2U"
-    localizePref $PREF 'extensions.qls.locale' "$LOC1-$LOC2U"
-    localizePref $PREF 'general.useragent.locale' "$LOC1-$LOC2U"
+    localizePref $PREF 'extensions.qls.visiblemenuitems' "$LAN#en-US"
+    localizePref $PREF 'extensions.qls.contentlocale' "$LAN"
+    localizePref $PREF 'extensions.qls.locale' "$LAN"
+    localizePref $PREF 'general.useragent.locale' "$LAN"
 fi
 
 # Install locale specific packages
