@@ -1,3 +1,9 @@
+solydxk-constructor (2.8.0) solydxk; urgency=low
+
+  * Missing closing fi in cleanup.sh
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 28 Jun 2016 09:17:23 +0200
+
 solydxk-constructor (2.7.9) solydxk; urgency=low
 
   * Fixed localization issues for Firefox/Thunderbird
