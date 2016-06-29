@@ -9,8 +9,8 @@ PREFEREDPLYMOUTHTHEME="solyd.*flat"
 
 # --force-yes is deprecated in stretch
 FORCE='--force-yes'
-VER=$(head -c 1 /etc/debian_version | sed 's/[a-zA-Z]/0/' 2>/dev/null || echo 0)
-if [ "$VER" -eq 0 ] || [ "$VER" -gt 8 ]; then
+source /etc/lsb-release
+if [[ -z "$DISTRIB_RELEASE" ]] || [ "$DISTRIB_RELEASE" -gt 8 ]; then
   FORCE='--allow-downgrades --allow-remove-essential --allow-change-held-packages'
 fi
 
