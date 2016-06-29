@@ -367,7 +367,7 @@ class BuildIso(threading.Thread):
 
                 cmd = "xorriso -as mkisofs " \
                       "-r " \
-                      "-V '%s' " \
+                      "-volid '%s' " \
                       "-o '%s' " \
                       "-isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin " \
                       "-partition_offset 16 " \
@@ -383,7 +383,7 @@ class BuildIso(threading.Thread):
                       "-e isolinux/efiboot.img " \
                       "-no-emul-boot " \
                       "-isohybrid-gpt-basdat " \
-                      "%s" % (self.isoName, self.isoFileName, self.bootPath)
+                      "%s" % (self.get_volid(self.isoName), self.isoFileName, self.bootPath)
                 self.ec.run(cmd)
 
                 print("Add md5")
@@ -410,6 +410,15 @@ class BuildIso(threading.Thread):
         except Exception as detail:
             self.returnMessage = "ERROR: BuildIso: %(detail)s" % {"detail": detail}
             self.queue.put(self.returnMessage)
+
+    def get_volid(self, name):
+        name = name.upper().replace(" ", "_")
+        volid = ""
+        for c in name:
+            matchObj = re.search("[A-Z0-9_]", c)
+            if matchObj:
+                volid += c
+        return volid
 
     def copy_file(self, file_path, destination):
         if exists(file_path):

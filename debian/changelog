@@ -1,3 +1,9 @@
+solydxk-constructor (2.8.1) solydxk; urgency=low
+
+  * Use -volid instead of -V to id an ISO.
+
+ -- Arjen Balfoort <arjenbalfoort@solydxk.com>  Tue, 28 Jun 2016 19:51:30 +0200
+
 solydxk-constructor (2.8.0) solydxk; urgency=low
 
   * Missing closing fi in cleanup.sh
